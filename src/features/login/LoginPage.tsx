@@ -1,17 +1,41 @@
 import React, { useMemo } from "react";
-import styled from "styled-components";
+import { Form, Input, SubmitButton, ResetButton } from "formik-antd";
+import { Formik } from "formik";
+import { Button, Row, Col } from "antd";
 
-import { Button } from "antd";
+import { Styled } from "./LoginPage.styled";
 
-import Wrapper from "./LoginPage.styled";
-
-const Test = styled.span`
-  color: red;
-`;
 const LoginPage: React.FC = () => {
+  const handleSubmit = (values: any, actions: any) => {};
   return (
     <>
-      <div>Test</div>
+      <Styled.Wrapper>
+        <Styled.LoginBox>
+          <Row>
+            <Col span={12}>
+              <Formik
+                initialValues={{ user: "", password: "" }}
+                onSubmit={handleSubmit}
+                render={() => (
+                  <Form>
+                    <Row>
+                      <Input name="user" placeholder="First Name" />
+                    </Row>
+                    <Row>
+                      <Input name="password" placeholder="Password" />
+                    </Row>
+                    <SubmitButton name="Submit">Submit</SubmitButton> or{" "}
+                    <ResetButton>Reset Fields</ResetButton>
+                  </Form>
+                )}
+              />
+            </Col>
+            <Col span={12}>
+              <Button>Login with Google</Button>
+            </Col>
+          </Row>
+        </Styled.LoginBox>
+      </Styled.Wrapper>
     </>
   );
 };
