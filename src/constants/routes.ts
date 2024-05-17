@@ -1,5 +1,7 @@
-export const ROUTES = {
-  LOGIN_ROUTE: "/login",
-  PROFILE: "/profile",
-  PROFILE_FIENDS: "/friends",
+const appRoutes = {
+  home: "/",
+  login: "/login",
+  profile: "/profile",
+  friends: "/friends",
 };
+export default appRoutes;

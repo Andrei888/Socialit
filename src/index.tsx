@@ -5,7 +5,6 @@ import { ConnectedRouter } from "connected-react-router";
 
 // components
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 
 import history from "./utils/history";
 import configureStore from "./configureStore";

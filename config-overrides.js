@@ -6,6 +6,10 @@ module.exports = function override(config, env) {
   addWebpackAlias({
     ["@app"]: path.resolve(__dirname, "./src"),
     ["@constants"]: path.resolve(__dirname, "./src/constants"),
+    ["@features"]: path.resolve(__dirname, "./src/features"),
+    ["@utils"]: path.resolve(__dirname, "./src/utils"),
+    ["@hooks"]: path.resolve(__dirname, "./src/hooks"),
+    ["@models"]: path.resolve(__dirname, "./src/models"),
   })(config);
 
   return config;

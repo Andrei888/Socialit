@@ -21,6 +21,10 @@ const notificationMiddleware: Middleware<{}, AppState> =
 
       // @ts-ignore
       NotificationService[type](message, options);
+
+      if (error) {
+        console.log(error);
+      }
     } else {
       next(action);
     }

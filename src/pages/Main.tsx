@@ -1,6 +1,6 @@
 import React from "react";
 //constants
-import { ROUTES } from "../constants/routes";
+//import { ROUTES } from "../constants/routes";
 //components
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";

@@ -3,7 +3,11 @@
     "baseUrl": ".",
     "paths": {
       "@app/*": ["src/*"],
-      "@constants": ["src/constants/*"]
+      "@constants/*": ["src/constants/*"],
+      "@features/*": ["src/features/*"],
+      "@models/*": ["src/models/*"],
+      "@utils/*": ["src/utils/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   }
 }
