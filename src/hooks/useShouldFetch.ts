@@ -5,7 +5,6 @@ const useShouldFetch = (
   fetch: (...props: any) => void,
   ...fetchArg: any
 ) => {
-  console.log(shouldFetch);
   useEffect(() => {
     shouldFetch && fetch && fetch(...fetchArg);
   }, [fetch, fetchArg, shouldFetch]);

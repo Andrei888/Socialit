@@ -14,7 +14,6 @@ export const getUser = createSelector(selectUserInformation, (state) => ({
 }));
 
 export const userLoaded = createSelector(selectUserInformation, (state) => {
-  console.log(state);
   if (state.email) {
     return true;
   } else {

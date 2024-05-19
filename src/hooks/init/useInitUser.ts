@@ -7,7 +7,6 @@ import useShouldFetch from "../useShouldFetch";
 const useInitUser = () => {
   const shouldFetch = !useSelector(selectors.userLoaded);
   const dispatch = useDispatch();
-  console.log(shouldFetch);
   const fetchUsers = useCallback(
     () => dispatch(actions.fetchUserFromStorage()),
     [dispatch]

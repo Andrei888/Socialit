@@ -1,6 +1,6 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Button } from "antd";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 // utils
 import {

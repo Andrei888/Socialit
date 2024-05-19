@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { takeLatest, put, call } from "redux-saga/effects";
+import { takeLatest, put } from "redux-saga/effects";
 import { push } from "react-router-redux";
 import queryString from "query-string";
 //models

@@ -5,7 +5,6 @@ import { Form, Input, ResetButton } from "formik-antd";
 import { useDispatch } from "react-redux";
 // models
 import { SignUpFormValues } from "./interfaces";
-import { GooglePayload } from "./redux/interfaces";
 //utils
 import {
   createUserFirebase,
@@ -46,12 +45,11 @@ const SignUpForm: FC = () => {
         const userCreated = await createUserDocumentFromAuth(response.user, {
           displayName: values.name,
         });
-        console.log(userCreated);
+
         if (userCreated) {
           dispatch(userLoginSuccess(userCreated));
         }
       }
-      console.log(response);
     } catch (error) {
       console.log(error);
       setErrors(error as string);

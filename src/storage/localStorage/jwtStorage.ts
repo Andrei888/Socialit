@@ -4,7 +4,6 @@ const getJWT = () => {
   return localStorage.getItem(JWT);
 };
 const setJWT = (value: string) => {
-  console.log(value);
   return localStorage.setItem(JWT, value);
 };
 const removeJWT = () => {
