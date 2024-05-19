@@ -1168,7 +1168,7 @@
   resolved "https://registry.yarnpkg.com/@babel/regjsgen/-/regjsgen-0.8.0.tgz#f0ba69b075e1f05fb2825b7fad991e7adbb18310"
   integrity sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.4", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.3", "@babel/runtime@^7.16.7", "@babel/runtime@^7.18.0", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.0", "@babel/runtime@^7.20.7", "@babel/runtime@^7.21.0", "@babel/runtime@^7.23.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.4", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.3", "@babel/runtime@^7.16.7", "@babel/runtime@^7.18.0", "@babel/runtime@^7.18.3", "@babel/runtime@^7.2.0", "@babel/runtime@^7.20.0", "@babel/runtime@^7.20.7", "@babel/runtime@^7.21.0", "@babel/runtime@^7.23.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
   version "7.24.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.5.tgz#230946857c053a36ccc66e1dd03b17dd0c4ed02c"
   integrity sha512-Nms86NXrsaeU9vbBJKni6gXiEXZ4CVpYVzEjDH9Sb8vmZ3UljyA1GSOJl/6LGPO8EHLuSF9H+IxNXHPX8QHJ4g==
@@ -2588,6 +2588,11 @@
   integrity sha512-2XUaGVmyQjgyAZldf0D0c14vvo/yv0MhQBSTJcejMMaitsn3nxCB6TmH4G0ZQf+uxROOa9mpanoSm8h6SG/1ZA==
   dependencies:
     "@types/yargs-parser" "*"
+
+"@types/yup@0.26.32":
+  version "0.26.32"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.32.tgz#bd356fb405f3d641eff963854edf7ad854a8e829"
+  integrity sha512-55WFAq8lNYXdRzSP1cenMFFXtPRe7PWsqn5y9ibqKHOQZ/cSLErkcnB1LE89M7W2TSXVDFtx+T7eFePkGoB+xw==
 
 "@typescript-eslint/eslint-plugin@^4.5.0":
   version "4.33.0"
@@ -11065,6 +11070,13 @@ redux-injectors@^1.0.3:
     invariant "^2.2.4"
     lodash "^4.17.15"
     redux "^4.0.5"
+
+redux-saga-firebase@0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/redux-saga-firebase/-/redux-saga-firebase-0.15.0.tgz#84f4bd3f07d7b9b24a705e1b18a842bcd45cae60"
+  integrity sha512-VcoIL9e0BPLBXM7GOrwdp6m1LyfP2CnInwveqHdUJyPdFieM77pe5kxacSq/RCvCVvxeIyqvLmpJLar+N8FPvw==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
 
 redux-saga@^1.2.1:
   version "1.3.0"

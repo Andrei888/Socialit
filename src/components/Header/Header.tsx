@@ -1,7 +1,7 @@
 import { Row, Col, Button } from "antd";
 
 //components
-import Login from "../../features/login/Login";
+import Login from "../../features/login/GoogleLogin";
 import logo from "../../images/logo.jpg";
 const Header = () => {
   return (

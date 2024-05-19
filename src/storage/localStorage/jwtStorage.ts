@@ -4,6 +4,7 @@ const getJWT = () => {
   return localStorage.getItem(JWT);
 };
 const setJWT = (value: string) => {
+  console.log(value);
   return localStorage.setItem(JWT, value);
 };
 const removeJWT = () => {
@@ -24,10 +25,11 @@ window.addEventListener("storage", (event: StorageEvent) => {
     }
   }
 });
-
-export default {
+const jwtStorage = {
   getJWT,
   setJWT,
   removeJWT,
   exists,
 };
+
+export default jwtStorage;

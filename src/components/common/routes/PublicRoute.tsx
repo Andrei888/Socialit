@@ -1,9 +1,6 @@
 import React from "react";
 
-import { Route, Redirect, RouteProps } from "react-router-dom";
-import JWTStore from "../../../storage/localStorage/jwtStorage";
-
-import appRoutes from "@constants/routes";
+import { Route, RouteProps } from "react-router-dom";
 
 interface PublicRouteInt extends RouteProps {
   component: React.ComponentType<RouteProps>;
@@ -18,12 +15,7 @@ const PublicRoute: React.FC<PublicRouteInt> = ({
       {...rest}
       render={(props) => (
         <>
-          {!JWTStore.exists() && <Component {...props} />}
-          {JWTStore.exists() && (
-            <Redirect
-              to={{ pathname: appRoutes.home, state: { from: props.location } }}
-            />
-          )}
+          <Component {...props} />
         </>
       )}
     />

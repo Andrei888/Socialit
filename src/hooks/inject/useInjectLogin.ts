@@ -4,7 +4,7 @@ import { default as loginReducer, saga as sagas } from "@features/login/redux";
 
 const useInjectLogin = () => {
   useInjectReducer({
-    key: "login",
+    key: "user",
     reducer: loginReducer,
   });
   //   useInjectSaga({
@@ -12,7 +12,7 @@ const useInjectLogin = () => {
   //     saga: AuthSaga,
   //   });
   useInjectSaga({
-    key: "login",
+    key: "user",
     saga: sagas,
   });
 };

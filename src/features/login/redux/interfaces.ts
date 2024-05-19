@@ -4,10 +4,18 @@ export interface LoginHeader {
 }
 
 export interface LoginPayload {
-  header: LoginHeader;
+  displayName: string;
+  email: string;
+  uid: string;
+}
+
+export interface GooglePayload {
+  user: LoginPayload;
 }
 
 export interface UserState {
-  userName: string;
-  userEmail: string;
+  name: string;
+  email: string;
+  id: string | null;
+  loading: boolean;
 }

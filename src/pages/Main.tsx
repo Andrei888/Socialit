@@ -4,6 +4,7 @@ import React from "react";
 //components
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
+//redux
 
 const Main: React.FC = () => {
   return (
