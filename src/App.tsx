@@ -20,6 +20,11 @@ import PrivateRoute from "./components/common/routes/PrivateRoute";
 import LoginPage from "@features/login/LoginPage";
 import Main from "./pages/Main";
 
+//pages
+import AboutUs from "./pages/AboutUs";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+
 const headerContent = (
   <>
     {/* <Helmet titleTemplate="Social IT" defaultTitle="Social IT" >
@@ -37,13 +42,16 @@ const useInit = () => {
 function App() {
   useInjectLogin();
   useInit();
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <div className="App">
         {headerContent}
         <Switch>
           <PublicRoute path={appRoutes.login} component={LoginPage} />
-          <PrivateRoute path={appRoutes.home} component={Main} />
+          <PrivateRoute path={appRoutes.about} component={AboutUs} />
+          <PrivateRoute path={appRoutes.profile} component={Profile} />
+          <PrivateRoute path={appRoutes.home} component={Home} />
         </Switch>
       </div>
     </ThemeProvider>

@@ -1,6 +1,10 @@
 import React from "react";
 
 import { Route, Redirect, RouteProps } from "react-router-dom";
+
+// Main Sections
+import Main from "@app/pages/Main";
+// utils
 import JWTStore from "../../../storage/localStorage/jwtStorage";
 
 import appRoutes from "@constants/routes";
@@ -18,7 +22,7 @@ const PrivateRoute: React.FC<PrivateRouteInt> = ({
       {...rest}
       render={(props) => (
         <>
-          {JWTStore.exists() && <Component {...props} />}
+          {JWTStore.exists() && <Main component={Component} />}
           {!JWTStore.exists() && (
             <Redirect
               to={{

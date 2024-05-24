@@ -4,14 +4,23 @@ import React from "react";
 //components
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
-//redux
 
-const Main: React.FC = () => {
+import { Styled } from "./Main.styled";
+
+interface MainInterface {
+  component: React.ComponentType;
+}
+const Main: React.FC<MainInterface> = ({ component: Component, ...rest }) => {
   return (
     <div className="App">
       <header className="App-header">
         <Header />
       </header>
+      <div className="main">
+        <Styled.Container>
+          <Component {...rest} />
+        </Styled.Container>
+      </div>
       <footer>
         <Footer />
       </footer>

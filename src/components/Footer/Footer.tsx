@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
           </Col>
           <Col>
             <Title>About</Title>
-            <Link href="#n">Test link</Link>
+            <Link href="/about-us">About Us</Link>
           </Col>
           <Col>
             <Title>Discover</Title>
