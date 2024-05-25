@@ -10,7 +10,7 @@ import appRoutes from "@constants/routes";
 import { defaultTheme } from "./core/theme";
 
 // redux
-import { useInjectLogin } from "@hooks/inject";
+import { useInjectLogin, useInjectFriends } from "@hooks/inject";
 import { useInitUser } from "@hooks/init";
 
 // components
@@ -24,6 +24,7 @@ import Main from "./pages/Main";
 import AboutUs from "./pages/AboutUs";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import MyFriends from "./pages/MyFriends";
 
 const headerContent = (
   <>
@@ -41,6 +42,7 @@ const useInit = () => {
 
 function App() {
   useInjectLogin();
+  useInjectFriends();
   useInit();
 
   return (
@@ -49,6 +51,7 @@ function App() {
         {headerContent}
         <Switch>
           <PublicRoute path={appRoutes.login} component={LoginPage} />
+          <PrivateRoute path={appRoutes.friends} component={MyFriends} />
           <PrivateRoute path={appRoutes.about} component={AboutUs} />
           <PrivateRoute path={appRoutes.profile} component={Profile} />
           <PrivateRoute path={appRoutes.home} component={Home} />

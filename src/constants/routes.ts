@@ -4,5 +4,6 @@ const appRoutes = {
   login: "/login",
   profile: "/profile",
   friends: "/friends",
+  groups: "/groups",
 };
 export default appRoutes;

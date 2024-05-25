@@ -14,6 +14,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  getDocs,
   collection,
   writeBatch,
 } from "firebase/firestore";
@@ -159,4 +160,35 @@ export const addCollectionAndDocs = async (collectionKey, objectToAdd) => {
   const collectionRef = collection(db, collectionKey);
 
   const batch = writeBatch(db);
+};
+
+// Find Users
+
+export const findUsersFirebase = async (query) => {
+  console.log(query);
+  const usersCol = collection(db, "users");
+
+  const userSnapshot = await getDocs(usersCol);
+  console.log(userSnapshot);
+
+  if (!userSnapshot.empty) {
+    console.log("test");
+    const test = userSnapshot.docs
+      .map((doc) => doc.data())
+      .filter((user) => {
+        console.log(user);
+        const name = user.displayName?.toLowerCase();
+
+        return name.includes(query.toLowerCase());
+      })
+      .map((user) => ({
+        displayName: user.displayName,
+        id: user.id,
+        email: user.email,
+      }));
+    console.log(test);
+    return test;
+  } else {
+    return null;
+  }
 };

@@ -1,7 +1,14 @@
 import { FC, useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "antd";
 import { Formik, FormikProps } from "formik";
-import { Form, Input, InputNumber, ResetButton } from "formik-antd";
+import {
+  Checkbox,
+  Form,
+  Input,
+  InputNumber,
+  Radio,
+  ResetButton,
+} from "formik-antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Typography } from "antd";
 // models
@@ -73,6 +80,7 @@ const ProfileForm: FC = () => {
             age: userDetails.age,
             sex: userDetails.sex ?? "",
             address: userDetails.address ?? "",
+            isProfilePublic: userDetails.isProfilePublic ?? true,
           } as UserState)
         );
       }
@@ -95,6 +103,7 @@ const ProfileForm: FC = () => {
       age: user.age,
       sex: user.sex ?? "",
       address: user.address ?? "",
+      isProfilePublic: user.isProfilePublic ?? true,
     };
   }, [user]);
 
@@ -132,6 +141,19 @@ const ProfileForm: FC = () => {
               <Form.Item name="email">
                 <Text>Email*</Text>
                 <Input disabled name="email" placeholder="Email" />
+              </Form.Item>
+            </Styled.FormRow>
+            <Styled.FormRow>
+              <Form.Item name="isProfilePublic">
+                <Text>Profile Type</Text>
+                <label>
+                  <Radio name="isProfilePublic" value={true} />
+                  Public Profile
+                </label>
+                <label>
+                  <Radio name="isProfilePublic" value={true} />
+                  Private Profile
+                </label>
               </Form.Item>
             </Styled.FormRow>
             <Styled.FormRow>

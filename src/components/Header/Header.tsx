@@ -19,8 +19,13 @@ const Header = () => {
           <Col>
             <Row align="middle">
               <Col>
-                <Link className="header-link" to="/find">
-                  Find Friend/Groups
+                <Link className="header-link" to="/friends">
+                  Friends
+                </Link>
+              </Col>
+              <Col>
+                <Link className="header-link" to="/groups">
+                  My Groups
                 </Link>
               </Col>
               <Col>
