@@ -4,24 +4,30 @@ import { FriendsState } from "./interfaces";
 import * as actions from "./actions";
 
 const initialState: FriendsState = {
-  friends: null,
+  usersfriends: null,
   loading: false,
-  initialRequest: false,
+  requestFriends: true,
 };
 
 const getUserFriendsReducer: CaseReducer<FriendsState> = (
   draftState,
   action
 ) => {
-  console.log(action.payload);
   if (action.payload) {
-    draftState.friends = action.payload;
+    draftState.usersfriends = action.payload;
   }
+  draftState.requestFriends = false;
   draftState.loading = false;
 };
 
+const updateUserFriendsReducer: CaseReducer = (draftState, action) => {
+  draftState.requestFriends = true;
+};
+
 const reducer = createReducer(initialState, (builder: any) =>
-  builder.addCase(actions.getUserFriends, getUserFriendsReducer)
+  builder
+    .addCase(actions.getUserFriends, getUserFriendsReducer)
+    .addCase(actions.updateUserFriends, updateUserFriendsReducer)
 );
 
 export default reducer;

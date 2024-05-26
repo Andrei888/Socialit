@@ -1,11 +1,8 @@
-import FindUsers from "@app/features/find/users/FindUsers";
-import Users from "@app/features/find/users/Users";
-import { Row, Col, Typography } from "antd";
 import React from "react";
-//constants
-//import { ROUTES } from "../constants/routes";
-//components
-//redux
+import { Row, Col, Typography } from "antd";
+// components
+import FindUsers from "@app/features/user/FindUsers";
+import UsersFriends from "@app/features/user/UsersFriends";
 
 const { Title, Text } = Typography;
 
@@ -15,7 +12,7 @@ const MyFriends: React.FC = () => {
       <Title>My Friends</Title>
       <Row>
         <Col span={18}>
-          <Users />
+          <UsersFriends />
         </Col>
         <Col span={6}>
           <Text>Find New Friends</Text>

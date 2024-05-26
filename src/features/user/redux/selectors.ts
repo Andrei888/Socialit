@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { FriendsState } from "./interfaces";
 
-const selectUserInformation = (state: any) => state.user as FriendsState;
+const selectUserInformation = (state: any) => state.friends as FriendsState;
 
 export const isLoading = createSelector(
   selectUserInformation,
@@ -10,18 +10,18 @@ export const isLoading = createSelector(
 
 export const getFriends = createSelector(
   selectUserInformation,
-  (state) => state.friends
+  (state) => state.usersfriends
 );
 
-export const getFriendsInitialRequest = createSelector(
+export const getRequestFriends = createSelector(
   selectUserInformation,
-  (state) => state.initialRequest
+  (state) => state.requestFriends
 );
 
 const allSelectors = {
   isLoading,
   getFriends,
-  getFriendsInitialRequest,
+  getRequestFriends,
 };
 
 export default allSelectors;

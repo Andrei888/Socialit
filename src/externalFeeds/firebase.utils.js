@@ -34,7 +34,7 @@ const firebaseConfig = {
 // Initialize Firebase
 // @ts-ignore
 const firebaseApp = initializeApp(firebaseConfig);
-console.log(firebaseApp);
+
 const provider = new GoogleAuthProvider();
 
 provider.setCustomParameters({
@@ -91,7 +91,6 @@ export const signOutUser = async () => {
 };
 
 export const getUserDetailsFirebase = async (user) => {
-  console.log(user);
   const userDocRef = doc(db, "users", user.id);
 
   const userSnapshot = await getDoc(userDocRef);
@@ -121,8 +120,6 @@ export const updateUserFirebase = async (user, additionalInfo = {}) => {
       ...additionalInfo,
       email: oldUser.email,
     };
-
-    console.log(updatedUser);
 
     try {
       await setDoc(userDocRef, updatedUser);
@@ -165,18 +162,16 @@ export const addCollectionAndDocs = async (collectionKey, objectToAdd) => {
 // Find Users
 
 export const findUsersFirebase = async (query) => {
-  console.log(query);
   const usersCol = collection(db, "users");
 
   const userSnapshot = await getDocs(usersCol);
-  console.log(userSnapshot);
 
   if (!userSnapshot.empty) {
-    console.log("test");
     const test = userSnapshot.docs
-      .map((doc) => doc.data())
+      .map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      })
       .filter((user) => {
-        console.log(user);
         const name = user.displayName?.toLowerCase();
 
         return name.includes(query.toLowerCase());
@@ -186,9 +181,72 @@ export const findUsersFirebase = async (query) => {
         id: user.id,
         email: user.email,
       }));
-    console.log(test);
+
     return test;
   } else {
     return null;
+  }
+};
+
+// find Friend
+
+export const myFriendsFirestore = async (user) => {
+  const userDocRef = doc(db, "users", user.id);
+
+  const userSnapshot = await getDoc(userDocRef);
+
+  let usersList = [];
+
+  if (userSnapshot.exists()) {
+    const userFriends = userSnapshot.data().friends;
+    if (userFriends && userFriends.length) {
+      const usersCol = collection(db, "users");
+
+      const usersSnapshot = await getDocs(usersCol);
+
+      usersList = usersSnapshot.docs
+        .filter((doc) => {
+          return userFriends.includes(doc.id);
+        })
+        .map((doc) => ({
+          displayName: doc.data().displayName,
+          id: user.id,
+          email: doc.data().email,
+        }));
+    }
+
+    return usersList;
+  }
+};
+
+// add Friend
+
+export const addFriendFirestore = async (user, friendId) => {
+  const userDocRef = doc(db, "users", user.id);
+
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    const updatedAt = new Date();
+
+    const oldUser = userSnapshot.data();
+
+    const friendArr = oldUser.friends
+      ? [...oldUser.friends, friendId]
+      : [friendId];
+
+    const updatedUser = {
+      ...oldUser,
+      updatedAt,
+      friends: friendArr,
+    };
+
+    try {
+      await setDoc(userDocRef, updatedUser);
+    } catch (error) {
+      console.log("error updating user doesnt exist!", error.message);
+    }
+
+    return friendArr;
   }
 };

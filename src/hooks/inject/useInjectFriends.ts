@@ -3,7 +3,7 @@ import { useInjectReducer, useInjectSaga } from "redux-injectors";
 import {
   default as friendsReducer,
   saga as sagas,
-} from "@features/find/users/redux";
+} from "@app/features/user/redux";
 
 const useInjectLogin = () => {
   useInjectReducer({

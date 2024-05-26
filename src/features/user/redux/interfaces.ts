@@ -1,10 +1,10 @@
-export interface Friends {
+export interface Friend {
   displayName: string;
   id: string;
 }
 
 export interface FriendsState {
-  friends: Array<Friends> | null;
+  usersfriends: Array<Friend> | null;
   loading: boolean;
-  initialRequest: boolean;
+  requestFriends: boolean;
 }

@@ -25,7 +25,6 @@ function* userLoginSuccess(action: PayloadAction<LoginPayload>) {
 
   JWTStore.setJWT(queryString.stringify(user));
 
-  console.log(pageLocation());
   if (pageLocation() === "login") {
     yield put(push(appRoutes.home));
   }
@@ -41,7 +40,7 @@ function* fetchUserFromStorageSaga() {
     const jwt = JWTStore.getJWT();
     if (jwt) {
       const jwtUser = queryString.parse(jwt);
-      console.log(jwtUser);
+
       const user = {
         displayName: jwtUser.displayName as string,
         email: jwtUser.email as string,

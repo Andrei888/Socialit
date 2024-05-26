@@ -1,16 +1,9 @@
 import { FC, useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "antd";
 import { Formik, FormikProps } from "formik";
-import {
-  Checkbox,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  ResetButton,
-} from "formik-antd";
+import { Form, Input, InputNumber, Radio, ResetButton } from "formik-antd";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Typography } from "antd";
+import { Typography } from "antd";
 // models
 import { ProfileValues } from "./interfaces";
 //utils
@@ -47,7 +40,6 @@ const ProfileForm: FC = () => {
     }
   };
   const handleSubmit = () => {
-    //formRef.current?.submitForm();
     if (formRef.current?.values) {
       handleSubmitForm(formRef.current?.values);
     }

@@ -1,7 +1,7 @@
 import React from "react";
-import { Row, Col, Typography } from "antd";
+import { Typography } from "antd";
 
-const { Title, Text, Link } = Typography;
+const { Title, Text } = Typography;
 
 const AboutUs: React.FC = () => {
   return (

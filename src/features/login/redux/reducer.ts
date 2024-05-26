@@ -24,8 +24,6 @@ const userLoginSuccessReducer: CaseReducer<UserState> = (
 ) => {
   const { displayName, email, uid, isAnonymous, accessToken } = action.payload;
 
-  console.log(action.payload);
-
   draftState.displayName = displayName;
   draftState.email = email;
   draftState.id = uid;
