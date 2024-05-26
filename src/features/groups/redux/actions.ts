@@ -1,17 +1,15 @@
 import { createAction } from "@reduxjs/toolkit";
 import * as types from "./types";
 
-import { LoginPayload, UserState } from "./interfaces";
+import { Group } from "./interfaces";
 
-export const userLoginSuccess = createAction<LoginPayload>(
-  types.USER_LOGIN_SUCCESS
+export const getUserGroupsSuccess = createAction<Group[]>(
+  types.GET_USER_GROUPS
 );
-export const userLoginFail = createAction<string>(types.USER_LOGIN_FAIL);
-
-export const userLogout = createAction(types.USER_LOGOUT);
-
-export const fetchUserFromStorage = createAction(types.GET_USER_FROM_STORAGE);
-
-export const getUserDetailsSuccess = createAction<UserState>(
-  types.GET_USER_DETAILS_SUCCESS
+export const getUserGroupsFail = createAction<string>(
+  types.GET_USER_GROUPS_FAIL
 );
+
+export const findGroups = createAction(types.FIND_GROUPS);
+
+export const updateGroupsList = createAction(types.UPDATE_GROUPS_LIST);

@@ -80,6 +80,8 @@ const ProfileForm: FC = () => {
     if (user.id) {
       fetchDetails();
     }
+
+    // eslint-disable-line react-hooks/exhaustive-deps
   }, [user.id]);
 
   useEffect(() => {

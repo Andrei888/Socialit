@@ -1,26 +1,31 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Typography } from "antd";
 //import {PlusCircleOutlined} from  'antd/'
 // models
-import { Friend } from "./redux/interfaces";
+import { Group } from "./redux/interfaces";
 //utils
 import {
-  findUsersFirebase,
-  addFriendFirestore,
+  updateUserFirebase,
+  getUserDetailsFirebase,
+  findGroupsFirebase,
+  joinGroupFirebase,
 } from "../../externalFeeds/firebase.utils";
 
 // redux
-import { actions as friendsActions } from "@app/features/user/redux";
+import {
+  selectors as groupSelector,
+  actions as groupAction,
+} from "@features/groups/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
 import Input from "antd/lib/input/Input";
 
 const { Title } = Typography;
 
-const FindUsers: FC = () => {
+const CreateNewGroup: FC = () => {
   const user = useSelector(getUserDetails);
 
-  const [users, setUsers] = useState<Friend[] | null>(null);
+  const [groups, setUsers] = useState<Group[] | null>(null);
   const [textQuery, setTextQuery] = useState<string | null>(null);
 
   const dispatch = useDispatch();
@@ -28,19 +33,19 @@ const FindUsers: FC = () => {
   const handleSearch = async (event: ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
     if (event.target.value.length > 2) {
-      const foundUsers = await findUsersFirebase(event.target.value);
-      console.log(foundUsers);
+      const foundUsers = await findGroupsFirebase(event.target.value);
       setUsers(foundUsers);
     } else {
       setUsers(null);
     }
     setTextQuery(event.target.value ?? "");
   };
-  const addFriendHandler = async (friendId: string) => {
-    if (user && friendId) {
-      const friends = await addFriendFirestore(user, friendId);
-      if (friends) {
-        dispatch(friendsActions.updateUserFriends());
+
+  const addGroupHandler = async (groupId: string) => {
+    if (user && groupId) {
+      const updatedUser = await joinGroupFirebase(user, groupId);
+      if (updatedUser) {
+        dispatch(groupAction.updateGroupsList());
       }
     }
   };
@@ -51,16 +56,20 @@ const FindUsers: FC = () => {
         <Input placeholder="find" onChange={(e) => handleSearch(e)} />
       </div>
       <div>
-        {!users && textQuery && textQuery?.length > 2 && <p>No Users Found!</p>}
-        {!users && textQuery && textQuery?.length < 3 && (
+        {!groups && textQuery && textQuery?.length > 2 && (
+          <p>No Users Found!</p>
+        )}
+        {!groups && textQuery && textQuery?.length < 3 && (
           <p>Please Type minimum 3 chars!</p>
         )}
-        {users &&
-          users?.map((user) => {
+        {groups &&
+          groups?.map((group) => {
             return (
               <div>
-                <Title>testsd {user.displayName}</Title>
-                <Button onClick={(e) => addFriendHandler(user.id)}>+++</Button>
+                <Title>{group.name}</Title>
+                <Button onClick={(e) => addGroupHandler(group.id)}>
+                  Join Group
+                </Button>
               </div>
             );
           })}
@@ -69,4 +78,4 @@ const FindUsers: FC = () => {
   );
 };
 
-export default FindUsers;
+export default CreateNewGroup;

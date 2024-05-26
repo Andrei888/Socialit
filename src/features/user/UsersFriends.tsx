@@ -4,11 +4,7 @@ import { Row, Col, Button } from "antd";
 // models
 import { Friend } from "./redux/interfaces";
 //utils
-import {
-  updateUserFirebase,
-  getUserDetailsFirebase,
-  myFriendsFirestore,
-} from "../../externalFeeds/firebase.utils";
+import { myFriendsFirestore } from "../../externalFeeds/firebase.utils";
 
 // redux
 import {
@@ -42,7 +38,7 @@ const UsersFriends: FC = () => {
     if (friendsNotLoaded && user.id) {
       fetchFriends();
     }
-  }, [friendsNotLoaded, user]);
+  }, [friendsNotLoaded, user, dispatch]);
 
   useEffect(() => {
     setMyFriends(friends);

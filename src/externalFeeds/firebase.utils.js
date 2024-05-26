@@ -250,3 +250,138 @@ export const addFriendFirestore = async (user, friendId) => {
     return friendArr;
   }
 };
+
+// Groups
+
+// Find Groups
+
+export const findGroupsFirebase = async (query) => {
+  const usersCol = collection(db, "groups");
+
+  const userSnapshot = await getDocs(usersCol);
+
+  if (!userSnapshot.empty) {
+    const filteredGroups = userSnapshot.docs
+      .map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      })
+      .filter((group) => {
+        const groupName = group.name?.toLowerCase();
+
+        return groupName.includes(query.toLowerCase());
+      })
+      .map((group) => ({
+        name: group.name,
+        id: group.id,
+        chat: group.chat,
+        seo: group.seo,
+      }));
+
+    return filteredGroups;
+  } else {
+    return null;
+  }
+};
+
+// join a Group
+
+export const joinGroupFirebase = async (user, groupId) => {
+  const userDocRef = doc(db, "users", user.id);
+
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    // update User Groups
+    const updatedAt = new Date();
+
+    const oldUser = userSnapshot.data();
+
+    if (oldUser.group && oldUser.group?.includes(groupId)) {
+      console.log("User already part of this Group!");
+      return null;
+    }
+
+    const groupsArr = oldUser.groups ? [...oldUser.groups, groupId] : [groupId];
+
+    const updatedUser = {
+      ...oldUser,
+      updatedAt,
+      groups: groupsArr,
+    };
+
+    try {
+      await setDoc(userDocRef, updatedUser);
+    } catch (error) {
+      console.log("error updating user doesnt exist!", error.message);
+    }
+
+    // update Group's userList
+    const groupDocRef = doc(db, "groups", groupId);
+
+    const groupSnapshot = await getDoc(groupDocRef);
+
+    if (groupSnapshot.exists()) {
+      const group = groupSnapshot.data();
+
+      const usersInGroupArr = group.users
+        ? [
+            ...group.users,
+            {
+              name: updatedUser.name,
+              email: updatedUser.email,
+              id: user.id,
+            },
+          ]
+        : [
+            {
+              name: updatedUser.name,
+              email: updatedUser.email,
+              id: user.id,
+            },
+          ];
+
+      const newGroup = { ...group, users: usersInGroupArr };
+      console.log(newGroup);
+      try {
+        await setDoc(groupDocRef, newGroup);
+      } catch (error) {
+        console.log("error updating user doesnt exist!", error.message);
+      }
+    }
+
+    return updatedUser;
+  }
+};
+
+// my Groups
+
+export const myGroupsFirestore = async (user) => {
+  const userDocRef = doc(db, "users", user.id);
+
+  const userSnapshot = await getDoc(userDocRef);
+
+  let groupsList = [];
+
+  if (userSnapshot.exists()) {
+    const userGroups = userSnapshot.data().groups;
+    if (userGroups && userGroups.length) {
+      const usersGroups = collection(db, "groups");
+
+      const groupsSnapshot = await getDocs(usersGroups);
+
+      groupsList = groupsSnapshot.docs
+        .filter((doc) => {
+          console.log(userGroups);
+          console.log(doc.id);
+          return userGroups.includes(doc.id);
+        })
+        .map((doc) => ({
+          name: doc.data().name,
+          id: doc.id,
+          usersInGroup: doc.data().users,
+        }));
+    }
+
+    return groupsList;
+  }
+};

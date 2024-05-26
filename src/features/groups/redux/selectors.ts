@@ -1,38 +1,30 @@
 import { createSelector } from "reselect";
-import { UserState } from "./interfaces";
+import { MyGroups } from "./interfaces";
 
-const selectUserInformation = (state: any) => state.user as UserState;
+const selectUserInformation = (state: any) => state.usersGroups as MyGroups;
 
 export const isLoading = createSelector(
   selectUserInformation,
   (state) => state.loading
 );
 
-export const getUser = createSelector(selectUserInformation, (state) => ({
-  name: state.name,
-  email: state.email,
-  id: state.id,
-  isAnonymous: state.isAnonymous,
-  accessToken: state.accessToken,
-}));
-
-export const getUserDetails = createSelector(
+export const getGroups = createSelector(
   selectUserInformation,
-  (state) => state
+  (state) => state.userGroups
 );
 
-export const userLoaded = createSelector(selectUserInformation, (state) => {
-  if (state.email) {
-    return true;
-  } else {
-    return false;
+export const getRequestGroups = createSelector(
+  selectUserInformation,
+  (state) => {
+    console.log(state);
+    return state.requestGroups;
   }
-});
+);
 
 const allSelectors = {
   isLoading,
-  getUser,
-  userLoaded,
+  getGroups,
+  getRequestGroups,
 };
 
 export default allSelectors;
