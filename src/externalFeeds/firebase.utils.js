@@ -385,3 +385,46 @@ export const myGroupsFirestore = async (user) => {
     return groupsList;
   }
 };
+
+// create new Groups
+
+export const createNewGroupFirestore = async (user, newGroup) => {
+  console.log(user);
+  // check if group already exist with same Id
+  const allGroups = collection(db, "groups");
+  const groupsSnapshot = await getDocs(allGroups);
+
+  // find if group already exists with same ID
+  if (groupsSnapshot.exists) {
+    const groupAlreadyExists = groupsSnapshot.docs.find((doc) => {
+      return doc.id === newGroup.seo;
+    });
+    if (groupAlreadyExists) {
+      return false;
+    }
+  }
+
+  const createGroup = {
+    users: [
+      {
+        displayName: user.displayName,
+        email: user.email,
+        id: user.id,
+      },
+    ],
+    description: newGroup.description,
+    seo: newGroup.seo,
+    name: newGroup.name,
+  };
+
+  try {
+    await setDoc(doc(db, "groups", newGroup.seo), createGroup);
+
+    // join user to new created group
+    await joinGroupFirebase(user, newGroup.seo);
+  } catch (error) {
+    console.log("error creating new group!", error.message);
+  }
+
+  return true;
+};

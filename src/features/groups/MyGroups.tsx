@@ -18,7 +18,7 @@ import {
 } from "@features/groups/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
 
-const MyGroups: FC = () => {
+const UsersGroups: FC = () => {
   const user = useSelector(getUserDetails);
   const groupsNotLoaded = useSelector(groupSelector.getRequestGroups);
   const loading = useSelector(groupSelector.isLoading);
@@ -73,4 +73,4 @@ const MyGroups: FC = () => {
   );
 };
 
-export default MyGroups;
+export default UsersGroups;

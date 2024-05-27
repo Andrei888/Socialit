@@ -8,7 +8,7 @@ const validationSchema = yup.object<ProfileValues>({
   name: yup.string().required("Name is Required"),
   email: yup
     .string()
-    .required("Name is required!")
+    .required("Email is required!")
     .email("Invalid Email Address!"),
 });
 

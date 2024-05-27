@@ -1,15 +1,18 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { FC, useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Typography } from "antd";
+import { Formik, FormikProps } from "formik";
+import { Form, Input, Radio, ResetButton } from "formik-antd";
 //import {PlusCircleOutlined} from  'antd/'
 // models
-import { Group } from "./redux/interfaces";
+import { NewGroupValues } from "./interfaces";
 //utils
 import {
   updateUserFirebase,
   getUserDetailsFirebase,
   findGroupsFirebase,
   joinGroupFirebase,
+  createNewGroupFirestore,
 } from "../../externalFeeds/firebase.utils";
 
 // redux
@@ -18,62 +21,102 @@ import {
   actions as groupAction,
 } from "@features/groups/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
-import Input from "antd/lib/input/Input";
 
-const { Title } = Typography;
+import validationSchema from "./validation";
+
+import { Styled } from "./CreateNewGroup.styled";
+
+const { Title, Text } = Typography;
 
 const CreateNewGroup: FC = () => {
   const user = useSelector(getUserDetails);
+  const [errors, setErrors] = useState<string | null>(null);
+  const [submittedMsg, setSubmittedMsg] = useState<string | null>(null);
+  const formRef = useRef<FormikProps<NewGroupValues> | null>(null);
 
-  const [groups, setUsers] = useState<Group[] | null>(null);
-  const [textQuery, setTextQuery] = useState<string | null>(null);
+  const initialValues = useCallback(() => {
+    return {
+      name: "",
+      seo: "",
+      description: "",
+    };
+  }, [user]);
 
-  const dispatch = useDispatch();
+  const handleSubmitForm = (values: NewGroupValues) => {
+    setErrors("");
 
-  const handleSearch = async (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
-    if (event.target.value.length > 2) {
-      const foundUsers = await findGroupsFirebase(event.target.value);
-      setUsers(foundUsers);
-    } else {
-      setUsers(null);
+    console.log(formRef.current);
+    if (formRef.current?.isValid) {
+      submitToFirebase(values);
+
+      if (formRef.current?.values) {
+        createNewGroupFirestore(user, formRef.current?.values);
+      }
     }
-    setTextQuery(event.target.value ?? "");
+  };
+  const handleSubmit = () => {
+    console.log(formRef.current);
+    formRef.current?.submitForm();
   };
 
-  const addGroupHandler = async (groupId: string) => {
-    if (user && groupId) {
-      const updatedUser = await joinGroupFirebase(user, groupId);
-      if (updatedUser) {
-        dispatch(groupAction.updateGroupsList());
+  const submitToFirebase = async (values: NewGroupValues) => {
+    console.log(values);
+    try {
+      const response = await createNewGroupFirestore(user, values);
+      if (response) {
+        setSubmittedMsg("New Group Successfully Created!");
       }
+    } catch (error) {
+      console.log(error);
+      setErrors(error as string);
     }
   };
 
   return (
-    <div>
-      <div>
-        <Input placeholder="find" onChange={(e) => handleSearch(e)} />
-      </div>
-      <div>
-        {!groups && textQuery && textQuery?.length > 2 && (
-          <p>No Users Found!</p>
+    <div className="group-form">
+      <Formik
+        initialValues={initialValues()}
+        onSubmit={handleSubmitForm}
+        enableReinitialize
+        innerRef={(instance) => {
+          formRef.current = instance;
+        }}
+        validationSchema={validationSchema}
+        render={() => (
+          <Form>
+            <Styled.FormRow>
+              <Form.Item name="name">
+                <Text>Group Name*</Text>
+                <Input name="name" placeholder="Group Name" />
+              </Form.Item>
+            </Styled.FormRow>
+            <Styled.FormRow>
+              <Form.Item name="seo">
+                <Text>Group SEO*</Text>
+                <Input name="seo" placeholder="Seo" aria-label="test" />
+              </Form.Item>
+            </Styled.FormRow>
+            <Styled.FormRow>
+              <Form.Item name="description">
+                <Text>Group Description*</Text>
+                <Input.TextArea
+                  showCount
+                  maxLength={200}
+                  name="description"
+                  placeholder="Please provide descriprion, max 200 characters."
+                  style={{ height: 220, resize: "none" }}
+                />
+              </Form.Item>
+            </Styled.FormRow>
+            <div>
+              <Button name="Submit" onClick={(e) => handleSubmit()}>
+                Submit
+              </Button>{" "}
+              or <ResetButton>Reset Form</ResetButton>
+            </div>
+          </Form>
         )}
-        {!groups && textQuery && textQuery?.length < 3 && (
-          <p>Please Type minimum 3 chars!</p>
-        )}
-        {groups &&
-          groups?.map((group) => {
-            return (
-              <div>
-                <Title>{group.name}</Title>
-                <Button onClick={(e) => addGroupHandler(group.id)}>
-                  Join Group
-                </Button>
-              </div>
-            );
-          })}
-      </div>
+      />
     </div>
   );
 };

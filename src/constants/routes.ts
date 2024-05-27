@@ -5,5 +5,9 @@ const appRoutes = {
   profile: "/profile",
   friends: "/friends",
   groups: "/groups",
+  newGroup: "/new-group",
+  messages: "/messages",
+  usersMessages: "/messages/:seo",
+  group: "/group/:id",
 };
 export default appRoutes;

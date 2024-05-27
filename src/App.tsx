@@ -28,7 +28,11 @@ import AboutUs from "./pages/AboutUs";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import MyFriends from "./pages/MyFriends";
-import Groups from "./pages/Groups";
+import MyGroups from "./pages/MyGroups";
+import NewGroup from "./pages/NewGroup";
+import Messages from "./pages/Messages";
+import UsersMessages from "./pages/UsersMessages";
+import Group from "./pages/Group";
 
 const headerContent = (
   <>
@@ -59,7 +63,15 @@ function App() {
           <PrivateRoute path={appRoutes.friends} component={MyFriends} />
           <PrivateRoute path={appRoutes.about} component={AboutUs} />
           <PrivateRoute path={appRoutes.profile} component={Profile} />
-          <PrivateRoute path={appRoutes.groups} component={Groups} />
+          <PrivateRoute path={appRoutes.groups} component={MyGroups} />
+          <PrivateRoute path={appRoutes.newGroup} component={NewGroup} />
+          <PrivateRoute path={appRoutes.group} component={Group} />
+          <PrivateRoute path={appRoutes.messages} component={Messages} />
+          <PrivateRoute
+            path={appRoutes.usersMessages}
+            component={UsersMessages}
+          />
+
           <PrivateRoute path={appRoutes.home} component={Home} />
         </Switch>
       </div>

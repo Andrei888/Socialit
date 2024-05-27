@@ -8,8 +8,8 @@ const { Title, Text } = Typography;
 
 const Groups: React.FC = () => {
   return (
-    <div className="friends-page">
-      <Title>Create New Groups</Title>
+    <div className="new-group-page">
+      <Title>Create New Group</Title>
       <Row>
         <Col span={16}>
           <CreateNewGroup />
