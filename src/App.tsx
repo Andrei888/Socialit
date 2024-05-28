@@ -4,6 +4,7 @@ import "./App.css";
 import { Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "styled-components";
+import { Helmet } from "react-helmet";
 
 // constants
 import appRoutes from "@constants/routes";
@@ -36,9 +37,9 @@ import Group from "./pages/Group";
 
 const headerContent = (
   <>
-    {/* <Helmet titleTemplate="Social IT" defaultTitle="Social IT" >
-    <meta name="description" content="Aplicatie de socializare" />
-  </Helmet> */}
+    <Helmet titleTemplate="Social IT" defaultTitle="Social IT">
+      <meta name="description" content="Aplicatie de socializare" />
+    </Helmet>
     <ToastContainer autoClose={3000} position="top-right" theme="light" />
     <GlobalLoader />
   </>

@@ -1,30 +1,14 @@
 import React from "react";
-
-import { updateUserFirebase } from "../externalFeeds/firebase.utils";
-import { Button } from "antd";
-import { useSelector } from "react-redux";
-
-// redux
-import { getUser } from "@features/login/redux/selectors";
+import { Typography } from "antd";
 
 // components
 import ProfileForm from "@features/profile-edit/ProfileForm";
 
 const Profile: React.FC = () => {
-  const user = useSelector(getUser);
-  const restInfo = {
-    description: "test description",
-  };
-  const handleReset = () => {
-    updateUserFirebase(user, restInfo);
-  };
   return (
     <div className="profile-page">
-      My Profile
+      <Typography.Title>My Profile</Typography.Title>
       <ProfileForm />
-      <div>
-        <Button onClick={(e) => handleReset()}>Reset Profile</Button>
-      </div>
     </div>
   );
 };

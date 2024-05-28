@@ -1,11 +1,21 @@
 import { FC, useState, useRef, useCallback, useEffect } from "react";
-import { Button } from "antd";
+import { Button, Row, Col, Modal, Image } from "antd";
 import { Formik, FormikProps } from "formik";
-import { Form, Input, InputNumber, Radio, ResetButton } from "formik-antd";
+import {
+  Form,
+  InputNumber,
+  Radio,
+  ResetButton,
+  Input,
+  Select,
+} from "formik-antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "antd";
 // models
 import { ProfileValues } from "./interfaces";
+// constants
+import { DEFAULT_AVATAR } from "@constants/placeholders";
+import { sexOptions } from "@constants/options";
 //utils
 import {
   updateUserFirebase,
@@ -16,7 +26,9 @@ import { getUserDetailsSuccess } from "../login/redux/actions";
 import { getUserDetails } from "../login/redux/selectors";
 //import { userLoginSuccess } from "./redux/actions";
 
+// components
 import { Styled } from "./ProfileForm.styled";
+import ImageInput from "../image-edit/ImageInput";
 
 import validationSchema from "./validation";
 import { UserState } from "../login/redux/interfaces";
@@ -32,21 +44,20 @@ const ProfileForm: FC = () => {
   const [submittedMsg, setSubmittedMsg] = useState<string | null>(null);
   const formRef = useRef<FormikProps<ProfileValues> | null>(null);
 
-  const handleSubmitForm = (values: ProfileValues) => {
+  const handleSubmitForm = () => {
     setErrors("");
 
-    if (formRef.current?.isValid) {
-      submitToFirebase(values);
+    if (formRef.current) {
+      formRef.current.submitForm();
     }
   };
   const handleSubmit = () => {
-    if (formRef.current?.values) {
-      handleSubmitForm(formRef.current?.values);
+    if (formRef.current?.isValid) {
+      submitToFirebase(formRef.current?.values);
     }
   };
 
   const submitToFirebase = async (values: ProfileValues) => {
-    console.log(values);
     try {
       const response = await updateUserFirebase(user, values);
       if (response) {
@@ -61,12 +72,12 @@ const ProfileForm: FC = () => {
   useEffect(() => {
     async function fetchDetails() {
       const userDetails = await getUserDetailsFirebase(user);
-      console.log(userDetails);
       if (userDetails) {
         dispatch(
           getUserDetailsSuccess({
             displayName: userDetails.displayName,
             name: userDetails.name,
+            avatar: userDetails.avatar,
             email: userDetails.email,
             description: userDetails.description ?? "",
             age: userDetails.age,
@@ -82,11 +93,15 @@ const ProfileForm: FC = () => {
     }
 
     // eslint-disable-line react-hooks/exhaustive-deps
-  }, [user.id]);
+  }, [user.id, user.updateUserDetails]);
 
   useEffect(() => {
-    setSubmittedMsg(null);
-  }, [user]);
+    if (submittedMsg) {
+      setTimeout(() => {
+        setSubmittedMsg(null);
+      }, 2000);
+    }
+  }, [user, submittedMsg]);
 
   const initialValues = useCallback(() => {
     return {
@@ -110,78 +125,123 @@ const ProfileForm: FC = () => {
       {errors && <p>{errors}</p>}
       <Formik
         initialValues={initialValues()}
-        onSubmit={handleSubmitForm}
+        onSubmit={handleSubmit}
         enableReinitialize
         innerRef={(instance) => {
           // @ts-ignore
           formRef.current = instance;
         }}
         validationSchema={validationSchema}
-        render={() => (
-          <Form>
-            <Styled.FormRow>
-              <Form.Item name="displayName">
-                <Text>Display Name*</Text>
-                <Input name="displayName" placeholder="Display Name" />
-              </Form.Item>
-            </Styled.FormRow>
-            <Styled.FormRow>
-              <Form.Item name="name">
-                <Text>Name*</Text>
-                <Input name="name" placeholder="Name" aria-label="test" />
-              </Form.Item>
-            </Styled.FormRow>
-            <Styled.FormRow>
-              <Form.Item name="email">
-                <Text>Email*</Text>
-                <Input disabled name="email" placeholder="Email" />
-              </Form.Item>
-            </Styled.FormRow>
-            <Styled.FormRow>
-              <Form.Item name="isProfilePublic">
-                <Text>Profile Type</Text>
-                <label>
-                  <Radio name="isProfilePublic" value={true} />
-                  Public Profile
-                </label>
-                <label>
-                  <Radio name="isProfilePublic" value={true} />
-                  Private Profile
-                </label>
-              </Form.Item>
-            </Styled.FormRow>
-            <Styled.FormRow>
-              <Form.Item name="description">
-                <Text>Description*</Text>
-                <Input name="description" placeholder="Description" />
-              </Form.Item>
-            </Styled.FormRow>
-            <Styled.FormRow>
-              <Form.Item name="age">
-                <Text>Age*</Text>
-                <InputNumber name="age" min={0} placeholder="age" />
-              </Form.Item>
-            </Styled.FormRow>
-            <Styled.FormRow>
-              <Form.Item name="sex">
-                <Text>Sex*</Text>
-                <Input name="sex" placeholder="sex" />
-              </Form.Item>
-            </Styled.FormRow>
-            <Styled.FormRow>
-              <Form.Item name="address">
-                <Text>Address*</Text>
-                <Input name="address" placeholder="address" />
-              </Form.Item>
-            </Styled.FormRow>
-            <div>
-              <Button name="Submit" onClick={(e) => handleSubmit()}>
-                Submit
-              </Button>{" "}
-              or <ResetButton>Reset Form</ResetButton>
-            </div>
-          </Form>
-        )}
+        component={(item) => {
+          return (
+            <Form>
+              <Row>
+                <Col span={8}>
+                  <Styled.FormRow>
+                    <ImageInput user={user} />
+                  </Styled.FormRow>
+                  <Styled.FormRow>
+                    <Col span={24}>
+                      <Form.Item name="displayName">
+                        <Text>Display Name*</Text>
+                        <Input name="displayName" placeholder="Display Name" />
+                      </Form.Item>
+                    </Col>
+                  </Styled.FormRow>
+                  <Styled.FormRow>
+                    <Col span={24}>
+                      <Form.Item name="name">
+                        <Text>Name*</Text>
+                        <Input
+                          name="name"
+                          placeholder="Name"
+                          aria-label="test"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Styled.FormRow>
+                  <Styled.FormRow>
+                    <Col span={24}>
+                      <Form.Item name="email">
+                        <Text>Email*</Text>
+                        <Input disabled name="email" placeholder="Email" />
+                      </Form.Item>
+                    </Col>
+                  </Styled.FormRow>
+                </Col>
+                <Col span={14}>
+                  <Styled.FormRow>
+                    <Col span={24}>
+                      <Form.Item name="isProfilePublic">
+                        <Text>Profile Type</Text>
+                        <Radio.Group name="isProfilePublic">
+                          <label className="label-wrap">
+                            <Radio name="isProfilePublic" value={true} />
+                            Public Profile
+                          </label>
+                          <label className="label-wrap">
+                            <Radio name="isProfilePublic" value={false} />
+                            Private Profile
+                          </label>
+                        </Radio.Group>
+                      </Form.Item>
+                    </Col>
+                  </Styled.FormRow>
+                  <Styled.FormRow>
+                    <Col span={24}>
+                      <Form.Item name="description">
+                        <Text>Description</Text>
+                        <Input.TextArea
+                          name="description"
+                          placeholder="Description"
+                          rows={3}
+                          maxLength={200}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Styled.FormRow>
+                  <Styled.FormRow>
+                    <Col span={24}>
+                      <Form.Item name="age">
+                        <Text>Age</Text>
+                        <InputNumber name="age" min={0} placeholder="age" />
+                      </Form.Item>
+                    </Col>
+                  </Styled.FormRow>
+                  <Styled.FormRow>
+                    <Col span={24}>
+                      <Form.Item name="sex">
+                        <Text>Sex</Text>
+                        <Select
+                          name="sex"
+                          options={sexOptions.split("|").map((item) => {
+                            return { value: item, label: item };
+                          })}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Styled.FormRow>
+                  <Styled.FormRow>
+                    <Col span={24}>
+                      <Form.Item name="address">
+                        <Text>Address</Text>
+                        <Input name="address" placeholder="address" />
+                      </Form.Item>
+                    </Col>
+                  </Styled.FormRow>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={8}>
+                  <Button name="Submit" onClick={(e) => handleSubmitForm()}>
+                    Submit
+                  </Button>{" "}
+                  or <ResetButton>Reset Form</ResetButton>
+                </Col>
+              </Row>
+            </Form>
+          );
+        }}
       />
     </Styled.Wrapper>
   );

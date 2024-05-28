@@ -15,3 +15,5 @@ export const fetchUserFromStorage = createAction(types.GET_USER_FROM_STORAGE);
 export const getUserDetailsSuccess = createAction<UserState>(
   types.GET_USER_DETAILS_SUCCESS
 );
+
+export const updateUserDetails = createAction(types.UPDATE_USER_DETAILS);

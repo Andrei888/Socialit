@@ -17,6 +17,7 @@ export interface GooglePayload {
 
 export interface UserState {
   displayName: string;
+  avatar: string;
   name: string;
   email: string;
   id: string | null;
@@ -28,4 +29,5 @@ export interface UserState {
   isAnonymous?: boolean;
   accessToken?: string;
   loading: boolean;
+  updateUserDetails: boolean;
 }

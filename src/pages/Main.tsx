@@ -12,15 +12,15 @@ interface MainInterface {
 }
 const Main: React.FC<MainInterface> = ({ component: Component, ...rest }) => {
   return (
-    <div className="App">
+    <div className="social-app">
       <header className="App-header">
         <Header />
       </header>
-      <div className="main">
+      <Styled.Main className="main">
         <Styled.Container>
           <Component {...rest} />
         </Styled.Container>
-      </div>
+      </Styled.Main>
       <footer>
         <Footer />
       </footer>

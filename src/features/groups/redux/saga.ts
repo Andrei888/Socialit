@@ -15,6 +15,6 @@ function* getUserGroupsSuccessSaga(action: PayloadAction<Group[]>) {
   }
 }
 
-export default function* loginActionsSaga() {
+export default function* groupsActionsSaga() {
   yield takeLatest(actions.getUserGroupsSuccess, getUserGroupsSuccessSaga);
 }

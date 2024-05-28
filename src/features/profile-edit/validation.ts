@@ -10,6 +10,11 @@ const validationSchema = yup.object<ProfileValues>({
     .string()
     .required("Email is required!")
     .email("Invalid Email Address!"),
+  description: yup.string(),
+  isProfilePublic: yup.boolean(),
+  age: yup.number(),
+  sex: yup.string(),
+  address: yup.string(),
 });
 
 export default validationSchema;

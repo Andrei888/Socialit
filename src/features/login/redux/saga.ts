@@ -12,7 +12,7 @@ import { pageLocation } from "@utils/page";
 // redux
 import * as actions from "./actions";
 
-function* userLoginSuccess(action: PayloadAction<LoginPayload>) {
+function* userLoginSuccessSaga(action: PayloadAction<LoginPayload>) {
   const { displayName, email, uid, isAnonymous, accessToken } = action.payload;
 
   const user = {
@@ -55,7 +55,7 @@ function* fetchUserFromStorageSaga() {
 }
 
 export default function* loginActionsSaga() {
-  yield takeLatest(actions.userLoginSuccess, userLoginSuccess);
+  yield takeLatest(actions.userLoginSuccess, userLoginSuccessSaga);
   yield takeLatest(actions.userLogout, userLogoutSaga);
   yield takeLatest(actions.fetchUserFromStorage, fetchUserFromStorageSaga);
 }

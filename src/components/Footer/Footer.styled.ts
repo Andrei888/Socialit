@@ -5,9 +5,6 @@ import { Row, Col } from "antd";
 const Footer = styled.div`
   max-height: 160px;
   padding: 20px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
   background: rgb(52, 113, 235);
 

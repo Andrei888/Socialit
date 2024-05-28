@@ -12,7 +12,7 @@ const Header = () => {
       <Styled.Container>
         <Row justify="space-between" align="middle">
           <Col span={2}>
-            <Link className="header-link" to="/">
+            <Link className="header-link" to={"/"}>
               <img src={logo} className="social-logo" alt="logo" />
             </Link>
           </Col>

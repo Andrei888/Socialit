@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+const Main = styled.main`
+  width: 100%;
+  min-height: calc(100vh - 230px);
+`;
 const Container = styled.div`
   width: 1200px;
   max-width: 100%;
@@ -14,4 +18,5 @@ const Container = styled.div`
 
 export const Styled = {
   Container,
+  Main,
 };
