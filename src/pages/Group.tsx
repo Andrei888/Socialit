@@ -9,20 +9,12 @@ import { getUser } from "@features/login/redux/selectors";
 
 // components
 
-const { Title, Text } = Typography;
+import GroupDetails from "@features/group-details/GroupDetails";
 
 const Group: React.FC = () => {
   return (
-    <div className="friends-page">
-      <Title>Group Name</Title>
-      <Row>
-        <Col span={18}>
-          <Text>Group Description</Text>
-        </Col>
-        <Col span={6}>
-          <Text>Users in Group</Text>
-        </Col>
-      </Row>
+    <div className="group-details-page">
+      <GroupDetails />
     </div>
   );
 };

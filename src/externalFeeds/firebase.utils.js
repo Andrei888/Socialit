@@ -275,6 +275,7 @@ export const findGroupsFirebase = async (query) => {
         id: group.id,
         chat: group.chat,
         seo: group.seo,
+        description: group.description,
       }));
 
     return filteredGroups;
@@ -327,14 +328,14 @@ export const joinGroupFirebase = async (user, groupId) => {
         ? [
             ...group.users,
             {
-              name: updatedUser.name,
+              displayName: updatedUser.displayName,
               email: updatedUser.email,
               id: user.id,
             },
           ]
         : [
             {
-              name: updatedUser.name,
+              displayName: updatedUser.displayName,
               email: updatedUser.email,
               id: user.id,
             },
@@ -371,14 +372,13 @@ export const myGroupsFirestore = async (user) => {
 
       groupsList = groupsSnapshot.docs
         .filter((doc) => {
-          console.log(userGroups);
-          console.log(doc.id);
           return userGroups.includes(doc.id);
         })
         .map((doc) => ({
           name: doc.data().name,
           id: doc.id,
           usersInGroup: doc.data().users,
+          description: doc.data().description,
         }));
     }
 
@@ -424,6 +424,58 @@ export const createNewGroupFirestore = async (user, newGroup) => {
     await joinGroupFirebase(user, newGroup.seo);
   } catch (error) {
     console.log("error creating new group!", error.message);
+  }
+
+  return true;
+};
+
+// get Group Details
+
+export const fetchGroupDetails = async (newGroupId) => {
+  // check if group already exist with same Id
+  const group = doc(db, "groups", newGroupId);
+  const groupSnapshot = await getDoc(group);
+
+  // find if group already exists with same ID
+  if (groupSnapshot.exists) {
+    console.log(groupSnapshot.data());
+    return groupSnapshot.data();
+  } else {
+    return null;
+  }
+};
+
+// update Group Firestore
+
+export const updateChatInGroupFirestore = async (user, groupId, text) => {
+  console.log(user);
+  // check if group already exist with same Id
+  const group = doc(db, "groups", groupId);
+  const groupSnapshot = await getDoc(group);
+
+  // find if group already exists with same ID
+  if (groupSnapshot.exists) {
+    const msgId = Date.now().toString() + Math.random().toString();
+    const updatedGroup = {
+      ...groupSnapshot.data(),
+      chat: [
+        ...(groupSnapshot.data().chat ? groupSnapshot.data().chat : []),
+        {
+          text: text,
+          userName: user.displayName,
+          userId: user.id,
+          msgId: msgId,
+        },
+      ],
+    };
+    console.log(updatedGroup);
+    try {
+      await setDoc(doc(db, "groups", groupId), updatedGroup);
+    } catch (error) {
+      console.log("error creating new group!", error.message);
+    }
+  } else {
+    return false;
   }
 
   return true;

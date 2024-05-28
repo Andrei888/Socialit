@@ -1,6 +1,8 @@
+// @ts-nocheck
 import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Typography } from "antd";
+import { Link } from "react-router-dom";
 // models
 import { Group } from "./redux/interfaces";
 //utils
@@ -18,12 +20,15 @@ import {
 } from "@features/groups/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
 
+// components
+import { Styled } from "./MyGroups.styled";
+
+const { Title, Text } = Typography;
+
 const UsersGroups: FC = () => {
   const user = useSelector(getUserDetails);
   const groupsNotLoaded = useSelector(groupSelector.getRequestGroups);
   const loading = useSelector(groupSelector.isLoading);
-  console.log(groupsNotLoaded);
-  console.log(loading);
   const groups = useSelector(groupSelector.getGroups);
 
   const [myGroups, setMyGroups] = useState<Group[] | null>(groups);
@@ -52,20 +57,23 @@ const UsersGroups: FC = () => {
     setMyGroups(groups);
   }, [groups]);
 
+  console.log(myGroups);
+
   return (
     <div>
       {!myGroups && <div>Not part of any Groups.</div>}
       {myGroups && (
         <>
           {myGroups.map((group: Group) => (
-            <Row>
-              <Col>
-                <div>{group.name}</div>
-              </Col>
-              <Col>
-                <Button>See Group</Button>
-              </Col>
-            </Row>
+            <Styled.Row>
+              <Styled.Col span={20}>
+                <Title className="group-name">{group.name}</Title>
+                <Text className="group-name">{group.description}</Text>
+              </Styled.Col>
+              <Styled.Col span={4}>
+                <Link to={`/group/${group.id}`}>See Group</Link>
+              </Styled.Col>
+            </Styled.Row>
           ))}
         </>
       )}

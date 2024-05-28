@@ -2,6 +2,7 @@ export interface Group {
   id: string;
   name: string;
   seo: string;
+  description: string | null;
   chat: Messages[] | null;
 }
 

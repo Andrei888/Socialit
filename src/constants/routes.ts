@@ -7,7 +7,7 @@ const appRoutes = {
   groups: "/groups",
   newGroup: "/new-group",
   messages: "/messages",
-  usersMessages: "/messages/:seo",
+  usersMessages: "/messages/:id",
   group: "/group/:id",
 };
 export default appRoutes;

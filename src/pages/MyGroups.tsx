@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { Row, Col, Typography } from "antd";
 import { Link } from "react-router-dom";
@@ -18,9 +19,7 @@ const MyGroups: React.FC = () => {
         <Col span={8}>
           <Text>Find New Group</Text>
           <FindGroups />
-          <Link className="" to="/new-group">
-            Create New Group
-          </Link>
+          <Link to="/new-group">Create New Group</Link>
         </Col>
       </Row>
     </div>
