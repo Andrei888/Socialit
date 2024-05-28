@@ -15,7 +15,6 @@ const MyFriends: React.FC = () => {
           <UsersFriends />
         </Col>
         <Col span={6}>
-          <Text>Find New Friends</Text>
           <FindUsers />
         </Col>
       </Row>

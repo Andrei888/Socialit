@@ -5,7 +5,7 @@ const Main = styled.main`
   min-height: calc(100vh - 230px);
 `;
 const Container = styled.div`
-  width: 1200px;
+  width: 1000px;
   max-width: 100%;
   padding: 10px 20px;
   margin: 0 auto;

@@ -21,4 +21,5 @@ export interface Group {
 export interface GroupUser {
   displayName: string;
   email: string;
+  id: string;
 }

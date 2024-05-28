@@ -1,7 +1,6 @@
 import { ChangeEvent, FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Typography } from "antd";
-//import {PlusCircleOutlined} from  'antd/'
+import { Button, Typography, Input } from "antd";
 // models
 import { Friend } from "./redux/interfaces";
 //utils
@@ -13,7 +12,8 @@ import {
 // redux
 import { actions as friendsActions } from "@app/features/user/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
-import Input from "antd/lib/input/Input";
+
+import { Styled } from "./FindUsers.styled";
 
 const { Title } = Typography;
 
@@ -47,21 +47,30 @@ const FindUsers: FC = () => {
 
   return (
     <div>
+      <Styled.Text>Find New Friends</Styled.Text>
       <div>
         <Input placeholder="find" onChange={(e) => handleSearch(e)} />
       </div>
       <div>
-        {!users && textQuery && textQuery?.length > 2 && <p>No Users Found!</p>}
+        {!users && textQuery && textQuery?.length > 2 && (
+          <Styled.Message>No Users Found!</Styled.Message>
+        )}
         {!users && textQuery && textQuery?.length < 3 && (
-          <p>Please Type minimum 3 chars!</p>
+          <Styled.Message>Please Type minimum 3 chars!</Styled.Message>
         )}
         {users &&
           users?.map((user) => {
             return (
-              <div>
-                <Title>testsd {user.displayName}</Title>
-                <Button onClick={(e) => addFriendHandler(user.id)}>+++</Button>
-              </div>
+              <Styled.Row justify={"space-between"} align={"middle"}>
+                <Styled.Col>
+                  <Title>{user.displayName}</Title>
+                </Styled.Col>
+                <Styled.Col>
+                  <Button onClick={(e) => addFriendHandler(user.id)}>
+                    Add friend
+                  </Button>
+                </Styled.Col>
+              </Styled.Row>
             );
           })}
       </div>

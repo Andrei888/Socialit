@@ -2,13 +2,12 @@ import styled from "styled-components";
 
 import { Row, Col, Typography } from "antd";
 
-const { Title } = Typography;
-
 const Wrapper = styled.section`
   padding: 4em 0 12em 0;
   h1.ant-typography {
     font-size: 13px;
     margin-bottom: 15px;
+    color: rgb(24, 106, 182);
   }
   .ant-typography {
     margin: 0;
@@ -16,28 +15,26 @@ const Wrapper = styled.section`
 `;
 
 const FormRow = styled(Row)`
+  padding: 10px 0;
   margin-bottom: 0 !important;
-  .ant-row {
-    margin: 0;
-  }
+  border-bottom: 1px solid red;
 `;
 const FormCol = styled(Col)`
-  margin-bottom: 0 !important;
-  .ant-typography {
-    margin: 0;
+  h1.ant-typography {
+    font-size: 16px;
+    margin-bottom: 0px;
   }
 `;
 
-const CustomTitle = styled(Title)`
-  &.ant-typography {
-    color: rgba(14, 166, 181, 1);
-    font-size: 16px;
-  }
+const Message = styled.div`
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 700;
 `;
 
 export const Styled = {
   Wrapper,
-  FormRow,
-  FormCol,
-  Title: CustomTitle,
+  Row: FormRow,
+  Col: FormCol,
+  Message,
 };

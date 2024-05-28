@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Typography } from "antd";
-//import {PlusCircleOutlined} from  'antd/'
+import { Button, Typography, Input } from "antd";
+import { Link } from "react-router-dom";
 // models
 import { Group } from "./redux/interfaces";
 //utils
@@ -18,7 +18,9 @@ import {
   actions as groupAction,
 } from "@features/groups/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
-import Input from "antd/lib/input/Input";
+
+// components
+import { Styled } from "./FindGroups.styled";
 
 const { Title } = Typography;
 
@@ -50,27 +52,38 @@ const FindGroups: FC = () => {
     }
   };
 
+  console.log(groups);
+
   return (
     <div>
       <div>
-        <Input placeholder="find" onChange={(e) => handleSearch(e)} />
+        <Input placeholder="search by name" onChange={(e) => handleSearch(e)} />
       </div>
       <div>
-        {!groups && textQuery && textQuery?.length > 2 && (
-          <p>No Users Found!</p>
+        {!groups?.length && textQuery && textQuery?.length > 2 && (
+          <Styled.Message>No Groups Found!</Styled.Message>
         )}
         {!groups && textQuery && textQuery?.length < 3 && (
-          <p>Please Type minimum 3 chars!</p>
+          <Styled.Message>Please Type minimum 3 characters!</Styled.Message>
         )}
         {groups &&
           groups?.map((group) => {
             return (
-              <div>
-                <Title>{group.name}</Title>
-                <Button onClick={(e) => addGroupHandler(group.id)}>
-                  Join Group
-                </Button>
-              </div>
+              <Styled.Row justify={"space-between"} align={"middle"}>
+                <Styled.Col>
+                  <Title>{group.name}</Title>
+                </Styled.Col>
+                <Styled.Col>
+                  {group.users &&
+                  group.users.find((groupUser) => groupUser.id === user.id) ? (
+                    <Link to={`/group/${group.id}`}>See Group</Link>
+                  ) : (
+                    <Button onClick={(e) => addGroupHandler(group.id)}>
+                      Join Group
+                    </Button>
+                  )}
+                </Styled.Col>
+              </Styled.Row>
             );
           })}
       </div>

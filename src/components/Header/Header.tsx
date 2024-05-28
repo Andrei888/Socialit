@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 //components
 import LogoutBtn from "../../features/login/LogoutBtn";
-import logo from "../../images/logo.jpg";
+import logo from "../../images/updatedLogo.jpg";
 import { Styled } from "./Header.styled";
 
 const Header = () => {

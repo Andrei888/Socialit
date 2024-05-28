@@ -15,6 +15,7 @@ const Wrapper = styled.section`
 
 const FormRow = styled(Row)`
   padding-right: 20px;
+  margin-bottom: 0 !important;
   label.label-wrap {
     margin: 0 20px 0 0;
   }

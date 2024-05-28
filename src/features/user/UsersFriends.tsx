@@ -51,7 +51,7 @@ const UsersFriends: FC = () => {
         <>
           {myFriends.map((friend: Friend) => (
             <Row>
-              <Col>
+              <Col span={18}>
                 <div>{friend.displayName}</div>
               </Col>
               <Col>

@@ -26,7 +26,7 @@ import validationSchema from "./validation";
 
 import { Styled } from "./CreateNewGroup.styled";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const CreateNewGroup: FC = () => {
   const user = useSelector(getUserDetails);
@@ -74,6 +74,10 @@ const CreateNewGroup: FC = () => {
 
   return (
     <div className="group-form">
+      <Styled.Title>
+        By submitting this form you will create a new Group where you will join
+        automatically!
+      </Styled.Title>
       <Formik
         initialValues={initialValues()}
         onSubmit={handleSubmitForm}

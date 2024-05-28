@@ -1,11 +1,12 @@
 import React from "react";
 import { Row, Col, Typography } from "antd";
+import { Link } from "react-router-dom";
 
 //components
-import logo from "../../images/logo.jpg";
+import logo from "../../images/updatedLogo.jpg";
 import { Styled } from "./Footer.styled";
 
-const { Title, Text, Link } = Typography;
+const { Title, Text, Link: ExternalLink } = Typography;
 
 const Footer: React.FC = () => {
   return (
@@ -17,20 +18,24 @@ const Footer: React.FC = () => {
           </Col>
           <Col>
             <Title>About</Title>
-            <Link href="/about-us">About Us</Link>
+            <Link to="/about-us">About Us</Link>
           </Col>
           <Col>
-            <Title>Discover</Title>
-            <Link href="#n">Facebook</Link>
-            <Link href="#n">Instagram</Link>
+            <Title>Discover Us</Title>
+            <Row>
+              <ExternalLink href="#facebook">Facebook</ExternalLink>
+            </Row>
+            <Row>
+              <ExternalLink href="#instagram">Instagram</ExternalLink>
+            </Row>
           </Col>
           <Col>
             <Title>Community</Title>
-            <Link href="#n">Test link</Link>
+            <ExternalLink href="#n">Test link</ExternalLink>
           </Col>
           <Col>
             <Title>Help </Title>
-            <Link href="#n">Test link</Link>
+            <Link to={"/test"}>Test link</Link>
           </Col>
         </Row>
         <Row>

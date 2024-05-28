@@ -30,10 +30,14 @@ const ChatBlock = styled.div`
   padding: 10px;
   border: 2px solid rgba(14, 166, 181, 1);
   border-radius: 5px;
+  .submit-btn {
+    width: 100%;
+  }
 `;
 const MsgBlock = styled.div`
-  padding: 10px;
+  padding: 10px 10px 15px 10px;
   border-bottom: 1px solid rgba(14, 166, 181, 1);
+  margin-bottom: 15px;
 `;
 const User = styled.div`
   margin-bottom: 10px;

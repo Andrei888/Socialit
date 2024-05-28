@@ -3,15 +3,18 @@ import styled from "styled-components";
 import { Row, Col } from "antd";
 
 const Footer = styled.div`
-  max-height: 160px;
   padding: 20px;
   width: 100%;
-  background: rgb(52, 113, 235);
+  background: rgb(24, 106, 182);
 
   .social-logo {
-    max-width: 80px;
+    max-width: 190px;
   }
 
+  h1.ant-typography {
+    color: #fff;
+    font-size: 20px;
+  }
   a {
     color: #fff;
   }
@@ -21,7 +24,7 @@ const Footer = styled.div`
   }
 `;
 const Container = styled.div`
-  width: 1200px;
+  width: 1020px;
   max-width: 100%;
   padding: 10px 20px;
   margin: 0 auto;

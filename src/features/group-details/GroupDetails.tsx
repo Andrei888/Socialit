@@ -1,4 +1,10 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FC,
+  useEffect,
+  useState,
+  KeyboardEventHandler,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Button, Typography, Input } from "antd";
 import { useLocation } from "react-router";
@@ -51,7 +57,7 @@ const GroupDetails: FC = () => {
     }
     console.log(group);
     console.log(groupNotLoaded);
-    if (groupNotLoaded && groupId) {
+    if ((groupNotLoaded && groupId) || (groupId && groupId !== group.id)) {
       getGroupDetails(groupId);
     }
   }, [groupNotLoaded, groupId]);
@@ -89,7 +95,17 @@ const GroupDetails: FC = () => {
       updateTextMsg(groupId);
     }
   };
-  console.log(group);
+
+  const handleKeyUp = (e: React.KeyboardEvent) => {
+    console.log(e);
+    if (e.keyCode === 13) {
+      handleSendText();
+    }
+  };
+
+  if (group.seo !== groupId) {
+    return null;
+  }
 
   return (
     <div>
@@ -119,10 +135,13 @@ const GroupDetails: FC = () => {
                 <Input
                   value={newMessage}
                   onChange={(e) => handleChangeText(e)}
+                  onKeyUp={(e) => handleKeyUp(e)}
                 />
               </Col>
-              <Col>
-                <Button onClick={handleSendText}>Send</Button>
+              <Col span={4}>
+                <Button className="submit-btn" onClick={handleSendText}>
+                  Send
+                </Button>
               </Col>
             </Row>
           </Styled.ChatBlock>

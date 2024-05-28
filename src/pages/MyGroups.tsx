@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 // components
 import UsersGroups from "@features/groups/MyGroups";
 import FindGroups from "@app/features/groups/FindGroups";
+import Spacer from "../components/common/elements/Spacer";
 
 const { Title, Text } = Typography;
 
@@ -19,6 +20,7 @@ const MyGroups: React.FC = () => {
         <Col span={8}>
           <Text>Find New Group</Text>
           <FindGroups />
+          <Spacer />
           <Link to="/new-group">Create New Group</Link>
         </Col>
       </Row>

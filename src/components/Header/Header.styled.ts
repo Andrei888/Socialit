@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { Row, Col } from "antd";
 
 const Header = styled(Row)`
-  background: rgba(14, 166, 181, 1);
+  background: rgb(24, 106, 182);
 
   .social-logo {
-    max-width: 60px;
+    max-width: 190px;
   }
 `;
 const Container = styled.div`
-  width: 1200px;
+  width: 1020px;
   max-width: 100%;
   padding: 10px 20px;
   margin: 0 auto;

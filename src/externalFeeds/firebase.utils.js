@@ -276,6 +276,7 @@ export const findGroupsFirebase = async (query) => {
         chat: group.chat,
         seo: group.seo,
         description: group.description,
+        users: group.users,
       }));
 
     return filteredGroups;
@@ -297,7 +298,7 @@ export const joinGroupFirebase = async (user, groupId) => {
 
     const oldUser = userSnapshot.data();
 
-    if (oldUser.group && oldUser.group?.includes(groupId)) {
+    if (oldUser.groups && oldUser.groups?.includes(groupId)) {
       console.log("User already part of this Group!");
       return null;
     }
@@ -439,7 +440,10 @@ export const fetchGroupDetails = async (newGroupId) => {
   // find if group already exists with same ID
   if (groupSnapshot.exists) {
     console.log(groupSnapshot.data());
-    return groupSnapshot.data();
+    return {
+      ...groupSnapshot.data(),
+      seo: groupSnapshot.data().seo ?? newGroupId,
+    };
   } else {
     return null;
   }
@@ -455,7 +459,7 @@ export const updateChatInGroupFirestore = async (user, groupId, text) => {
 
   // find if group already exists with same ID
   if (groupSnapshot.exists) {
-    const msgId = Date.now().toString() + Math.random().toString();
+    const msgId = Date.now().toString();
     const updatedGroup = {
       ...groupSnapshot.data(),
       chat: [

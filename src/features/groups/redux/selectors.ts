@@ -16,7 +16,6 @@ export const getGroups = createSelector(
 export const getRequestGroups = createSelector(
   selectUserInformation,
   (state) => {
-    console.log(state);
     return state.requestGroups;
   }
 );

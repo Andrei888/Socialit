@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Button, Typography } from "antd";
+import { Row, Col, Button, Typography, Space } from "antd";
 import { Link } from "react-router-dom";
 // models
 import { Group } from "./redux/interfaces";
@@ -70,6 +70,7 @@ const UsersGroups: FC = () => {
                 <Title className="group-name">{group.name}</Title>
                 <Text className="group-name">{group.description}</Text>
               </Styled.Col>
+              <Space />
               <Styled.Col span={4}>
                 <Link to={`/group/${group.id}`}>See Group</Link>
               </Styled.Col>
