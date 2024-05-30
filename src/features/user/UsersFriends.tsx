@@ -13,12 +13,18 @@ import {
 } from "@app/features/user/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
 
+// component
+import GoToMessages from "./GoToMessages";
+import MyFriendsGroup from "./MyFriendsGroup";
+
 const UsersFriends: FC = () => {
   const user = useSelector(getUserDetails);
   const friendsNotLoaded = useSelector(friendsSelector.getRequestFriends);
   const friends = useSelector(friendsSelector.getFriends);
 
-  const [myFriends, setMyFriends] = useState<Friend[] | null>(friends);
+  const friendsRequests = useSelector(friendsSelector.getFriendsRequests);
+
+  const friendsRequested = useSelector(friendsSelector.getFriendsRequested);
 
   const dispatch = useDispatch();
 
@@ -26,6 +32,8 @@ const UsersFriends: FC = () => {
     async function fetchFriends() {
       try {
         const friends = await myFriendsFirestore(user);
+
+        console.log(friends);
 
         if (friends) {
           dispatch(friendsActions.getUserFriends(friends as Friend[]));
@@ -40,27 +48,25 @@ const UsersFriends: FC = () => {
     }
   }, [friendsNotLoaded, user, dispatch]);
 
-  useEffect(() => {
-    setMyFriends(friends);
-  }, [friends]);
-
   return (
     <div>
-      {!myFriends && <div>No Friend Found.</div>}
-      {myFriends && (
-        <>
-          {myFriends.map((friend: Friend) => (
-            <Row>
-              <Col span={18}>
-                <div>{friend.displayName}</div>
-              </Col>
-              <Col>
-                <Button>Message Friend</Button>
-              </Col>
-            </Row>
-          ))}
-        </>
-      )}
+      <MyFriendsGroup
+        friends={friends}
+        user={user}
+        noFriendsText={"No friends found."}
+      />
+      <MyFriendsGroup
+        friends={friendsRequests}
+        user={user}
+        title={"Friends Requested"}
+        noFriendsText={"No requests sent."}
+      />
+      <MyFriendsGroup
+        friends={friendsRequested}
+        user={user}
+        title={"Requests"}
+        noFriendsText={"No new requests."}
+      />
     </div>
   );
 };

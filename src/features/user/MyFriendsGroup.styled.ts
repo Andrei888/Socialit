@@ -2,10 +2,15 @@ import styled from "styled-components";
 
 import { Row, Col, Typography } from "antd";
 
-const { Text } = Typography;
+const { Title } = Typography;
 
 const Wrapper = styled.section`
-  padding: 4em 0 12em 0;
+  padding: 20px;
+  border: 1px solid rgb(24, 106, 182);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+
   h1.ant-typography {
   }
   .ant-typography {
@@ -25,22 +30,18 @@ const FormCol = styled(Col)`
   }
 `;
 
-const Message = styled.div`
-  padding: 10px 0;
-  font-size: 14px;
-  font-weight: 700;
-`;
-
-const NewText = styled(Text)`
-  font-size: 16px;
-  font-weight: 700;
-  color: rgb(24, 106, 182);
+const NewTitle = styled(Title)`
+  &.ant-typography {
+    font-size: 16px;
+    font-weight: 700;
+    color: rgb(24, 106, 182);
+    margin-bottom: 10px;
+  }
 `;
 
 export const Styled = {
   Wrapper,
   Row: FormRow,
   Col: FormCol,
-  Message,
-  Text: NewText,
+  Title: NewTitle,
 };

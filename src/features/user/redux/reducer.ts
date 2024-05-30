@@ -1,10 +1,12 @@
 import { createReducer, CaseReducer } from "@reduxjs/toolkit";
-import { FriendsState } from "./interfaces";
+import { FriendsState, Friend } from "./interfaces";
 
 import * as actions from "./actions";
 
 const initialState: FriendsState = {
   usersfriends: null,
+  usersFriendRequested: null,
+  usersFriendRequests: null,
   loading: false,
   requestFriends: true,
 };
@@ -13,9 +15,19 @@ const getUserFriendsReducer: CaseReducer<FriendsState> = (
   draftState,
   action
 ) => {
-  if (action.payload) {
-    draftState.usersfriends = action.payload;
-  }
+  const friendsList = action.payload;
+
+  draftState.usersfriends = friendsList.filter(
+    (friend: Friend) => friend.isAccepted && friend.isVerified
+  );
+  draftState.usersFriendRequested = friendsList.filter(
+    (friend: Friend) => friend.isAccepted && !friend.isVerified
+  );
+
+  draftState.usersFriendRequests = friendsList.filter(
+    (friend: Friend) => !friend.isAccepted && friend.isVerified
+  );
+
   draftState.requestFriends = false;
   draftState.loading = false;
 };

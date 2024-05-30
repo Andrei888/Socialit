@@ -8,23 +8,24 @@ import { useSelector } from "react-redux";
 import { getUser } from "@features/login/redux/selectors";
 
 // components
+import FindUsers from "@app/features/user/FindUsers";
 
 const { Title, Text } = Typography;
 
-const UsersMessages: React.FC = () => {
+const LatestMessages: React.FC = () => {
   return (
     <div className="friends-page">
-      <Title>Messages Name</Title>
+      <Title>My Latest Messages</Title>
       <Row>
         <Col span={18}>
           <Text>Messages Description</Text>
         </Col>
         <Col span={6}>
-          <Text>Messages in Group</Text>
+          <FindUsers title="Find My Friends" isFriend />
         </Col>
       </Row>
     </div>
   );
 };
 
-export default UsersMessages;
+export default LatestMessages;

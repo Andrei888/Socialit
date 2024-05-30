@@ -13,6 +13,16 @@ export const getFriends = createSelector(
   (state) => state.usersfriends
 );
 
+export const getFriendsRequested = createSelector(
+  selectUserInformation,
+  (state) => state.usersFriendRequested
+);
+
+export const getFriendsRequests = createSelector(
+  selectUserInformation,
+  (state) => state.usersFriendRequests
+);
+
 export const getRequestFriends = createSelector(
   selectUserInformation,
   (state) => state.requestFriends
@@ -21,6 +31,8 @@ export const getRequestFriends = createSelector(
 const allSelectors = {
   isLoading,
   getFriends,
+  getFriendsRequested,
+  getFriendsRequests,
   getRequestFriends,
 };
 

@@ -16,6 +16,7 @@ import {
   useInjectFriends,
   useInjectGroups,
   useInjectGroupDetails,
+  useInjectLatestMessages,
 } from "@hooks/inject";
 import { useInitUser } from "@hooks/init";
 
@@ -33,8 +34,9 @@ import MyFriends from "./pages/MyFriends";
 import MyGroups from "./pages/MyGroups";
 import NewGroup from "./pages/NewGroup";
 import Messages from "./pages/Messages";
-import UsersMessages from "./pages/UsersMessages";
+import LatestMessages from "./pages/LatestMessages";
 import Group from "./pages/Group";
+import MyMessages from "./pages/MyMessages";
 
 const headerContent = (
   <>
@@ -55,6 +57,7 @@ function App() {
   useInjectFriends();
   useInjectGroups();
   useInjectGroupDetails();
+  useInjectLatestMessages();
   useInit();
 
   return (
@@ -71,8 +74,8 @@ function App() {
           <PrivateRoute path={appRoutes.group} component={Group} />
           <PrivateRoute path={appRoutes.messages} component={Messages} />
           <PrivateRoute
-            path={appRoutes.usersMessages}
-            component={UsersMessages}
+            path={appRoutes.latestMessages}
+            component={LatestMessages}
           />
 
           <PrivateRoute path={appRoutes.home} component={Home} />

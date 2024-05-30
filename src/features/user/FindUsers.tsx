@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Typography, Input } from "antd";
 // models
@@ -7,6 +7,7 @@ import { Friend } from "./redux/interfaces";
 import {
   findUsersFirebase,
   addFriendFirestore,
+  myFriendsFirestore,
 } from "../../externalFeeds/firebase.utils";
 
 // redux
@@ -17,7 +18,17 @@ import { Styled } from "./FindUsers.styled";
 
 const { Title } = Typography;
 
-const FindUsers: FC = () => {
+interface FindUsersProps {
+  title?: string;
+  placeholder?: string;
+  isFriend?: boolean;
+}
+
+const FindUsers: React.FC<FindUsersProps> = ({
+  title,
+  placeholder,
+  isFriend = false,
+}) => {
   const user = useSelector(getUserDetails);
 
   const [users, setUsers] = useState<Friend[] | null>(null);
@@ -27,8 +38,19 @@ const FindUsers: FC = () => {
 
   const handleSearch = async (event: ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
+    let foundUsers: Friend[] | null = [];
     if (event.target.value.length > 2) {
-      const foundUsers = await findUsersFirebase(event.target.value);
+      if (isFriend) {
+        // @ts-ignore
+        foundUsers = await myFriendsFirestore(user, event.target.value);
+      } else {
+        // @ts-ignore
+        foundUsers = await findUsersFirebase(
+          event.target.value,
+          user,
+          isFriend
+        );
+      }
       console.log(foundUsers);
       setUsers(foundUsers);
     } else {
@@ -47,9 +69,12 @@ const FindUsers: FC = () => {
 
   return (
     <div>
-      <Styled.Text>Find New Friends</Styled.Text>
+      <Styled.Text>{title ?? "Find New Friends"}</Styled.Text>
       <div>
-        <Input placeholder="find" onChange={(e) => handleSearch(e)} />
+        <Input
+          placeholder={placeholder ?? `find`}
+          onChange={(e) => handleSearch(e)}
+        />
       </div>
       <div>
         {!users && textQuery && textQuery?.length > 2 && (
@@ -61,7 +86,11 @@ const FindUsers: FC = () => {
         {users &&
           users?.map((user) => {
             return (
-              <Styled.Row justify={"space-between"} align={"middle"}>
+              <Styled.Row
+                justify={"space-between"}
+                align={"middle"}
+                key={user.id}
+              >
                 <Styled.Col>
                   <Title>{user.displayName}</Title>
                 </Styled.Col>

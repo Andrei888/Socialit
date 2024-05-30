@@ -161,7 +161,8 @@ export const addCollectionAndDocs = async (collectionKey, objectToAdd) => {
 
 // Find Users
 
-export const findUsersFirebase = async (query) => {
+export const findUsersFirebase = async (query, myUser, isFriend) => {
+  console.log("friend", isFriend);
   const usersCol = collection(db, "users");
 
   const userSnapshot = await getDocs(usersCol);
@@ -174,7 +175,15 @@ export const findUsersFirebase = async (query) => {
       .filter((user) => {
         const name = user.displayName?.toLowerCase();
 
-        return name.includes(query.toLowerCase());
+        if (isFriend) {
+          return (
+            user.id !== myUser.id &&
+            name.includes(query.toLowerCase()) &&
+            myUser.friends.indludes(user.id)
+          );
+        }
+
+        return user.id !== myUser.id && name.includes(query.toLowerCase());
       })
       .map((user) => ({
         displayName: user.displayName,
@@ -190,29 +199,56 @@ export const findUsersFirebase = async (query) => {
 
 // find Friend
 
-export const myFriendsFirestore = async (user) => {
+export const myFriendsFirestore = async (user, queryText) => {
   const userDocRef = doc(db, "users", user.id);
 
   const userSnapshot = await getDoc(userDocRef);
 
   let usersList = [];
 
+  console.log(user);
+  console.log(queryText);
+
   if (userSnapshot.exists()) {
     const userFriends = userSnapshot.data().friends;
     if (userFriends && userFriends.length) {
+      const userFriendsIds = userFriends.map((friend) => friend.friendId);
       const usersCol = collection(db, "users");
 
       const usersSnapshot = await getDocs(usersCol);
 
-      usersList = usersSnapshot.docs
-        .filter((doc) => {
-          return userFriends.includes(doc.id);
-        })
-        .map((doc) => ({
-          displayName: doc.data().displayName,
-          id: user.id,
-          email: doc.data().email,
-        }));
+      console.log(userFriends);
+
+      if (queryText) {
+        usersList = usersSnapshot.docs
+          .filter((doc) => {
+            return (
+              userFriendsIds.includes(doc.id) &&
+              doc.data().displayName.includes(queryText)
+            );
+          })
+          .map((doc) => ({
+            displayName: doc.data().displayName,
+            id: user.id,
+            email: doc.data().email,
+          }));
+      } else {
+        usersList = usersSnapshot.docs
+          .filter((doc) => {
+            return userFriendsIds.includes(doc.id);
+          })
+          .map((doc) => {
+            const findUserIndex = userFriends.findIndex(
+              (friend) => friend.friendId === doc.id
+            );
+            return {
+              ...userFriends[findUserIndex],
+              displayName: doc.data().displayName,
+              id: doc.id,
+              email: doc.data().email,
+            };
+          });
+      }
     }
 
     return usersList;
@@ -220,6 +256,37 @@ export const myFriendsFirestore = async (user) => {
 };
 
 // add Friend
+
+const addFriendInList = (myFriendsList, friendId, prop) => {
+  const indexFriendInList = myFriendsList?.findIndex((user) => {
+    return user.friendId === friendId;
+  });
+
+  if (indexFriendInList !== undefined && indexFriendInList !== -1) {
+    myFriendsList[indexFriendInList] = {
+      ...myFriendsList[indexFriendInList],
+      [prop]: true,
+    };
+  } else if (indexFriendInList !== undefined) {
+    myFriendsList.push({
+      friendId: friendId,
+      isAccepted: false,
+      isVerified: false,
+      [prop]: true,
+    });
+  } else {
+    myFriendsList = [
+      {
+        friendId: friendId,
+        isAccepted: false,
+        isVerified: false,
+        [prop]: true,
+      },
+    ];
+  }
+
+  return myFriendsList;
+};
 
 export const addFriendFirestore = async (user, friendId) => {
   const userDocRef = doc(db, "users", user.id);
@@ -231,9 +298,7 @@ export const addFriendFirestore = async (user, friendId) => {
 
     const oldUser = userSnapshot.data();
 
-    const friendArr = oldUser.friends
-      ? [...oldUser.friends, friendId]
-      : [friendId];
+    const friendArr = addFriendInList(oldUser.friends, friendId, "isVerified");
 
     const updatedUser = {
       ...oldUser,
@@ -245,6 +310,28 @@ export const addFriendFirestore = async (user, friendId) => {
       await setDoc(userDocRef, updatedUser);
     } catch (error) {
       console.log("error updating user doesnt exist!", error.message);
+    }
+
+    const friendDocRef = doc(db, "users", friendId);
+
+    const friendSnapshot = await getDoc(friendDocRef);
+
+    if (friendSnapshot.exists()) {
+      const updatedAt = new Date();
+
+      const oldFriend = friendSnapshot.data();
+
+      const updatedFriend = {
+        ...oldFriend,
+        updatedAt,
+        friends: addFriendInList(oldFriend.friends, user.id, "isAccepted"),
+      };
+
+      try {
+        await setDoc(friendDocRef, updatedFriend);
+      } catch (error) {
+        console.log("error updating user doesnt exist!", error.message);
+      }
     }
 
     return friendArr;
