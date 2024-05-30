@@ -6,7 +6,7 @@ import {
   KeyboardEventHandler,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Button, Typography, Input } from "antd";
+import { Row, Col, Button, Typography, Input, Checkbox } from "antd";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 // models
@@ -38,7 +38,6 @@ const GroupDetails: FC = () => {
   const [newMessage, setNewMessage] = useState<string>();
 
   const location = useLocation();
-  console.log(location);
   const [groupInfo, setGroupInfo] = useState<Group | null>(group);
 
   const dispatch = useDispatch();
@@ -107,6 +106,8 @@ const GroupDetails: FC = () => {
     return null;
   }
 
+  console.log(groupInfo);
+
   return (
     <div>
       <Styled.Row>
@@ -118,6 +119,16 @@ const GroupDetails: FC = () => {
         <Styled.Col span={18}>
           <Title className="group-name">{group.name}</Title>
           <Text className="group-name">{group.description}</Text>
+          {group.author && <Text className="group-author">{group.author}</Text>}
+          {group.authorId === user.id ? (
+            <Text className="group-author">
+              <Checkbox value={"disable-group"}>Disable Group</Checkbox>
+            </Text>
+          ) : (
+            <Text className="group-user">
+              <Checkbox value={"leave-group"}>Leave Group</Checkbox>
+            </Text>
+          )}
           <Styled.ChatBlock>
             {group?.chat &&
               group?.chat.length &&

@@ -1,9 +1,11 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Typography, Input } from "antd";
+import { Button, Typography, Input, Select } from "antd";
 import { Link } from "react-router-dom";
 // models
 import { Group } from "./redux/interfaces";
+// constants
+import { groupSearchFields } from "@constants/options";
 //utils
 import {
   updateUserFirebase,
@@ -21,13 +23,16 @@ import { getUserDetails } from "@features/login/redux/selectors";
 
 // components
 import { Styled } from "./FindGroups.styled";
+import { GroupUser } from "../group-details/redux/interfaces";
 
 const { Title } = Typography;
 
 const FindGroups: FC = () => {
   const user = useSelector(getUserDetails);
+  const userGroups = useSelector(groupSelector.getGroups);
 
   const [groups, setUsers] = useState<Group[] | null>(null);
+  const [selectedValue, setSelectedValue] = useState<string>("title");
   const [textQuery, setTextQuery] = useState<string | null>(null);
 
   const dispatch = useDispatch();
@@ -54,10 +59,41 @@ const FindGroups: FC = () => {
 
   console.log(groups);
 
+  const handleSelectChange = (value: string) => {
+    setSelectedValue(value);
+  };
+
+  const checkIfUserInGroup = (usersList: GroupUser[] | null) => {
+    if (
+      usersList &&
+      usersList.findIndex((groupUser) => groupUser.id === user.id) !== -1
+    ) {
+      return true;
+    } else {
+    }
+  };
+
+  useEffect(() => {
+    if (textQuery) {
+      setTextQuery(textQuery);
+    }
+  }, [userGroups]);
+
   return (
-    <div>
+    <Styled.Wrapper>
       <div>
-        <Input placeholder="search by name" onChange={(e) => handleSearch(e)} />
+        <Select
+          options={groupSearchFields}
+          value={selectedValue}
+          style={{ width: "100%", marginBottom: "15px" }}
+          onChange={handleSelectChange}
+        />
+      </div>
+      <div>
+        <Input
+          placeholder={`Search by ${selectedValue}`}
+          onChange={(e) => handleSearch(e)}
+        />
       </div>
       <div>
         {!groups?.length && textQuery && textQuery?.length > 2 && (
@@ -70,13 +106,14 @@ const FindGroups: FC = () => {
           groups?.map((group) => {
             return (
               <Styled.Row justify={"space-between"} align={"middle"}>
-                <Styled.Col>
+                <Styled.Col span={15}>
                   <Title>{group.name}</Title>
                 </Styled.Col>
                 <Styled.Col>
-                  {group.users &&
-                  group.users.find((groupUser) => groupUser.id === user.id) ? (
-                    <Link to={`/group/${group.id}`}>See Group</Link>
+                  {checkIfUserInGroup(group.users) ? (
+                    <Link className="new-group-btn" to={`/group/${group.id}`}>
+                      <span>See Group</span>
+                    </Link>
                   ) : (
                     <Button onClick={(e) => addGroupHandler(group.id)}>
                       Join Group
@@ -87,7 +124,7 @@ const FindGroups: FC = () => {
             );
           })}
       </div>
-    </div>
+    </Styled.Wrapper>
   );
 };
 

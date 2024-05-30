@@ -16,6 +16,8 @@ export interface Group {
   description: string | null;
   chat: Messages[] | null;
   users: GroupUser[] | null;
+  author: string | null;
+  authorId: string | null;
 }
 
 export interface GroupUser {

@@ -500,6 +500,8 @@ export const createNewGroupFirestore = async (user, newGroup) => {
         id: user.id,
       },
     ],
+    author: user.displayName,
+    authorId: user.id,
     description: newGroup.description,
     seo: newGroup.seo,
     name: newGroup.name,

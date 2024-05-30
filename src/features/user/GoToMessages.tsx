@@ -7,8 +7,6 @@ interface GoToMessagesProps {
 }
 
 const GoToMessages: React.FC<GoToMessagesProps> = ({ myId, friendId }) => {
-  console.log(myId);
-  console.log(friendId);
   if (myId && friendId) {
     return <Link to={`/messages/${myId}-${friendId}`}>Send Message</Link>;
   }

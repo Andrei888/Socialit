@@ -11,6 +11,8 @@ export const getGroup = createSelector(selectUserInformation, (state) => {
     description: state.description,
     chat: state.chat,
     users: state.users,
+    author: state.author,
+    authorId: state.authorId,
   };
 });
 

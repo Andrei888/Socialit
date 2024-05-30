@@ -36,7 +36,6 @@ import NewGroup from "./pages/NewGroup";
 import Messages from "./pages/Messages";
 import LatestMessages from "./pages/LatestMessages";
 import Group from "./pages/Group";
-import MyMessages from "./pages/MyMessages";
 
 const headerContent = (
   <>
