@@ -16,6 +16,12 @@ export const getUser = createSelector(selectUserInformation, (state) => ({
   accessToken: state.accessToken,
 }));
 
+export const getUserBasic = createSelector(selectUserInformation, (state) => ({
+  displayName: state.displayName,
+  email: state.email,
+  id: state.id,
+}));
+
 export const getUserDetails = createSelector(
   selectUserInformation,
   (state) => state
@@ -32,6 +38,7 @@ export const userLoaded = createSelector(selectUserInformation, (state) => {
 const allSelectors = {
   isLoading,
   getUser,
+  getUserDetails,
   userLoaded,
 };
 

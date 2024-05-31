@@ -573,3 +573,142 @@ export const updateChatInGroupFirestore = async (user, groupId, text) => {
 
   return true;
 };
+
+// get user to user Messages
+
+export const getUserToUserMessages = async (userId, friendId) => {
+  const messagesIds = [userId + "-" + friendId, friendId + "-" + userId];
+
+  const messagesCol = collection(db, "messages");
+  const messagesSnapshot = await getDocs(messagesCol);
+
+  if (!messagesSnapshot.exists) {
+    const messages = messagesSnapshot.docs.find((doc) => {
+      return messagesIds.includes(doc.id);
+    });
+    if (!messages) {
+      return null;
+    } else {
+      return {
+        userId: userId,
+        firstUser: messages.data().firstUser,
+        firstUserId: messages.data().firstUserId,
+        secondUser: messages.data().secondUser,
+        secondUserId: messages.data().secondUserId,
+        messages: messages.data().messages,
+      };
+    }
+  }
+};
+
+// update Conversation Firestore
+
+export const updateConversationFirestore = async (
+  user,
+  friend,
+  friendId,
+  text
+) => {
+  const messagesIds = [user.id + "-" + friendId, friendId + "-" + user.id];
+  const msgId = Date.now().toString();
+  // check if group already exist with same Id
+  // const group = doc(db, "groups", groupId);
+  // const groupSnapshot = await getDoc(group);
+  console.log(user);
+  console.log(friend);
+  console.log(friendId);
+
+  const messagesCol = collection(db, "messages");
+  const messagesSnapshot = await getDocs(messagesCol);
+
+  console.log(messagesSnapshot);
+  if (!messagesSnapshot.empty) {
+    const messages = messagesSnapshot.docs.find((doc) => {
+      return messagesIds.includes(doc.id);
+    });
+    let messagesId = "";
+    let updatedMessages = {};
+
+    console.log(messages);
+
+    if (messages && messages.exists) {
+      messagesId = messages.id;
+      updatedMessages = {
+        ...messages.data(),
+        messages: [
+          ...(messages.data().messages ? messages.data().messages : []),
+          {
+            text: text,
+            userName: user.displayName,
+            userId: user.id,
+            msgId: msgId,
+          },
+        ],
+      };
+    } else {
+      messagesId = user.id + "-" + friendId;
+      console.log(messagesId);
+      updatedMessages = {
+        firstUser: user.displayName,
+        firstUserId: user.id,
+        secondUser: friend,
+        secondUserId: friendId,
+        messages: [
+          {
+            text: text,
+            userName: user.displayName,
+            userId: user.id,
+            msgId: msgId,
+          },
+        ],
+      };
+    }
+    try {
+      await setDoc(doc(db, "messages", messagesId), updatedMessages);
+    } catch (error) {
+      console.log("error adding new message!", error.message);
+    }
+  }
+
+  return true;
+};
+
+// get user latest Messages
+
+export const getUserLatestMessages = async (userId) => {
+  const messagesCol = collection(db, "messages");
+  const messagesSnapshot = await getDocs(messagesCol);
+
+  console.log(messagesSnapshot);
+
+  if (!messagesSnapshot.empty) {
+    const messages = messagesSnapshot.docs.filter((doc) => {
+      return doc.id.includes(userId);
+    });
+    console.log(messages);
+    if (!messages) {
+      return null;
+    } else {
+      const latestMessages = messages.map((doc) => {
+        const messages = doc.data().messages;
+        if (messages?.length) {
+          const reversedMessages = messages
+            .reverse()
+            .filter((msg) => msg.userId !== userId);
+          console.log(reversedMessages);
+
+          if (reversedMessages?.length) {
+            console.log(reversedMessages);
+            return reversedMessages[0];
+          } else {
+            return null;
+          }
+        }
+      });
+      console.log(latestMessages);
+      return latestMessages;
+    }
+  } else {
+    return null;
+  }
+};

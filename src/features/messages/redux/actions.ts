@@ -1,9 +1,9 @@
 import { createAction } from "@reduxjs/toolkit";
 import * as types from "./types";
 
-import { Messages } from "./interfaces";
+import { MessagesDoc, Message } from "./interfaces";
 
-export const getUserMessagesSuccess = createAction<Messages>(
+export const getUserMessagesSuccess = createAction<MessagesDoc>(
   types.GET_USER_MESSAGES_SUCCESS
 );
 export const getUserMessagesFail = createAction<string>(
@@ -11,3 +11,7 @@ export const getUserMessagesFail = createAction<string>(
 );
 
 export const updateUserMessages = createAction(types.UPDATE_USER_MESSAGES);
+
+export const getLatestMessagesSuccess = createAction<Message[]>(
+  types.GET_LATEST_MESSAGES_SUCCESS
+);

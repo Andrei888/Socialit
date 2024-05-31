@@ -10,6 +10,8 @@ const initialState: GroupState = {
   description: null,
   chat: null,
   users: null,
+  author: null,
+  authorId: null,
   requestGroupInfo: true,
 };
 

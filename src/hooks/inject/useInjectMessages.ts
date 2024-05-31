@@ -3,18 +3,18 @@ import { useInjectReducer, useInjectSaga } from "redux-injectors";
 import {
   default as groupsReducer,
   saga as sagas,
-} from "@app/features/groups/redux";
+} from "@app/features/messages/redux";
 
-const useInjectLogin = () => {
+const useInjectMesssages = () => {
   useInjectReducer({
-    key: "latestMessages",
+    key: "messages",
     reducer: groupsReducer,
   });
 
   useInjectSaga({
-    key: "latestMessages",
+    key: "messages",
     saga: sagas,
   });
 };
 
-export default useInjectLogin;
+export default useInjectMesssages;

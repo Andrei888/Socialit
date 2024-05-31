@@ -1,12 +1,7 @@
+import { Message } from "@models/messages";
+
 export interface GroupState extends Group {
   requestGroupInfo: boolean;
-}
-
-export interface Messages {
-  text: string;
-  userId: string;
-  userName: string;
-  msgId: string;
 }
 
 export interface Group {
@@ -14,7 +9,7 @@ export interface Group {
   name: string | null;
   seo: string | null;
   description: string | null;
-  chat: Messages[] | null;
+  chat: Message[] | null;
   users: GroupUser[] | null;
   author: string | null;
   authorId: string | null;

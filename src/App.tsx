@@ -16,7 +16,7 @@ import {
   useInjectFriends,
   useInjectGroups,
   useInjectGroupDetails,
-  useInjectLatestMessages,
+  useInjectMessages,
 } from "@hooks/inject";
 import { useInitUser } from "@hooks/init";
 
@@ -56,7 +56,7 @@ function App() {
   useInjectFriends();
   useInjectGroups();
   useInjectGroupDetails();
-  useInjectLatestMessages();
+  useInjectMessages();
   useInit();
 
   return (

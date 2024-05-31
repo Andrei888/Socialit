@@ -1,29 +1,38 @@
 import { createSelector } from "reselect";
-import { GroupState } from "./interfaces";
+import { UsersMessages } from "./interfaces";
 
-const selectUserInformation = (state: any) => state.groupDetails as GroupState;
+const selectUserInformation = (state: any) => state.messages as UsersMessages;
 
-export const getGroup = createSelector(selectUserInformation, (state) => {
-  return {
-    seo: state.seo,
-    name: state.name,
-    id: state.id,
-    description: state.description,
-    chat: state.chat,
-    users: state.users,
-  };
-});
-
-export const requestGroupInfo = createSelector(
+export const getMessagesState = createSelector(
   selectUserInformation,
   (state) => {
-    return state.requestGroupInfo;
+    return {
+      userId: state.userId,
+      friendId: state.friendId,
+      user: state.user,
+      friend: state.friend,
+      messages: state.messages,
+    };
+  }
+);
+
+export const requestMessages = createSelector(
+  selectUserInformation,
+  (state) => {
+    return state.requestUserMessages;
+  }
+);
+export const getLatestMessages = createSelector(
+  selectUserInformation,
+  (state) => {
+    return state.latestMessages;
   }
 );
 
 const allSelectors = {
-  getGroup,
-  requestGroupInfo,
+  getMessagesState,
+  getLatestMessages,
+  requestMessages,
 };
 
 export default allSelectors;

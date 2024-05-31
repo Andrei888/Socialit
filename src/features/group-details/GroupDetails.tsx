@@ -25,6 +25,7 @@ import {
 import { getUserDetails } from "@features/login/redux/selectors";
 
 // components
+import MessagesBlock from "@features/messages/MessagesBlock";
 import { Styled } from "./GroupDetails.styled";
 
 const { Title, Text } = Typography;
@@ -122,40 +123,20 @@ const GroupDetails: FC = () => {
           {group.author && <Text className="group-author">{group.author}</Text>}
           {group.authorId === user.id ? (
             <Text className="group-author">
-              <Checkbox value={"disable-group"}>Disable Group</Checkbox>
+              <Button className="disable-group">Disable Group</Button>
             </Text>
           ) : (
             <Text className="group-user">
-              <Checkbox value={"leave-group"}>Leave Group</Checkbox>
+              <Button className="leave-group">Leave Group</Button>
             </Text>
           )}
-          <Styled.ChatBlock>
-            {group?.chat &&
-              group?.chat.length &&
-              group.chat.map((message) => {
-                return (
-                  <Styled.MsgBlock>
-                    <Styled.User>{message.userName}</Styled.User>
-                    <Styled.Message>{message.text}</Styled.Message>
-                  </Styled.MsgBlock>
-                );
-              })}
-            {!group?.chat && <Row>No disscusion started!</Row>}
-            <Row>
-              <Col span={20}>
-                <Input
-                  value={newMessage}
-                  onChange={(e) => handleChangeText(e)}
-                  onKeyUp={(e) => handleKeyUp(e)}
-                />
-              </Col>
-              <Col span={4}>
-                <Button className="submit-btn" onClick={handleSendText}>
-                  Send
-                </Button>
-              </Col>
-            </Row>
-          </Styled.ChatBlock>
+          <MessagesBlock
+            messages={group.chat}
+            newMessage={newMessage}
+            handleKeyUp={handleKeyUp}
+            handleChangeText={handleChangeText}
+            handleSendText={handleSendText}
+          />
         </Styled.Col>
         <Styled.Col span={2}></Styled.Col>
         <Styled.Col span={4}>
