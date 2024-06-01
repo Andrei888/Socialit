@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   getAuth,
   //signInWithRedirect,
@@ -34,6 +35,7 @@ const firebaseConfig = {
 // Initialize Firebase
 // @ts-ignore
 const firebaseApp = initializeApp(firebaseConfig);
+const storage = getStorage(firebaseApp);
 
 const provider = new GoogleAuthProvider();
 
@@ -607,7 +609,9 @@ export const updateConversationFirestore = async (
   user,
   friend,
   friendId,
-  text
+  text,
+  isFile = false,
+  fileType = ""
 ) => {
   const messagesIds = [user.id + "-" + friendId, friendId + "-" + user.id];
   const msgId = Date.now().toString();
@@ -638,10 +642,12 @@ export const updateConversationFirestore = async (
         messages: [
           ...(messages.data().messages ? messages.data().messages : []),
           {
-            text: text,
+            text: isFile ? null : text,
             userName: user.displayName,
             userId: user.id,
             msgId: msgId,
+            file: isFile ? text : null,
+            fileType: isFile ? fileType : null,
           },
         ],
       };
@@ -655,10 +661,12 @@ export const updateConversationFirestore = async (
         secondUserId: friendId,
         messages: [
           {
-            text: text,
+            text: isFile ? null : text,
             userName: user.displayName,
             userId: user.id,
             msgId: msgId,
+            file: isFile ? text : null,
+            fileType: isFile ? fileType : null,
           },
         ],
       };
@@ -711,4 +719,20 @@ export const getUserLatestMessages = async (userId) => {
   } else {
     return null;
   }
+};
+
+export const uploadFile = async (userId, file) => {
+  console.log(file);
+  const fileType = file.type;
+  const storageRef = ref(storage, `${userId}/${file.name}`);
+
+  // 'file' comes from the Blob or File API
+  const storageDoc = await uploadBytes(storageRef, file);
+  console.log(storageDoc);
+
+  const url = await getDownloadURL(storageRef);
+  console.log(url);
+  return { url: url, type: fileType };
+  //const mountainsRef = ref(storage, `images/${file.name}`);
+  //console.log(mountainsRef);
 };

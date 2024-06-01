@@ -1,3 +1,4 @@
+import { Message } from "@app/models/messages";
 export interface UsersMessages {
   userId: null;
   user: null;
@@ -6,13 +7,6 @@ export interface UsersMessages {
   messages: Message[] | null;
   requestUserMessages: boolean;
   latestMessages: Message[] | null;
-}
-
-export interface Message {
-  text: string;
-  userId: string;
-  userName: string;
-  msgId: string;
 }
 
 export interface MessagesDoc {

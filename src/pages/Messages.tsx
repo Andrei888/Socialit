@@ -8,6 +8,7 @@ import {
   getUserToUserMessages,
   updateConversationFirestore,
   myFriendsFirestore,
+  uploadFile,
 } from "../externalFeeds/firebase.utils";
 // redux
 import { getUserDetails } from "@features/login/redux/selectors";
@@ -35,6 +36,8 @@ const Messages: React.FC = () => {
   const friendsNotLoaded = useSelector(friendsSelector.getRequestFriends);
   const myFriends = useSelector(friendsSelector.getFriends);
   const location = useLocation();
+
+  const [fileUploaded, setFileUploaded] = useState<File | null>(null);
 
   const dispatch = useDispatch();
   const [newMessage, setNewMessage] = useState<string>("");
@@ -96,7 +99,8 @@ const Messages: React.FC = () => {
           user,
           getFriendName(),
           friendId,
-          newMessage
+          newMessage,
+          false
         );
         if (response) {
           dispatch(messagesAction.updateUserMessages());
@@ -136,17 +140,59 @@ const Messages: React.FC = () => {
     }
   }, [friendsNotLoaded, user, dispatch]);
 
+  // file functionality
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    if (e.target.files) {
+      setFileUploaded(e.target.files[0]);
+    }
+  };
+  const handleUpload = async () => {
+    // We will fill this out later
+    const response = await uploadFile(user.id, fileUploaded);
+    const { url, type } = response;
+    handleSendFileToFirestore(url, type);
+  };
+
+  const handleSendFileToFirestore = (fileUrl: string, type: string) => {
+    async function updateTextMsg(friendId: string) {
+      try {
+        const response = await updateConversationFirestore(
+          user,
+          getFriendName(),
+          friendId,
+          fileUrl,
+          true,
+          type
+        );
+        if (response) {
+          dispatch(messagesAction.updateUserMessages());
+          setNewMessage("");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (userId && friendId && fileUrl) {
+      updateTextMsg(friendId);
+    }
+  };
+
   return (
     <div className="friends-page">
       <Title>Messages with - {getFriendName()}</Title>
       <Row>
         <Col span={18}>
           <MessagesBlock
+            userId={userId}
             messages={messagesState.messages}
             newMessage={newMessage}
             handleKeyUp={handleKeyUp}
             handleChangeText={handleChangeText}
             handleSendText={handleSendText}
+            newFile={fileUploaded}
+            handleFileChange={handleFileChange}
+            handleFileUpload={handleUpload}
           />
         </Col>
       </Row>
