@@ -16,6 +16,7 @@ const initialState: UserState = {
   id: null,
   isAnonymous: true,
   accessToken: "",
+  friends: null,
   loading: false,
   updateUserDetails: true,
 };

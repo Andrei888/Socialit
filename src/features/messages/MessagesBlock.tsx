@@ -5,21 +5,26 @@ import { Row, Col, Input, Button } from "antd";
 import { Message } from "@models/messages";
 
 // components
+import Spacer from "@app/components/common/elements/Spacer";
 import { Styled } from "./MessagesBlock.styled";
 
 interface MessagesBlockProps {
   userId: string;
+  friendName?: string;
+  isDisabled?: boolean;
   messages: Message[] | null;
   newMessage: string | undefined;
   handleChangeText: (event: ChangeEvent<HTMLInputElement>) => void;
   handleKeyUp: (e: React.KeyboardEvent) => void;
   handleSendText: () => void;
-  newFile: File | null;
-  handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleFileUpload: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  newFile?: File | null;
+  handleFileChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleFileUpload?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 const MessagesBlock: FC<MessagesBlockProps> = ({
   userId,
+  friendName,
+  isDisabled = false,
   messages,
   newMessage,
   handleChangeText,
@@ -30,7 +35,9 @@ const MessagesBlock: FC<MessagesBlockProps> = ({
   handleFileUpload,
 }) => {
   return (
-    <Styled.ChatBlock>
+    <Styled.ChatBlock
+      className={isDisabled ? "chat-block chat-block-disabled" : "chat-block"}
+    >
       {messages &&
         messages.length &&
         messages.map((message, index) => {
@@ -66,40 +73,54 @@ const MessagesBlock: FC<MessagesBlockProps> = ({
           );
         })}
       {!messages && <Row>No disscusion started!</Row>}
-      <Row>
-        <Col span={20}>
-          <Input
-            value={newMessage}
-            onChange={(e) => handleChangeText(e)}
-            onKeyUp={(e) => handleKeyUp(e)}
-          />
-        </Col>
-        <Col span={4}>
-          <Button className="submit-btn" onClick={handleSendText}>
-            Send
-          </Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <div>
-            <label htmlFor="file">or share a file</label>
-          </div>
-          <input id="file" type="file" onChange={handleFileChange} />
-        </Col>
-        <Col>
-          {newFile && (
-            <section>
-              <ul>
-                <li>Name: {newFile.name}</li>
-                <li>Type: {newFile.type}</li>
-                <li>Size: {newFile.size} bytes</li>
-              </ul>
-            </section>
-          )}
-          {newFile && <button onClick={handleFileUpload}>Send file</button>}
-        </Col>
-      </Row>
+      {!isDisabled && (
+        <Row>
+          <Col span={20}>
+            <Input
+              value={newMessage}
+              onChange={(e) => handleChangeText(e)}
+              onKeyUp={(e) => handleKeyUp(e)}
+            />
+          </Col>
+          <Col span={4}>
+            <Button className="submit-btn" onClick={handleSendText}>
+              Send
+            </Button>
+          </Col>
+        </Row>
+      )}
+
+      {handleFileUpload && (
+        <Row justify="space-between" align="top">
+          <Col>
+            <Spacer>
+              <label htmlFor="file" className="action-btn">
+                {newFile
+                  ? `Change file`
+                  : friendName
+                  ? `Share file with - ${friendName}`
+                  : "Share file"}
+              </label>
+            </Spacer>
+            <input
+              id="file"
+              type="file"
+              onChange={handleFileChange}
+              className="sr-only"
+            />
+            {newFile && <Spacer>{newFile.name}</Spacer>}
+          </Col>
+          <Col>
+            {newFile && (
+              <>
+                <button onClick={handleFileUpload} className="action-btn">
+                  Send file
+                </button>
+              </>
+            )}
+          </Col>
+        </Row>
+      )}
     </Styled.ChatBlock>
   );
 };

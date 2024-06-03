@@ -17,6 +17,7 @@ import {
   useInjectGroups,
   useInjectGroupDetails,
   useInjectMessages,
+  useInjectProfile,
 } from "@hooks/inject";
 import { useInitUser } from "@hooks/init";
 
@@ -30,12 +31,15 @@ import LoginPage from "@features/login/LoginPage";
 import AboutUs from "./pages/AboutUs";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import UserProfile from "./pages/UserProfile";
 import MyFriends from "./pages/MyFriends";
 import MyGroups from "./pages/MyGroups";
 import NewGroup from "./pages/NewGroup";
 import Messages from "./pages/Messages";
 import LatestMessages from "./pages/LatestMessages";
 import Group from "./pages/Group";
+import FAQ from "./pages/FAQ";
+import ContactUs from "./pages/ContactUs";
 
 const headerContent = (
   <>
@@ -54,6 +58,7 @@ const useInit = () => {
 function App() {
   useInjectLogin();
   useInjectFriends();
+  useInjectProfile();
   useInjectGroups();
   useInjectGroupDetails();
   useInjectMessages();
@@ -67,6 +72,7 @@ function App() {
           <PublicRoute path={appRoutes.login} component={LoginPage} />
           <PrivateRoute path={appRoutes.friends} component={MyFriends} />
           <PrivateRoute path={appRoutes.about} component={AboutUs} />
+          <PrivateRoute path={appRoutes.userProfile} component={UserProfile} />
           <PrivateRoute path={appRoutes.profile} component={Profile} />
           <PrivateRoute path={appRoutes.groups} component={MyGroups} />
           <PrivateRoute path={appRoutes.newGroup} component={NewGroup} />
@@ -76,7 +82,8 @@ function App() {
             path={appRoutes.latestMessages}
             component={LatestMessages}
           />
-
+          <PrivateRoute path={appRoutes.faq} component={FAQ} />
+          <PrivateRoute path={appRoutes.contactUs} component={ContactUs} />
           <PrivateRoute path={appRoutes.home} component={Home} />
         </Switch>
       </div>

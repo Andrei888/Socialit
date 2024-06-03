@@ -1,20 +1,16 @@
-import {
-  ChangeEvent,
-  FC,
-  useEffect,
-  useState,
-  KeyboardEventHandler,
-} from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Button, Typography, Input, Checkbox } from "antd";
+import { Row, Col, Button, Typography } from "antd";
 import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 // models
 import { Group } from "./redux/interfaces";
 //utils
 import {
   fetchGroupDetails,
   updateChatInGroupFirestore,
+  removeUserFromGroupFirestore,
+  disableGroupFirestore,
 } from "../../externalFeeds/firebase.utils";
 
 // redux
@@ -22,6 +18,10 @@ import {
   selectors as groupSelector,
   actions as groupAction,
 } from "@features/group-details/redux";
+import {
+  selectors as groupsSelector,
+  actions as groupsAction,
+} from "@features/groups/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
 
 // components
@@ -42,6 +42,7 @@ const GroupDetails: FC = () => {
   const [groupInfo, setGroupInfo] = useState<Group | null>(group);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     async function getGroupDetails(groupId: string) {
@@ -103,11 +104,49 @@ const GroupDetails: FC = () => {
     }
   };
 
+  const handleLeaveGroup = () => {
+    async function removeUserFromGroup(groupId: string) {
+      try {
+        const response = await removeUserFromGroupFirestore(
+          user,
+          groupId,
+          newMessage
+        );
+        if (response) {
+          dispatch(groupsAction.updateGroupsList());
+
+          history.push("/groups");
+          setNewMessage("");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (user && groupId) {
+      removeUserFromGroup(groupId);
+    }
+  };
+
+  const handleDisableGroup = (disabled: boolean) => {
+    async function disableGroupFromFirestore(groupId: string) {
+      try {
+        const response = await disableGroupFirestore(user, groupId, disabled);
+        if (response) {
+          dispatch(groupAction.updateGroupInfo());
+          setNewMessage("");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (user && groupId) {
+      disableGroupFromFirestore(groupId);
+    }
+  };
+
   if (group.seo !== groupId) {
     return null;
   }
-
-  console.log(groupInfo);
 
   return (
     <div>
@@ -116,21 +155,43 @@ const GroupDetails: FC = () => {
           <Link to={`/groups`}>Back to my groups</Link>
         </Col>
       </Styled.Row>
-      <Styled.Row>
+      <Styled.Row
+        className={group.isDisabled ? "group group-disabled" : "group"}
+      >
         <Styled.Col span={18}>
           <Title className="group-name">{group.name}</Title>
           <Text className="group-name">{group.description}</Text>
-          {group.author && <Text className="group-author">{group.author}</Text>}
-          {group.authorId === user.id ? (
+          {group.author && (
+            <Text className="group-author">Crated by: {group.author}</Text>
+          )}
+          {group.authorId === user.id && !group.isDisabled ? (
             <Text className="group-author">
-              <Button className="disable-group">Disable Group</Button>
+              <Button
+                className="disable-group"
+                onClick={(e) => handleDisableGroup(true)}
+              >
+                Disable Group
+              </Button>
+            </Text>
+          ) : group.authorId === user.id && group.isDisabled ? (
+            <Text className="group-author">
+              <Button
+                className="disable-group"
+                onClick={(e) => handleDisableGroup(false)}
+              >
+                Enable Group
+              </Button>
             </Text>
           ) : (
             <Text className="group-user">
-              <Button className="leave-group">Leave Group</Button>
+              <Button className="leave-group" onClick={handleLeaveGroup}>
+                Leave Group
+              </Button>
             </Text>
           )}
           <MessagesBlock
+            isDisabled={group.isDisabled}
+            userId={user.id ?? ""}
             messages={group.chat}
             newMessage={newMessage}
             handleKeyUp={handleKeyUp}

@@ -9,7 +9,10 @@ import { getUserLatestMessages } from "../../externalFeeds/firebase.utils";
 
 // redux
 import { actions, selectors } from "./redux";
-import useSelection from "antd/lib/table/hooks/useSelection";
+// compoments
+
+import GoToMessages from "@features/user/GoToMessages";
+import { Styled } from "./MyLatestMessages.styled";
 
 interface MyLatestMessagesProps {
   user: BasicUser;
@@ -54,9 +57,19 @@ const MyLatestMessages: FC<MyLatestMessagesProps> = ({ user }) => {
       {latestMessages && latestMessages.length ? (
         <div>
           {latestMessages.map((message) => (
-            <div>
-              {message.userName} - {message.text}
-            </div>
+            <Styled.MsgBlock>
+              <Styled.Row justify={"space-between"} align={"top"}>
+                <Styled.Col>
+                  <Styled.Title>{message.userName}</Styled.Title>
+                  <Styled.Message className="message">
+                    {message.text}
+                  </Styled.Message>
+                </Styled.Col>
+                <Styled.Col>
+                  <GoToMessages myId={user.id} friendId={message.userId} />
+                </Styled.Col>
+              </Styled.Row>
+            </Styled.MsgBlock>
           ))}
         </div>
       ) : (

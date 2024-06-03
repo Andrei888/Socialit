@@ -13,6 +13,7 @@ export interface Group {
   users: GroupUser[] | null;
   author: string | null;
   authorId: string | null;
+  isDisabled?: boolean;
 }
 
 export interface GroupUser {

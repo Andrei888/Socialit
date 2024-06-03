@@ -28,6 +28,13 @@ export interface UserState {
   address: string;
   isAnonymous?: boolean;
   accessToken?: string;
+  friends?: Friend[] | null;
   loading: boolean;
   updateUserDetails: boolean;
+}
+
+export interface Friend {
+  friendId: string | null;
+  isAccepted: boolean | null;
+  isVerified: boolean | null;
 }

@@ -14,6 +14,7 @@ const Footer = styled.div`
   h1.ant-typography {
     color: #fff;
     font-size: 20px;
+    margin-bottom: 25px;
   }
   a {
     color: #fff;

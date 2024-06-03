@@ -13,6 +13,7 @@ export const getGroup = createSelector(selectUserInformation, (state) => {
     users: state.users,
     author: state.author,
     authorId: state.authorId,
+    isDisabled: state.isDisabled,
   };
 });
 

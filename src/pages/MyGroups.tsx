@@ -21,7 +21,9 @@ const MyGroups: React.FC = () => {
           <Text>Find New Group</Text>
           <FindGroups />
           <Spacer />
-          <Link to="/new-group">Create New Group</Link>
+          <Link to="/new-group" className="action-btn">
+            Create New Group
+          </Link>
         </Col>
       </Row>
     </div>

@@ -18,6 +18,7 @@ import {
 import { getUserDetails } from "@features/login/redux/selectors";
 
 // component
+import GoToProfile from "./GoToProfile";
 import GoToMessages from "./GoToMessages";
 import { Styled } from "./MyFriendsGroup.styled";
 
@@ -64,7 +65,10 @@ const MyFriendsGroup: FC<MyFriendsGroupProps> = ({
               </Styled.Col>
               <Styled.Col>
                 {friend.isAccepted && friend.isVerified && (
-                  <GoToMessages myId={user.id} friendId={friend.id} />
+                  <div>
+                    <GoToProfile userId={friend.id} />
+                    <GoToMessages myId={user.id} friendId={friend.id} />
+                  </div>
                 )}
                 {friend.isAccepted && !friend.isVerified && (
                   <Button onClick={(e) => addFriendHandler(friend.id)}>

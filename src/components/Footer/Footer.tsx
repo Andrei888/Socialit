@@ -23,19 +23,36 @@ const Footer: React.FC = () => {
           <Col>
             <Title>Discover Us</Title>
             <Row>
-              <ExternalLink href="#facebook">Facebook</ExternalLink>
+              <ExternalLink
+                target="_blank"
+                href="https://www.google.com/#facebook"
+              >
+                Facebook
+              </ExternalLink>
             </Row>
             <Row>
-              <ExternalLink href="#instagram">Instagram</ExternalLink>
+              <ExternalLink
+                target="_blank"
+                href="https://www.google.com/#instagram"
+              >
+                Instagram
+              </ExternalLink>
             </Row>
           </Col>
           <Col>
             <Title>Community</Title>
-            <ExternalLink href="#n">Test link</ExternalLink>
+            <ExternalLink target="_blank" href="https://www.google.com/">
+              Community link
+            </ExternalLink>
           </Col>
           <Col>
             <Title>Help </Title>
-            <Link to={"/test"}>Test link</Link>
+            <Row>
+              <Link to={"/faq"}>FAQ</Link>
+            </Row>
+            <Row>
+              <Link to={"/contact"}>Contact Us</Link>
+            </Row>
           </Col>
         </Row>
         <Row>

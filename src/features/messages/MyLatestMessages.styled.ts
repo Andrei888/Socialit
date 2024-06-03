@@ -5,22 +5,12 @@ import { Row, Col, Typography } from "antd";
 const FormRow = styled(Row)``;
 const FormCol = styled(Col)`
   h1.ant-typography {
-    font-size: 24px;
+    font-size: 18px;
     margin-bottom: 15px;
   }
 `;
-
-const ChatBlock = styled.div`
-  padding: 10px;
-  border: 2px solid rgba(14, 166, 181, 1);
-  border-radius: 5px;
-
-  &.chat-block-disabled {
-    opacity: 0.6;
-  }
-  .submit-btn {
-    width: 100%;
-  }
+const CustomTitle = styled(Typography.Title)`
+  font-size: 16px;
 `;
 const MsgBlock = styled.div`
   padding: 10px 10px 15px 10px;
@@ -60,16 +50,12 @@ const MsgBlock = styled.div`
     }
   }
 `;
-const User = styled.div`
-  margin-bottom: 10px;
-`;
 const Message = styled.div``;
 
 export const Styled = {
+  Title: CustomTitle,
   Row: FormRow,
   Col: FormCol,
-  ChatBlock,
-  User,
   Message,
   MsgBlock,
 };

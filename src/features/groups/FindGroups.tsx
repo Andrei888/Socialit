@@ -32,19 +32,21 @@ const FindGroups: FC = () => {
   const userGroups = useSelector(groupSelector.getGroups);
 
   const [groups, setUsers] = useState<Group[] | null>(null);
-  const [selectedValue, setSelectedValue] = useState<string>("title");
+  const [searchIn, setSearchIn] = useState<string>("title");
   const [textQuery, setTextQuery] = useState<string | null>(null);
 
   const dispatch = useDispatch();
 
-  const handleSearch = async (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
-    if (event.target.value.length > 2) {
-      const foundUsers = await findGroupsFirebase(event.target.value);
-      setUsers(foundUsers);
+  const search = async (text: string, searchIn: string) => {
+    if (text.length > 2) {
+      const foundGroups = await findGroupsFirebase(text, searchIn);
+      setUsers(foundGroups);
     } else {
       setUsers(null);
     }
+  };
+
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setTextQuery(event.target.value ?? "");
   };
 
@@ -57,10 +59,8 @@ const FindGroups: FC = () => {
     }
   };
 
-  console.log(groups);
-
   const handleSelectChange = (value: string) => {
-    setSelectedValue(value);
+    setSearchIn(value);
   };
 
   const checkIfUserInGroup = (usersList: GroupUser[] | null) => {
@@ -79,19 +79,25 @@ const FindGroups: FC = () => {
     }
   }, [userGroups]);
 
+  useEffect(() => {
+    if (textQuery) {
+      search(textQuery, searchIn);
+    }
+  }, [textQuery, searchIn]);
+
   return (
     <Styled.Wrapper>
       <div>
         <Select
           options={groupSearchFields}
-          value={selectedValue}
+          value={searchIn}
           style={{ width: "100%", marginBottom: "15px" }}
           onChange={handleSelectChange}
         />
       </div>
       <div>
         <Input
-          placeholder={`Search by ${selectedValue}`}
+          placeholder={`Search by ${searchIn}`}
           onChange={(e) => handleSearch(e)}
         />
       </div>

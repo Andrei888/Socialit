@@ -153,6 +153,29 @@ export const updateUserFirebase = async (user, additionalInfo = {}) => {
   // }
 };
 
+// get user profile
+
+export const getUserProfile = async (userId) => {
+  const userDocRef = doc(db, "users", userId);
+
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    const oldUser = userSnapshot.data();
+
+    return {
+      userId: userId,
+      displayName: oldUser.displayName,
+      avatar: oldUser.avatar,
+      age: oldUser.age,
+      sex: oldUser.sex,
+      description: oldUser.description,
+    };
+  }
+
+  return null;
+};
+
 // upload to Firestore
 
 export const addCollectionAndDocs = async (collectionKey, objectToAdd) => {
@@ -163,7 +186,12 @@ export const addCollectionAndDocs = async (collectionKey, objectToAdd) => {
 
 // Find Users
 
-export const findUsersFirebase = async (query, myUser, isFriend) => {
+export const findUsersFirebase = async (
+  query,
+  myUser,
+  isFriend,
+  friendsList = []
+) => {
   console.log("friend", isFriend);
   const usersCol = collection(db, "users");
 
@@ -177,11 +205,11 @@ export const findUsersFirebase = async (query, myUser, isFriend) => {
       .filter((user) => {
         const name = user.displayName?.toLowerCase();
 
-        if (isFriend) {
+        if (!isFriend) {
           return (
             user.id !== myUser.id &&
             name.includes(query.toLowerCase()) &&
-            myUser.friends.indludes(user.id)
+            !friendsList.includes(user.id)
           );
         }
 
@@ -201,7 +229,7 @@ export const findUsersFirebase = async (query, myUser, isFriend) => {
 
 // find Friend
 
-export const myFriendsFirestore = async (user, queryText) => {
+export const myFriendsFirestore = async (user, queryText, isFriend) => {
   const userDocRef = doc(db, "users", user.id);
 
   const userSnapshot = await getDoc(userDocRef);
@@ -226,7 +254,10 @@ export const myFriendsFirestore = async (user, queryText) => {
           .filter((doc) => {
             return (
               userFriendsIds.includes(doc.id) &&
-              doc.data().displayName.includes(queryText)
+              doc
+                .data()
+                .displayName.toLowerCase()
+                .includes(queryText.toLowerCase())
             );
           })
           .map((doc) => ({
@@ -344,7 +375,7 @@ export const addFriendFirestore = async (user, friendId) => {
 
 // Find Groups
 
-export const findGroupsFirebase = async (query) => {
+export const findGroupsFirebase = async (query, searchIn) => {
   const usersCol = collection(db, "groups");
 
   const userSnapshot = await getDocs(usersCol);
@@ -355,9 +386,24 @@ export const findGroupsFirebase = async (query) => {
         return { id: doc.id, ...doc.data() };
       })
       .filter((group) => {
-        const groupName = group.name?.toLowerCase();
+        console.log(searchIn);
+        if (searchIn === "description") {
+          const groupDescription = group.description?.toLowerCase();
 
-        return groupName.includes(query.toLowerCase());
+          return groupDescription.includes(query.toLowerCase());
+        } else if (searchIn === "messages") {
+          const groupChat = group.chat
+            ?.map((message) => message.text.toLowerCase())
+            .join("_")
+            ?.toLowerCase();
+          console.log(groupChat);
+
+          return groupChat?.includes(query.toLowerCase());
+        } else {
+          const groupName = group.name?.toLowerCase();
+
+          return groupName.includes(query.toLowerCase());
+        }
       })
       .map((group) => ({
         name: group.name,
@@ -495,18 +541,13 @@ export const createNewGroupFirestore = async (user, newGroup) => {
   }
 
   const createGroup = {
-    users: [
-      {
-        displayName: user.displayName,
-        email: user.email,
-        id: user.id,
-      },
-    ],
+    users: [],
     author: user.displayName,
     authorId: user.id,
     description: newGroup.description,
     seo: newGroup.seo,
     name: newGroup.name,
+    isDisabled: false,
   };
 
   try {
@@ -566,6 +607,87 @@ export const updateChatInGroupFirestore = async (user, groupId, text) => {
     console.log(updatedGroup);
     try {
       await setDoc(doc(db, "groups", groupId), updatedGroup);
+    } catch (error) {
+      console.log("error creating new group!", error.message);
+    }
+  } else {
+    return false;
+  }
+
+  return true;
+};
+
+// disable Groups
+
+export const disableGroupFirestore = async (user, groupId, disabled) => {
+  // check if group exists
+  const group = doc(db, "groups", groupId);
+  const groupSnapshot = await getDoc(group);
+
+  // find if group already exists with same ID
+  if (groupSnapshot.exists) {
+    const updatedGroup = {
+      ...groupSnapshot.data(),
+      isDisabled: disabled,
+    };
+    try {
+      if (!updatedGroup.isDisabled && updatedGroup.authorId !== user.id) {
+        return false;
+      }
+      await setDoc(doc(db, "groups", groupId), updatedGroup);
+
+      return true;
+    } catch (error) {
+      console.log("error creating new group!", error.message);
+    }
+  } else {
+    return false;
+  }
+
+  return true;
+};
+
+// remove user from Groups
+
+export const removeUserFromGroupFirestore = async (user, groupId, text) => {
+  const group = doc(db, "groups", groupId);
+  const groupSnapshot = await getDoc(group);
+
+  // find if group exists
+  if (groupSnapshot.exists) {
+    const updatedGroup = {
+      ...groupSnapshot.data(),
+      users: groupSnapshot
+        .data()
+        .users.filter((userInGroup) => userInGroup.id !== user.id),
+    };
+
+    try {
+      await setDoc(doc(db, "groups", groupId), updatedGroup);
+
+      const userDocRef = doc(db, "users", user.id);
+
+      const userSnapshot = await getDoc(userDocRef);
+
+      if (userSnapshot.exists()) {
+        // update User Groups
+        const updatedAt = new Date();
+
+        const oldUser = userSnapshot.data();
+
+        if (oldUser.groups && oldUser.groups?.includes(groupId)) {
+          const groupsArr = oldUser.groups.filter((group) => group !== groupId);
+
+          const updatedUser = {
+            ...oldUser,
+            updatedAt,
+            groups: groupsArr,
+          };
+
+          await setDoc(userDocRef, updatedUser);
+          return true;
+        }
+      }
     } catch (error) {
       console.log("error creating new group!", error.message);
     }
@@ -722,7 +844,6 @@ export const getUserLatestMessages = async (userId) => {
 };
 
 export const uploadFile = async (userId, file) => {
-  console.log(file);
   const fileType = file.type;
   const storageRef = ref(storage, `${userId}/${file.name}`);
 
@@ -731,7 +852,7 @@ export const uploadFile = async (userId, file) => {
   console.log(storageDoc);
 
   const url = await getDownloadURL(storageRef);
-  console.log(url);
+
   return { url: url, type: fileType };
   //const mountainsRef = ref(storage, `images/${file.name}`);
   //console.log(mountainsRef);

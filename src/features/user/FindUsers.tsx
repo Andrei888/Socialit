@@ -11,7 +11,10 @@ import {
 } from "../../externalFeeds/firebase.utils";
 
 // redux
-import { actions as friendsActions } from "@app/features/user/redux";
+import {
+  selectors as friendsSelector,
+  actions as friendsActions,
+} from "@app/features/user/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
 
 import { Styled } from "./FindUsers.styled";
@@ -30,6 +33,7 @@ const FindUsers: React.FC<FindUsersProps> = ({
   isFriend = false,
 }) => {
   const user = useSelector(getUserDetails);
+  const friends = useSelector(friendsSelector.getFriends);
 
   const [users, setUsers] = useState<Friend[] | null>(null);
   const [textQuery, setTextQuery] = useState<string | null>(null);
@@ -42,13 +46,18 @@ const FindUsers: React.FC<FindUsersProps> = ({
     if (event.target.value.length > 2) {
       if (isFriend) {
         // @ts-ignore
-        foundUsers = await myFriendsFirestore(user, event.target.value);
+        foundUsers = await myFriendsFirestore(
+          user,
+          event.target.value,
+          isFriend
+        );
       } else {
         // @ts-ignore
         foundUsers = await findUsersFirebase(
           event.target.value,
           user,
-          isFriend
+          false,
+          friends?.map((friend) => friend.id)
         );
       }
       console.log(foundUsers);
@@ -67,6 +76,8 @@ const FindUsers: React.FC<FindUsersProps> = ({
     }
   };
 
+  console.log(users);
+
   return (
     <div>
       <Styled.Text>{title ?? "Find New Friends"}</Styled.Text>
@@ -77,12 +88,16 @@ const FindUsers: React.FC<FindUsersProps> = ({
         />
       </div>
       <div>
-        {!users && textQuery && textQuery?.length > 2 && (
-          <Styled.Message>No Users Found!</Styled.Message>
-        )}
-        {!users && textQuery && textQuery?.length < 3 && (
-          <Styled.Message>Please Type minimum 3 chars!</Styled.Message>
-        )}
+        {(users === null || !users?.length) &&
+          textQuery &&
+          textQuery?.length > 2 && (
+            <Styled.Message>No Users Found!</Styled.Message>
+          )}
+        {(users === null || !users?.length) &&
+          textQuery &&
+          textQuery?.length < 3 && (
+            <Styled.Message>Please Type minimum 3 chars!</Styled.Message>
+          )}
         {users &&
           users?.map((user) => {
             return (

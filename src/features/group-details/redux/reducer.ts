@@ -13,19 +13,33 @@ const initialState: GroupState = {
   author: null,
   authorId: null,
   requestGroupInfo: true,
+  isDisabled: undefined,
 };
 
 const getGroupInfoSuccessReducer: CaseReducer<GroupState> = (
   draftState,
   action
 ) => {
-  const { id, seo, name, description, users, chat } = action.payload;
+  const {
+    id,
+    seo,
+    name,
+    description,
+    users,
+    chat,
+    author,
+    authorId,
+    isDisabled,
+  } = action.payload;
   draftState.id = id;
   draftState.seo = seo;
   draftState.name = name;
   draftState.description = description;
   draftState.users = users;
   draftState.chat = chat;
+  draftState.author = author;
+  draftState.authorId = authorId;
+  draftState.isDisabled = isDisabled;
   draftState.requestGroupInfo = false;
 };
 const updateGroupInfoReducer: CaseReducer = (draftState, action) => {

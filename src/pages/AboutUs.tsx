@@ -7,49 +7,131 @@ const AboutUs: React.FC = () => {
   return (
     <div className="about-us-page">
       <Title>About Us</Title>
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce feugiat
-        suscipit vehicula. Sed condimentum mauris eu facilisis faucibus.
-      </Text>
-      <Text>
-        Suspendisse augue justo, posuere non vehicula consectetur, lacinia eget
-        urna. Curabitur a egestas risus. Ut finibus eros et arcu vestibulum, et
-        venenatis ante cursus. Fusce non ante vitae elit rutrum malesuada. Nulla
-        facilisi. In hac habitasse platea dictumst. Maecenas elementum ultricies
-        massa, luctus ullamcorper ex semper vitae. Quisque id scelerisque
-        mauris, at congue nibh. Cras arcu sem, consectetur vitae arcu quis,
-        tincidunt luctus urna. Integer laoreet felis velit, non iaculis lorem
-        cursus ut. Nullam est justo, faucibus sit amet justo quis, feugiat
-        semper nibh. Maecenas varius, lacus id fermentum tempus, nisi ex blandit
-        lacus, vel aliquam ante arcu congue sem. Pellentesque iaculis lectus at
-        ex posuere, ut tristique ante sagittis. Vivamus posuere ante eget lectus
-        suscipit cursus at in sapien. Sed congue leo ac dui eleifend, sit amet
-        sollicitudin turpis interdum. Aenean feugiat, erat non tempus dapibus,
-        ipsum nibh mollis elit, ut lobortis ligula odio nec quam. Sed id
-        fringilla enim, at volutpat elit. Praesent laoreet, ante non feugiat
-        interdum, mi felis iaculis lectus, a vulputate enim leo non ligula. Sed
-        rhoncus ultrices ex. In lectus massa, commodo sit amet nunc sed,
-        eleifend elementum quam. Phasellus consectetur aliquam tempor. Nam ut
-        lacinia neque. Mauris pellentesque rhoncus massa. Aliquam erat volutpat.
-        Maecenas commodo diam nec ex ullamcorper, eu tempor leo hendrerit.
-      </Text>
-      <Text>
-        Phasellus ac tristique massa. Integer posuere gravida luctus. Fusce a
-        viverra lacus. Suspendisse pretium felis massa, eu tincidunt elit mattis
-        vitae. Maecenas tempus laoreet enim sed tristique. Phasellus ornare eros
-        a faucibus volutpat. Mauris efficitur accumsan tortor, eu lacinia magna
-        pretium venenatis. Aliquam erat volutpat. Mauris iaculis, mi id
-        ultricies eleifend, massa dolor varius velit, eget vestibulum nisi sem
-        at eros. Etiam varius dui quis nisl dictum blandit. Maecenas
-        pellentesque, velit et gravida accumsan, urna elit ultricies metus, et
-        tempus dolor tellus eu purus. In volutpat, sapien et euismod malesuada,
-        eros augue convallis tortor, vitae tristique mauris turpis sed velit.
-      </Text>
-      <Text>
-        Nullam id felis vel sem lobortis vehicula vitae eget neque. Phasellus
-        risus lacus, tempus non ultricies a, malesuada et augue. Sed erat odio,
-        ultrices non ultrices a, eleifend in ex.
-      </Text>
+      <section>
+        <h2>Our Mission</h2>
+        <p>
+          At <strong>Social IT</strong>, our mission is to connect people from
+          all walks of life, fostering a global community where everyone can
+          share, learn, and grow together. We believe in the power of social
+          connections to make the world a smaller, more inclusive place.
+        </p>
+      </section>
+
+      <section>
+        <h2>Our Story</h2>
+        <p>
+          <strong>Social IT</strong> was founded in <strong>2024</strong> with a
+          simple idea: to create a space where people can easily connect, share
+          their stories, and discover new perspectives. What started as a small
+          project has grown into a thriving community of users who inspire us
+          every day.
+        </p>
+      </section>
+
+      <section>
+        <h2>Our Values</h2>
+        <ul>
+          <li>
+            <strong>Community:</strong> We strive to build a supportive and
+            inclusive environment where everyone feels welcome.
+          </li>
+          <li>
+            <strong>Innovation:</strong> We are constantly innovating to provide
+            the best possible experience for our users.
+          </li>
+          <li>
+            <strong>Privacy and Security:</strong> Your trust is our priority.
+            We are committed to protecting your data and ensuring a safe online
+            environment.
+          </li>
+          <li>
+            <strong>Transparency:</strong> We believe in being open and honest
+            with our users about how our platform works and how we use your
+            data.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Meet Our Team</h2>
+        <p>
+          We are a diverse group of passionate individuals dedicated to making{" "}
+          <strong>Social IT</strong> the best social networking experience. From
+          developers and designers to customer support and community managers,
+          our team is here to serve you.
+        </p>
+        <ul>
+          <li>
+            <strong>Founder/CEO Name</strong>
+            <br /> <em>Founder & CEO</em>
+            <br /> Andrei Purcaru
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>What We Offer</h2>
+        <ul>
+          <li>
+            <strong>Personalized Experience:</strong> Tailored content and
+            recommendations to suit your interests.
+          </li>
+          <li>
+            <strong>Interactive Features:</strong> Engage with others through
+            comments, likes, shares, and direct messaging.
+          </li>
+          <li>
+            <strong>Safe Environment:</strong> Robust privacy settings and
+            moderation tools to keep our community safe.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Contact Us</h2>
+        <p>
+          Have questions or feedback? Visit our{" "}
+          <a href="/contact">Contact Us</a> page to get in touch. We’d love to
+          hear from you!
+        </p>
+      </section>
+
+      <section>
+        <h2>Follow Us</h2>
+        <p>
+          Stay up-to-date with the latest news and updates by following us on
+          social media:
+        </p>
+        <ul>
+          <li>
+            <a
+              href="https://twitter.com/socialIT"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Twitter: @SocialIT
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://facebook.com/socialIT"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook: SocialIT
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://instagram.com/socialIT"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram: @SocialIT
+            </a>
+          </li>
+        </ul>
+      </section>
     </div>
   );
 };

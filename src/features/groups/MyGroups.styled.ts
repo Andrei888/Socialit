@@ -13,7 +13,10 @@ const Wrapper = styled.section`
   }
 `;
 
-const FormRow = styled(Row)``;
+const FormRow = styled(Row)`
+  border-bottom: 1px solid rgb(24, 106, 182);
+  margin-right: 20px;
+`;
 const FormCol = styled(Col)`
   h1.ant-typography {
     font-size: 24px;

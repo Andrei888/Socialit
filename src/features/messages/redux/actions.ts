@@ -1,7 +1,8 @@
 import { createAction } from "@reduxjs/toolkit";
 import * as types from "./types";
 
-import { MessagesDoc, Message } from "./interfaces";
+import { MessagesDoc } from "./interfaces";
+import { Message } from "@app/models/messages";
 
 export const getUserMessagesSuccess = createAction<MessagesDoc>(
   types.GET_USER_MESSAGES_SUCCESS

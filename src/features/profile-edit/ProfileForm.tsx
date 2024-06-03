@@ -212,12 +212,7 @@ const ProfileForm: FC = () => {
                     <Col span={24}>
                       <Form.Item name="sex">
                         <Text>Sex</Text>
-                        <Select
-                          name="sex"
-                          options={sexOptions.split("|").map((item) => {
-                            return { value: item, label: item };
-                          })}
-                        />
+                        <Select name="sex" options={sexOptions} />
                       </Form.Item>
                     </Col>
                   </Styled.FormRow>

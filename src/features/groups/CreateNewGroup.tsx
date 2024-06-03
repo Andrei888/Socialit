@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Typography } from "antd";
 import { Formik, FormikProps } from "formik";
 import { Form, Input, Radio, ResetButton } from "formik-antd";
+import { useHistory } from "react-router-dom";
 //import {PlusCircleOutlined} from  'antd/'
 // models
 import { NewGroupValues } from "./interfaces";
@@ -33,6 +34,9 @@ const CreateNewGroup: FC = () => {
   const [errors, setErrors] = useState<string | null>(null);
   const [submittedMsg, setSubmittedMsg] = useState<string | null>(null);
   const formRef = useRef<FormikProps<NewGroupValues> | null>(null);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const initialValues = useCallback(() => {
     return {
@@ -65,6 +69,10 @@ const CreateNewGroup: FC = () => {
       const response = await createNewGroupFirestore(user, values);
       if (response) {
         setSubmittedMsg("New Group Successfully Created!");
+        dispatch(groupAction.updateGroupsList());
+        setTimeout(() => {
+          history.push("/groups");
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
@@ -78,6 +86,7 @@ const CreateNewGroup: FC = () => {
         By submitting this form you will create a new Group where you will join
         automatically!
       </Styled.Title>
+      {submittedMsg && <p className="success-msg">{submittedMsg}</p>}
       <Formik
         initialValues={initialValues()}
         onSubmit={handleSubmitForm}

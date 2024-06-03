@@ -65,14 +65,16 @@ const UsersGroups: FC = () => {
       {myGroups && (
         <>
           {myGroups.map((group: Group) => (
-            <Styled.Row>
-              <Styled.Col span={20}>
+            <Styled.Row justify={"space-between"} align={"top"}>
+              <Styled.Col>
                 <Title className="group-name">{group.name}</Title>
                 <Text className="group-name">{group.description}</Text>
               </Styled.Col>
               <Space />
-              <Styled.Col span={4}>
-                <Link to={`/group/${group.id}`}>See Group</Link>
+              <Styled.Col>
+                <Link to={`/group/${group.id}`} className="action-btn">
+                  See Group
+                </Link>
               </Styled.Col>
             </Styled.Row>
           ))}

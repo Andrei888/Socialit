@@ -185,6 +185,7 @@ const Messages: React.FC = () => {
         <Col span={18}>
           <MessagesBlock
             userId={userId}
+            friendName={getFriendName()}
             messages={messagesState.messages}
             newMessage={newMessage}
             handleKeyUp={handleKeyUp}
