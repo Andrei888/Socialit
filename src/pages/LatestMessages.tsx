@@ -1,7 +1,6 @@
 import React from "react";
 
-import { updateUserFirebase } from "../externalFeeds/firebase.utils";
-import { Button, Typography, Row, Col } from "antd";
+import { Typography, Row, Col } from "antd";
 import { useSelector } from "react-redux";
 
 // redux
@@ -11,7 +10,7 @@ import { getUserBasic } from "@features/login/redux/selectors";
 import FindUsers from "@app/features/user/FindUsers";
 import MyLatestMessages from "@features/messages/MyLatestMessages";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const LatestMessages: React.FC = () => {
   const user = useSelector(getUserBasic);

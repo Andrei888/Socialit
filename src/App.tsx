@@ -40,6 +40,8 @@ import LatestMessages from "./pages/LatestMessages";
 import Group from "./pages/Group";
 import FAQ from "./pages/FAQ";
 import ContactUs from "./pages/ContactUs";
+import AllUsers from "./pages/AllUsers";
+import AllGroups from "./pages/AllGroups";
 
 const headerContent = (
   <>
@@ -71,10 +73,12 @@ function App() {
         <Switch>
           <PublicRoute path={appRoutes.login} component={LoginPage} />
           <PrivateRoute path={appRoutes.friends} component={MyFriends} />
+          <PrivateRoute path={appRoutes.allUsers} component={AllUsers} />
           <PrivateRoute path={appRoutes.about} component={AboutUs} />
           <PrivateRoute path={appRoutes.userProfile} component={UserProfile} />
           <PrivateRoute path={appRoutes.profile} component={Profile} />
           <PrivateRoute path={appRoutes.groups} component={MyGroups} />
+          <PrivateRoute path={appRoutes.allGroups} component={AllGroups} />
           <PrivateRoute path={appRoutes.newGroup} component={NewGroup} />
           <PrivateRoute path={appRoutes.group} component={Group} />
           <PrivateRoute path={appRoutes.messages} component={Messages} />

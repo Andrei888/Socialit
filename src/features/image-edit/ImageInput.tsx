@@ -3,7 +3,6 @@ import { Image, Modal, Typography } from "antd";
 // models
 import { SuccessErrorCallback } from "@app/models/callbacks";
 // constants
-import { DEFAULT_AVATAR } from "@constants/placeholders";
 import imageSrc from "../../images/default-avatar.jpg";
 // hooks
 import { updateUserFirebase } from "../../externalFeeds/firebase.utils";
@@ -58,7 +57,6 @@ const ImageInput: React.FC<ImageInputProps> = ({ user }) => {
       if (!image) {
         return;
       }
-      let fileInfo;
       // Make new FileReader
       let reader = new FileReader();
 

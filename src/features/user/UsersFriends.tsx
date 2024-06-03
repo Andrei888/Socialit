@@ -15,7 +15,7 @@ import { getUserDetails } from "@features/login/redux/selectors";
 
 // component
 import GoToMessages from "./GoToMessages";
-import MyFriendsGroup from "./MyFriendsGroup";
+import UsersGroup from "./UsersGroup";
 
 const UsersFriends: FC = () => {
   const user = useSelector(getUserDetails);
@@ -50,18 +50,18 @@ const UsersFriends: FC = () => {
 
   return (
     <div>
-      <MyFriendsGroup
+      <UsersGroup
         friends={friends}
         user={user}
         noFriendsText={"No friends found."}
       />
-      <MyFriendsGroup
+      <UsersGroup
         friends={friendsRequests}
         user={user}
         title={"Friends Requested"}
         noFriendsText={"No requests sent."}
       />
-      <MyFriendsGroup
+      <UsersGroup
         friends={friendsRequested}
         user={user}
         title={"Requests"}

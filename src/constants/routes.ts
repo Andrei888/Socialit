@@ -12,5 +12,7 @@ const appRoutes = {
   group: "/group/:id",
   contactUs: "/contact",
   faq: "/faq",
+  allUsers: "/all-users",
+  allGroups: "/all-groups",
 };
 export default appRoutes;

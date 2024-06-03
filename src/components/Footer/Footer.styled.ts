@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import { Row, Col } from "antd";
-
 const Footer = styled.div`
   padding: 20px;
   width: 100%;

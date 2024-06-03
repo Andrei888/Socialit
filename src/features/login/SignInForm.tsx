@@ -36,7 +36,8 @@ const SignInForm: FC = () => {
       const response = await signInUserWithEmailAndPassword(values);
 
       if (response) {
-        dispatch(userLoginSuccess(response.user as LoginPayload));
+        console.log(response);
+        dispatch(userLoginSuccess(response as Partial<LoginPayload>));
       }
     } catch (error) {
       console.log(error);

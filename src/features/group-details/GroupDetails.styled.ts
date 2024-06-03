@@ -19,6 +19,10 @@ const FormCol = styled(Col)`
     font-size: 24px;
     margin-bottom: 15px;
   }
+  .group-btn-wrap {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+  }
 `;
 
 const UsersBlock = styled.div`

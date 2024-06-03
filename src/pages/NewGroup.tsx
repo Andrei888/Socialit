@@ -4,7 +4,7 @@ import { Row, Col, Typography } from "antd";
 // components
 import CreateNewGroup from "@app/features/groups/CreateNewGroup";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const Groups: React.FC = () => {
   return (

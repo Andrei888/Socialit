@@ -13,14 +13,25 @@ import { pageLocation } from "@utils/page";
 import * as actions from "./actions";
 
 function* userLoginSuccessSaga(action: PayloadAction<LoginPayload>) {
-  const { displayName, email, uid, isAnonymous, accessToken } = action.payload;
+  console.log(action.payload);
+  const {
+    displayName,
+    email,
+    id,
+    isAnonymous,
+    accessToken,
+    isAdmin,
+    isDisabled,
+  } = action.payload;
 
   const user = {
     displayName: displayName,
     email,
-    id: uid,
+    id: id,
     isAnonymous: isAnonymous,
     accessToken: accessToken,
+    isAdmin: isAdmin,
+    isDisabled: isDisabled,
   };
 
   JWTStore.setJWT(queryString.stringify(user));
@@ -44,9 +55,11 @@ function* fetchUserFromStorageSaga() {
       const user = {
         displayName: jwtUser.displayName as string,
         email: jwtUser.email as string,
-        uid: jwtUser.id as string,
+        id: jwtUser.id as string,
         accessToken: jwtUser.accessToken as string,
         isAnonymous: jwtUser.isAnonymous === "true" ? true : false,
+        isAdmin: jwtUser.isAdmin === "true" ? true : false,
+        isDisabled: jwtUser.isDisabled === "true" ? true : false,
       } as LoginPayload;
 
       yield put(actions.userLoginSuccess(user));

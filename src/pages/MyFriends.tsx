@@ -4,7 +4,7 @@ import { Row, Col, Typography } from "antd";
 import FindUsers from "@app/features/user/FindUsers";
 import UsersFriends from "@app/features/user/UsersFriends";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const MyFriends: React.FC = () => {
   return (

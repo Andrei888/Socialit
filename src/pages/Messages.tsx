@@ -1,10 +1,9 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { Button, Typography, Row, Col } from "antd";
+import { Typography, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 // utils
 import {
-  updateUserFirebase,
   getUserToUserMessages,
   updateConversationFirestore,
   myFriendsFirestore,
@@ -25,7 +24,7 @@ import { Friend } from "@app/features/user/redux/interfaces";
 
 // components
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const Messages: React.FC = () => {
   const user = useSelector(getUserDetails);
@@ -76,7 +75,6 @@ const Messages: React.FC = () => {
         console.log(error);
       }
     }
-    console.log(friendsNotLoaded);
 
     if (
       friendId &&
@@ -86,7 +84,14 @@ const Messages: React.FC = () => {
     ) {
       getUserToUserMsg();
     }
-  }, [friendId, userId, friendsNotLoaded, requestMessages]);
+  }, [
+    friendId,
+    userId,
+    friendsNotLoaded,
+    requestMessages,
+    dispatch,
+    messagesState.friendId,
+  ]);
 
   const handleChangeText = (event: ChangeEvent<HTMLInputElement>) => {
     setNewMessage(event.target.value);

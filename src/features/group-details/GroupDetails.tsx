@@ -11,6 +11,7 @@ import {
   updateChatInGroupFirestore,
   removeUserFromGroupFirestore,
   disableGroupFirestore,
+  deleteGroupFirestore,
 } from "../../externalFeeds/firebase.utils";
 
 // redux
@@ -148,6 +149,34 @@ const GroupDetails: FC = () => {
     return null;
   }
 
+  const checkGroupOwnerOrAdmin = (
+    user: any,
+    authorId: string | null,
+    isDisabled?: boolean
+  ) => {
+    if ((isDisabled && authorId === user.id) || (isDisabled && user.isAdmin)) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleDeleteGroup = () => {
+    async function deleteGroupFromFirestore(groupId: string) {
+      try {
+        const response = await deleteGroupFirestore(user, groupId);
+        if (response) {
+          setNewMessage("");
+          history.push("/all-groups");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (user.isAdmin && groupId) {
+      deleteGroupFromFirestore(groupId);
+    }
+  };
+
   return (
     <div>
       <Styled.Row>
@@ -162,32 +191,39 @@ const GroupDetails: FC = () => {
           <Title className="group-name">{group.name}</Title>
           <Text className="group-name">{group.description}</Text>
           {group.author && (
-            <Text className="group-author">Crated by: {group.author}</Text>
+            <Text className="group-author">Owner: {group.author}</Text>
           )}
-          {group.authorId === user.id && !group.isDisabled ? (
-            <Text className="group-author">
+          {checkGroupOwnerOrAdmin(user, group.authorId, !group.isDisabled) ? (
+            <span className="group-btn-wrap group-author">
               <Button
                 className="disable-group"
                 onClick={(e) => handleDisableGroup(true)}
               >
                 Disable Group
               </Button>
-            </Text>
-          ) : group.authorId === user.id && group.isDisabled ? (
-            <Text className="group-author">
+            </span>
+          ) : checkGroupOwnerOrAdmin(user, group.authorId, group.isDisabled) ? (
+            <span className="group-btn-wrap group-author">
               <Button
                 className="disable-group"
                 onClick={(e) => handleDisableGroup(false)}
               >
                 Enable Group
               </Button>
-            </Text>
+            </span>
           ) : (
-            <Text className="group-user">
+            <span className="group-btn-wrap group-user">
               <Button className="leave-group" onClick={handleLeaveGroup}>
                 Leave Group
               </Button>
-            </Text>
+            </span>
+          )}
+          {user.isAdmin && (
+            <span className="group-btn-wrap group-admin">
+              <Button className="delete-group" onClick={handleDeleteGroup}>
+                Delete Group
+              </Button>
+            </span>
           )}
           <MessagesBlock
             isDisabled={group.isDisabled}
@@ -205,7 +241,7 @@ const GroupDetails: FC = () => {
             <Text className="group-users">Users in Group</Text>
             {group?.users &&
               group.users.map((user) => {
-                return <Row>{user.displayName}</Row>;
+                return <Row key={user.id}>{user.displayName}</Row>;
               })}
           </Styled.UsersBlock>
         </Styled.Col>

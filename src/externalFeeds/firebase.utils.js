@@ -18,6 +18,7 @@ import {
   getDocs,
   collection,
   writeBatch,
+  deleteDoc,
 } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -73,7 +74,21 @@ export const createUserDocumentFromAuth = async (
     }
   }
 
-  return userAuth;
+  //return userAuth;
+  console.log(userSnapshot.id);
+  console.log(userSnapshot.data());
+  return {
+    displayName: userSnapshot.data().displayName,
+    avatar: userSnapshot.data().avatar,
+    email: userSnapshot.data().email,
+    id: userSnapshot.id,
+    name: userSnapshot.data().name,
+    age: userSnapshot.data().age,
+    sex: userSnapshot.data().sex,
+    isAdmin: userSnapshot.data().isAdmin,
+    isProfilePublic: userSnapshot.data().isProfilePublic,
+    address: userSnapshot.data().address,
+  };
 };
 
 export const createUserFirebase = async (user) => {
@@ -85,7 +100,17 @@ export const createUserFirebase = async (user) => {
 export const signInUserWithEmailAndPassword = async (user) => {
   if (!user.email || !user.password) return;
 
-  return await signInWithEmailAndPassword(auth, user.email, user.password);
+  const response = await signInWithEmailAndPassword(
+    auth,
+    user.email,
+    user.password
+  );
+  console.log(response);
+  if (response.user.uid) {
+    const updatedUser = await getUserProfile(response.user.uid);
+    return updatedUser;
+  }
+  return;
 };
 
 export const signOutUser = async () => {
@@ -107,9 +132,12 @@ export const getUserDetailsFirebase = async (user) => {
 // update user in Firestore
 
 export const updateUserFirebase = async (user, additionalInfo = {}) => {
+  console.log(db);
+  console.log(user);
   const userDocRef = doc(db, "users", user.id);
 
   const userSnapshot = await getDoc(userDocRef);
+  console.log(userSnapshot);
 
   if (userSnapshot.exists()) {
     const updatedAt = new Date();
@@ -122,6 +150,8 @@ export const updateUserFirebase = async (user, additionalInfo = {}) => {
       ...additionalInfo,
       email: oldUser.email,
     };
+
+    console.log(updatedUser);
 
     try {
       await setDoc(userDocRef, updatedUser);
@@ -162,14 +192,18 @@ export const getUserProfile = async (userId) => {
 
   if (userSnapshot.exists()) {
     const oldUser = userSnapshot.data();
-
+    console.log(oldUser);
     return {
-      userId: userId,
+      id: userId,
+      name: oldUser.name,
       displayName: oldUser.displayName,
+      email: oldUser.email,
       avatar: oldUser.avatar,
       age: oldUser.age,
       sex: oldUser.sex,
       description: oldUser.description,
+      isAdmin: oldUser.isAdmin,
+      isDisabled: oldUser.isDisabled,
     };
   }
 
@@ -371,6 +405,39 @@ export const addFriendFirestore = async (user, friendId) => {
   }
 };
 
+// Get All Users
+
+export const getAllUsersFirebase = async (myUser) => {
+  if (!myUser.isAdmin) {
+    return null;
+  }
+
+  const usersCol = collection(db, "users");
+
+  const userSnapshot = await getDocs(usersCol);
+
+  if (!userSnapshot.empty) {
+    const users = userSnapshot.docs
+      .map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      })
+      .filter((user) => {
+        return user.id !== myUser.id;
+      })
+      .map((user) => ({
+        displayName: user.displayName,
+        id: user.id,
+        email: user.email,
+        isAccepted: true,
+        isVerified: true,
+        isDisabled: user.isDisabled,
+      }));
+
+    return users;
+  } else {
+    return null;
+  }
+};
 // Groups
 
 // Find Groups
@@ -623,6 +690,7 @@ export const disableGroupFirestore = async (user, groupId, disabled) => {
   // check if group exists
   const group = doc(db, "groups", groupId);
   const groupSnapshot = await getDoc(group);
+  console.log(disabled);
 
   // find if group already exists with same ID
   if (groupSnapshot.exists) {
@@ -631,7 +699,11 @@ export const disableGroupFirestore = async (user, groupId, disabled) => {
       isDisabled: disabled,
     };
     try {
-      if (!updatedGroup.isDisabled && updatedGroup.authorId !== user.id) {
+      if (
+        !user.isAdmin &&
+        !updatedGroup.isDisabled &&
+        updatedGroup.authorId !== user.id
+      ) {
         return false;
       }
       await setDoc(doc(db, "groups", groupId), updatedGroup);
@@ -645,6 +717,49 @@ export const disableGroupFirestore = async (user, groupId, disabled) => {
   }
 
   return true;
+};
+
+// all Groups
+
+export const allGroupsFirestore = async (user) => {
+  if (!user.isAdmin) {
+    return null;
+  }
+
+  const usersGroups = collection(db, "groups");
+
+  const groupsSnapshot = await getDocs(usersGroups);
+
+  const groupsList = groupsSnapshot.docs.map((doc) => ({
+    name: doc.data().name,
+    id: doc.id,
+    usersInGroup: doc.data().users,
+    description: doc.data().description,
+  }));
+
+  return groupsList;
+};
+
+// disable Groups
+
+export const deleteGroupFirestore = async (user, groupId) => {
+  if (!user.isAdmin) {
+    return false;
+  }
+  // check if group exists
+  const group = doc(db, "groups", groupId);
+  const groupSnapshot = await getDoc(group);
+
+  // find if group already exists with same ID
+  if (groupSnapshot.exists) {
+    try {
+      await deleteDoc(group);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    return false;
+  }
 };
 
 // remove user from Groups

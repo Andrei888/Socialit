@@ -8,6 +8,7 @@ import { UserState } from "../login/redux/interfaces";
 import {
   myFriendsFirestore,
   addFriendFirestore,
+  updateUserFirebase,
 } from "../../externalFeeds/firebase.utils";
 
 // redux
@@ -20,21 +21,26 @@ import { getUserDetails } from "@features/login/redux/selectors";
 // component
 import GoToProfile from "./GoToProfile";
 import GoToMessages from "./GoToMessages";
-import { Styled } from "./MyFriendsGroup.styled";
+import { Styled } from "./UsersGroup.styled";
 
-interface MyFriendsGroupProps {
+interface UsersGroupProps {
   user: UserState;
   friends: Friend[] | null;
   title?: string;
   noFriendsText: string;
+  isAdmin?: boolean;
+  handleCallback?: () => void;
 }
 
-const MyFriendsGroup: FC<MyFriendsGroupProps> = ({
+const UsersGroup: FC<UsersGroupProps> = ({
   friends,
   user,
   title,
   noFriendsText,
+  isAdmin,
+  handleCallback,
 }) => {
+  console.log(friends);
   const [myFriends, setMyFriends] = useState<Friend[] | null>(friends);
   useEffect(() => {
     setMyFriends(friends);
@@ -51,6 +57,22 @@ const MyFriendsGroup: FC<MyFriendsGroupProps> = ({
     }
   };
 
+  const disableEnableHandler = async (
+    userId: string,
+    toggleDisabled: boolean
+  ) => {
+    if (user && userId) {
+      const updatedUser = await updateUserFirebase(
+        { id: userId },
+        { isDisabled: toggleDisabled }
+      );
+      console.log(updatedUser);
+      if (updatedUser) {
+        handleCallback && handleCallback();
+      }
+    }
+  };
+
   return (
     <Styled.Wrapper>
       {title && <Styled.Title>{title}</Styled.Title>}
@@ -59,7 +81,11 @@ const MyFriendsGroup: FC<MyFriendsGroupProps> = ({
       {myFriends && (
         <>
           {myFriends.map((friend: Friend) => (
-            <Styled.Row justify={"space-between"} align={"middle"}>
+            <Styled.Row
+              justify={"space-between"}
+              align={"middle"}
+              key={friend.id}
+            >
               <Styled.Col>
                 <div>{friend.displayName}</div>
               </Styled.Col>
@@ -68,6 +94,16 @@ const MyFriendsGroup: FC<MyFriendsGroupProps> = ({
                   <div>
                     <GoToProfile userId={friend.id} />
                     <GoToMessages myId={user.id} friendId={friend.id} />
+                    {isAdmin && (
+                      <Button
+                        onClick={(e) =>
+                          disableEnableHandler(friend.id, !friend.isDisabled)
+                        }
+                        style={{ marginLeft: "10px" }}
+                      >
+                        {friend.isDisabled ? "Enable User" : "Disable User"}
+                      </Button>
+                    )}
                   </div>
                 )}
                 {friend.isAccepted && !friend.isVerified && (
@@ -87,4 +123,4 @@ const MyFriendsGroup: FC<MyFriendsGroupProps> = ({
   );
 };
 
-export default MyFriendsGroup;
+export default UsersGroup;

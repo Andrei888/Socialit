@@ -18,6 +18,8 @@ const initialState: UserState = {
   accessToken: "",
   friends: null,
   loading: false,
+  isAdmin: undefined,
+  isDisabled: undefined,
   updateUserDetails: true,
 };
 
@@ -25,16 +27,37 @@ const userLoginSuccessReducer: CaseReducer<UserState> = (
   draftState,
   action
 ) => {
-  const { displayName, avatar, email, uid, isAnonymous, accessToken } =
-    action.payload;
+  console.log(action.payload);
+  const {
+    displayName,
+    name,
+    avatar,
+    email,
+    id,
+    isAnonymous,
+    accessToken,
+    isAdmin,
+    address,
+    sex,
+    description,
+    age,
+    isDisabled,
+  } = action.payload;
 
   draftState.displayName = displayName;
+  draftState.name = name;
   draftState.avatar = avatar;
   draftState.email = email;
-  draftState.id = uid;
+  draftState.id = id;
   draftState.isAnonymous = isAnonymous;
   draftState.accessToken = accessToken;
   draftState.updateUserDetails = false;
+  draftState.isAdmin = isAdmin;
+  draftState.address = address;
+  draftState.age = age;
+  draftState.sex = sex;
+  draftState.description = description;
+  draftState.isDisabled = isDisabled;
 };
 const userLogoutReducer: CaseReducer = (draftState, action) => {
   draftState.displayName = "";
@@ -52,6 +75,8 @@ const getUserDetailsSuccessReducer: CaseReducer = (draftState, action) => {
     age,
     sex,
     isProfilePublic,
+    isAdmin,
+    isDisabled,
   } = action.payload;
 
   draftState.displayName = displayName;
@@ -62,7 +87,9 @@ const getUserDetailsSuccessReducer: CaseReducer = (draftState, action) => {
   draftState.age = age;
   draftState.sex = sex;
   draftState.isProfilePublic = isProfilePublic;
+  draftState.isAdmin = isAdmin;
   draftState.updateUserDetails = false;
+  draftState.isDisabled = isDisabled;
 };
 const updateUserDetailsReducer: CaseReducer = (draftState, action) => {
   draftState.updateUserDetails = true;

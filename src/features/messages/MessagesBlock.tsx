@@ -101,6 +101,13 @@ const MessagesBlock: FC<MessagesBlockProps> = ({
                   ? `Share file with - ${friendName}`
                   : "Share file"}
               </label>
+              {newFile && (
+                <>
+                  <button onClick={handleFileUpload} className="action-btn">
+                    Send file
+                  </button>
+                </>
+              )}
             </Spacer>
             <input
               id="file"
@@ -110,15 +117,7 @@ const MessagesBlock: FC<MessagesBlockProps> = ({
             />
             {newFile && <Spacer>{newFile.name}</Spacer>}
           </Col>
-          <Col>
-            {newFile && (
-              <>
-                <button onClick={handleFileUpload} className="action-btn">
-                  Send file
-                </button>
-              </>
-            )}
-          </Col>
+          <Col></Col>
         </Row>
       )}
     </Styled.ChatBlock>

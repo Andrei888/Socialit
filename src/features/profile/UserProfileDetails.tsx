@@ -10,15 +10,18 @@ import {
   selectors as profileSelectors,
   actions as profileActions,
 } from "@features/profile/redux";
+import { getUser } from "@features/login/redux/selectors";
 
 // components
 import { Styled } from "./UserProfile.styled";
+import GoToMessages from "../user/GoToMessages";
 
 interface UserProfileProps {
   profileId: string | null;
 }
 
 const UserProfile: FC<UserProfileProps> = ({ profileId }) => {
+  const myUser = useSelector(getUser);
   const userProfile = useSelector(profileSelectors.getUserProfile);
 
   const dispatch = useDispatch();
@@ -59,7 +62,7 @@ const UserProfile: FC<UserProfileProps> = ({ profileId }) => {
         </Col>
         <Col span={14}>
           <Row>
-            <Col span={24}>User name: {userProfile.displayName}</Col>
+            <Col span={24}>Name: {userProfile.displayName}</Col>
           </Row>
           <Row>
             <Col span={24}>
@@ -73,7 +76,12 @@ const UserProfile: FC<UserProfileProps> = ({ profileId }) => {
           </Row>
           <Row>
             <Col span={24}>
-              User description: {userProfile.description ?? "No description."}
+              Description: {userProfile.description ?? "No description."}
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <GoToMessages myId={myUser.id} friendId={userProfile.userId} />
             </Col>
           </Row>
         </Col>

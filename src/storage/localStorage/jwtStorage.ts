@@ -20,7 +20,6 @@ window.addEventListener("storage", (event: StorageEvent) => {
   if (event.key === JWT) {
     if (event.newValue !== null) {
       setJWT(event.newValue);
-      //            setAxiosAuthorizationHeader(event.newValue);
     }
   }
 });

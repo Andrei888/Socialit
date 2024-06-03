@@ -4,11 +4,19 @@ export interface LoginHeader {
 }
 
 export interface LoginPayload {
-  displayName: string;
-  email: string;
-  uid: string;
+  displayName?: string;
+  email?: string;
+  id?: string;
   isAnonymous?: boolean;
   accessToken?: string;
+  avatar?: string;
+  name?: string;
+  age?: number;
+  sex?: string;
+  isAdmin?: boolean;
+  isDisabled?: boolean;
+  isProfilePublic?: boolean;
+  address?: string;
 }
 
 export interface GooglePayload {
@@ -30,11 +38,15 @@ export interface UserState {
   accessToken?: string;
   friends?: Friend[] | null;
   loading: boolean;
+  isAdmin?: boolean;
+  isDisabled?: boolean;
   updateUserDetails: boolean;
 }
 
 export interface Friend {
-  friendId: string | null;
+  id: string | null;
+  name: string | null;
   isAccepted: boolean | null;
   isVerified: boolean | null;
+  isDisabled?: boolean;
 }

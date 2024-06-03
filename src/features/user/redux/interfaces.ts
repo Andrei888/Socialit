@@ -3,6 +3,7 @@ export interface Friend {
   id: string;
   isAccepted: boolean;
   isVerified: boolean;
+  isDisabled?: boolean;
 }
 
 export interface FriendsState {

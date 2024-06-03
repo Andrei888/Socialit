@@ -1,6 +1,10 @@
 // @ts-nocheck
 import { Row, Col } from "antd";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+// redux
+import { getUserDetails } from "@features/login/redux/selectors";
 
 //components
 import LogoutBtn from "../../features/login/LogoutBtn";
@@ -8,6 +12,7 @@ import logo from "../../images/updatedLogo.jpg";
 import { Styled } from "./Header.styled";
 
 const Header = () => {
+  const user = useSelector(getUserDetails);
   return (
     <Styled.Header justify={"space-between"} align={"middle"}>
       <Styled.Container>
@@ -39,6 +44,20 @@ const Header = () => {
                   My Groups
                 </Link>
               </Col>
+              {user.isAdmin && (
+                <>
+                  <Col>
+                    <Link className="header-link" to="/all-users">
+                      All Users
+                    </Link>
+                  </Col>
+                  <Col>
+                    <Link className="header-link" to="/all-groups">
+                      All Groups
+                    </Link>
+                  </Col>
+                </>
+              )}
               <Col>
                 <LogoutBtn />
               </Col>

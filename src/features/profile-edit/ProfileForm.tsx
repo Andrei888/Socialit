@@ -24,7 +24,6 @@ import {
 // redux
 import { getUserDetailsSuccess } from "../login/redux/actions";
 import { getUserDetails } from "../login/redux/selectors";
-//import { userLoginSuccess } from "./redux/actions";
 
 // components
 import { Styled } from "./ProfileForm.styled";
@@ -84,6 +83,7 @@ const ProfileForm: FC = () => {
             sex: userDetails.sex ?? "",
             address: userDetails.address ?? "",
             isProfilePublic: userDetails.isProfilePublic ?? true,
+            isAdmin: userDetails.isAdmin ?? false,
           } as UserState)
         );
       }

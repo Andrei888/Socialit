@@ -10,6 +10,7 @@ export const isLoading = createSelector(
 
 export const getUser = createSelector(selectUserInformation, (state) => ({
   name: state.name,
+  displayName: state.displayName,
   email: state.email,
   id: state.id,
   isAnonymous: state.isAnonymous,

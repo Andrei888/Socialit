@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Typography } from "antd";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
 // components
