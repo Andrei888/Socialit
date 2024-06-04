@@ -2,25 +2,16 @@ import { FC, useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Typography } from "antd";
 import { Formik, FormikProps } from "formik";
-import { Form, Input, Radio, ResetButton } from "formik-antd";
+import { Form, Input, ResetButton } from "formik-antd";
 import { useHistory } from "react-router-dom";
 //import {PlusCircleOutlined} from  'antd/'
 // models
 import { NewGroupValues } from "./interfaces";
 //utils
-import {
-  updateUserFirebase,
-  getUserDetailsFirebase,
-  findGroupsFirebase,
-  joinGroupFirebase,
-  createNewGroupFirestore,
-} from "../../externalFeeds/firebase.utils";
+import { createNewGroupFirestore } from "../../externalFeeds/firebase.utils";
 
 // redux
-import {
-  selectors as groupSelector,
-  actions as groupAction,
-} from "@features/groups/redux";
+import { actions as groupAction } from "@features/groups/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
 
 import validationSchema from "./validation";
@@ -44,6 +35,8 @@ const CreateNewGroup: FC = () => {
       seo: "",
       description: "",
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const handleSubmitForm = (values: NewGroupValues) => {
@@ -86,6 +79,7 @@ const CreateNewGroup: FC = () => {
         By submitting this form you will create a new Group where you will join
         automatically!
       </Styled.Title>
+      {errors && <p className="error-msg">{errors}</p>}
       {submittedMsg && <p className="success-msg">{submittedMsg}</p>}
       <Formik
         initialValues={initialValues()}

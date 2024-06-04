@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import { Typography } from "antd";
-
 const ImageWrapper = styled.div`
   border-radius: 50%;
   overflow: hidden;

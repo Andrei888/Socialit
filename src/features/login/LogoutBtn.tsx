@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 //utils
 import { signOutUser } from "../../externalFeeds/firebase.utils";

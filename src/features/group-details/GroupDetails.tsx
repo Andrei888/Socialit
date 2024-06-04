@@ -19,10 +19,7 @@ import {
   selectors as groupSelector,
   actions as groupAction,
 } from "@features/group-details/redux";
-import {
-  selectors as groupsSelector,
-  actions as groupsAction,
-} from "@features/groups/redux";
+import { actions as groupsAction } from "@features/groups/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
 
 // components
@@ -40,7 +37,6 @@ const GroupDetails: FC = () => {
   const [newMessage, setNewMessage] = useState<string>();
 
   const location = useLocation();
-  const [groupInfo, setGroupInfo] = useState<Group | null>(group);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -62,11 +58,9 @@ const GroupDetails: FC = () => {
     if ((groupNotLoaded && groupId) || (groupId && groupId !== group.id)) {
       getGroupDetails(groupId);
     }
-  }, [groupNotLoaded, groupId]);
 
-  useEffect(() => {
-    setGroupInfo(group);
-  }, [group]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupNotLoaded, groupId]);
 
   useEffect(() => {
     const id = location.pathname.split("/").splice(-1)[0];

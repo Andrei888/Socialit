@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Main = styled.main`
   width: 100%;
-  min-height: calc(100vh - 230px);
+  min-height: calc(100vh - 320px);
 `;
 const Container = styled.div`
   width: 1000px;

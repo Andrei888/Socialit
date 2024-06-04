@@ -59,11 +59,11 @@ const MessagesBlock: FC<MessagesBlockProps> = ({
               {message.file && (
                 <Styled.Message className="message">
                   {message.fileType?.includes("image") ? (
-                    <a href={message.file} target="_blank">
-                      <img src={message.file} />
+                    <a href={message.file} target="_blank" rel="noreferrer">
+                      <img src={message.file} alt={`${message.fileType}`} />
                     </a>
                   ) : (
-                    <a href={message.file} target="_blank">
+                    <a href={message.file} target="_blank" rel="noreferrer">
                       See {message.fileType?.split("/")[1]} file
                     </a>
                   )}

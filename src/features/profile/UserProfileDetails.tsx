@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Image } from "antd";
 // constants
@@ -42,6 +42,8 @@ const UserProfile: FC<UserProfileProps> = ({ profileId }) => {
     if (profileId && userProfile.userId !== profileId) {
       getLatestUserProfile();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileId, userProfile.userId]);
 
   if (!profileId) {

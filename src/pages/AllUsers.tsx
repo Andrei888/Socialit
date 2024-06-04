@@ -1,22 +1,16 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { Row, Col, Typography, Input } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 // models
-import { BasicUser } from "@models/user";
 import { Friend } from "@app/features/user/redux/interfaces";
 //utils
-import {
-  getAllUsersFirebase,
-  myFriendsFirestore,
-} from "../externalFeeds/firebase.utils";
+import { getAllUsersFirebase } from "../externalFeeds/firebase.utils";
 // redux
 import { getUserDetails } from "@features/login/redux/selectors";
 // components
-import FindUsers from "@app/features/user/FindUsers";
-import UsersFriends from "@app/features/user/UsersFriends";
 import UsersGroup from "@app/features/user/UsersGroup";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const AllUsers: React.FC = () => {
   const user = useSelector(getUserDetails);
@@ -41,10 +35,14 @@ const AllUsers: React.FC = () => {
     if (user.isAdmin) {
       fetchFriends();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.isAdmin, updateUsers]);
 
   useEffect(() => {
     setFiltredUsers(users);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [users?.length]);
 
   const handleUpdateUsers = () => {
@@ -60,6 +58,8 @@ const AllUsers: React.FC = () => {
         .includes(textQuery.toLocaleLowerCase())
     );
     setFiltredUsers(filtredList ?? []);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [textQuery, users]);
 
   if (!user.isAdmin) {

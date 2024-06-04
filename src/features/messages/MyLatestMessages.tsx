@@ -46,6 +46,7 @@ const MyLatestMessages: FC<MyLatestMessagesProps> = ({ user }) => {
     if (user.id) {
       getLatestUserMsg();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
 
   if (!user.id) {

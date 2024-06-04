@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { Row, Col, Typography } from "antd";
+import { Row, Col } from "antd";
 
 const FormRow = styled(Row)``;
 const FormCol = styled(Col)`

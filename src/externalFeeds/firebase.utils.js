@@ -8,7 +8,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  getAdditionalUserInfo,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -17,7 +16,7 @@ import {
   setDoc,
   getDocs,
   collection,
-  writeBatch,
+  // writeBatch,
   deleteDoc,
 } from "firebase/firestore";
 
@@ -213,9 +212,10 @@ export const getUserProfile = async (userId) => {
 // upload to Firestore
 
 export const addCollectionAndDocs = async (collectionKey, objectToAdd) => {
-  const collectionRef = collection(db, collectionKey);
-
-  const batch = writeBatch(db);
+  // @ts-nocheck
+  // const collectionRef = collection(db, collectionKey);
+  // @ts-ignore
+  //const batch = writeBatch(db);
 };
 
 // Find Users
@@ -949,6 +949,7 @@ export const getUserLatestMessages = async (userId) => {
             return null;
           }
         }
+        return null;
       });
       console.log(latestMessages);
       return latestMessages;

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import logo from "../../images/updatedLogo.jpg";
 import { Styled } from "./Footer.styled";
 
-const { Title, Text, Link: ExternalLink } = Typography;
+const { Title, Link: ExternalLink } = Typography;
 
 const Footer: React.FC = () => {
   return (

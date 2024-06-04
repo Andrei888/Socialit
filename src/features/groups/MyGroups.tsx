@@ -1,17 +1,12 @@
 // @ts-nocheck
 import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Button, Typography, Space } from "antd";
+import { Typography, Space } from "antd";
 import { Link } from "react-router-dom";
 // models
 import { Group } from "./redux/interfaces";
 //utils
-import {
-  updateUserFirebase,
-  getUserDetailsFirebase,
-  myFriendsFirestore,
-  myGroupsFirestore,
-} from "../../externalFeeds/firebase.utils";
+import { myGroupsFirestore } from "../../externalFeeds/firebase.utils";
 
 // redux
 import {
@@ -28,7 +23,6 @@ const { Title, Text } = Typography;
 const UsersGroups: FC = () => {
   const user = useSelector(getUserDetails);
   const groupsNotLoaded = useSelector(groupSelector.getRequestGroups);
-  const loading = useSelector(groupSelector.isLoading);
   const groups = useSelector(groupSelector.getGroups);
 
   const [myGroups, setMyGroups] = useState<Group[] | null>(groups);
@@ -51,10 +45,14 @@ const UsersGroups: FC = () => {
     if (groupsNotLoaded && user.id) {
       fetchGroups();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupsNotLoaded, user]);
 
   useEffect(() => {
     setMyGroups(groups);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups]);
 
   console.log(myGroups);

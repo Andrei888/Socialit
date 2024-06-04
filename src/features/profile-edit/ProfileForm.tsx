@@ -1,5 +1,5 @@
 import { FC, useState, useRef, useCallback, useEffect } from "react";
-import { Button, Row, Col, Modal, Image } from "antd";
+import { Button, Row, Col } from "antd";
 import { Formik, FormikProps } from "formik";
 import {
   Form,
@@ -14,7 +14,6 @@ import { Typography } from "antd";
 // models
 import { ProfileValues } from "./interfaces";
 // constants
-import { DEFAULT_AVATAR } from "@constants/placeholders";
 import { sexOptions } from "@constants/options";
 //utils
 import {
@@ -93,7 +92,7 @@ const ProfileForm: FC = () => {
     }
 
     // eslint-disable-line react-hooks/exhaustive-deps
-  }, [user.id, user.updateUserDetails]);
+  }, [user.id, user.updateUserDetails, dispatch, user]);
 
   useEffect(() => {
     if (submittedMsg) {
@@ -101,6 +100,8 @@ const ProfileForm: FC = () => {
         setSubmittedMsg(null);
       }, 2000);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, submittedMsg]);
 
   const initialValues = useCallback(() => {

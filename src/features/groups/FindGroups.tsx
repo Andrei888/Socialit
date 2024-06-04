@@ -8,8 +8,6 @@ import { Group } from "./redux/interfaces";
 import { groupSearchFields } from "@constants/options";
 //utils
 import {
-  updateUserFirebase,
-  getUserDetailsFirebase,
   findGroupsFirebase,
   joinGroupFirebase,
 } from "../../externalFeeds/firebase.utils";
@@ -77,12 +75,16 @@ const FindGroups: FC = () => {
     if (textQuery) {
       setTextQuery(textQuery);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userGroups]);
 
   useEffect(() => {
     if (textQuery) {
       search(textQuery, searchIn);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [textQuery, searchIn]);
 
   return (

@@ -1,24 +1,14 @@
 // @ts-nocheck
 import { FC, useEffect, useState, ChangeEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Button, Typography, Space, Input } from "antd";
+import { useSelector } from "react-redux";
+import { Typography, Space, Input } from "antd";
 import { Link } from "react-router-dom";
 // models
 import { Group } from "./redux/interfaces";
 //utils
-import {
-  updateUserFirebase,
-  getUserDetailsFirebase,
-  myFriendsFirestore,
-  myGroupsFirestore,
-  allGroupsFirestore,
-} from "../../externalFeeds/firebase.utils";
+import { allGroupsFirestore } from "../../externalFeeds/firebase.utils";
 
 // redux
-import {
-  selectors as groupSelector,
-  actions as groupAction,
-} from "@features/groups/redux";
 import { getUserDetails } from "@features/login/redux/selectors";
 
 // components
@@ -70,7 +60,7 @@ const UsersGroups: FC = () => {
           <div style={{ padding: "20px 20px 20px 0" }}>
             <Input
               value={textQuery}
-              placeholder={`Filter User by Group Name`}
+              placeholder={`Filter by Group Name`}
               onChange={(e) => handleSearch(e)}
             />
           </div>

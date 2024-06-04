@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
 import * as types from "./types";
 
-import { Friend, FriendsState } from "./interfaces";
+import { Friend } from "./interfaces";
 
 export const getUserFriends = createAction<Friend[]>(types.GET_USER_FRIENDS);
 export const getUserFriendsFailed = createAction<string>(

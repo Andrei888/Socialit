@@ -1,5 +1,5 @@
-import { createReducer, CaseReducer, Action } from "@reduxjs/toolkit";
-import { UsersMessages, MessagesDoc } from "./interfaces";
+import { createReducer, CaseReducer } from "@reduxjs/toolkit";
+import { UsersMessages } from "./interfaces";
 
 import * as actions from "./actions";
 

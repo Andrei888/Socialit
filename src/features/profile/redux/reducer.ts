@@ -1,4 +1,4 @@
-import { createReducer, CaseReducer, Action } from "@reduxjs/toolkit";
+import { createReducer, CaseReducer } from "@reduxjs/toolkit";
 import { UserProfile } from "./interfaces";
 
 import * as actions from "./actions";

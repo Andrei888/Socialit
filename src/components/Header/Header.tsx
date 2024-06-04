@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Row, Col } from "antd";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 // redux
 import { getUserDetails } from "@features/login/redux/selectors";

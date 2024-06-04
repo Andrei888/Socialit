@@ -110,7 +110,6 @@ const ImageInput: React.FC<ImageInputProps> = ({ user }) => {
   };
   const getBase64FromImage = (file: File) => {
     return new Promise((resolve) => {
-      let fileInfo;
       let baseURL: ArrayBuffer | string = "";
       // Make new FileReader
       let reader = new FileReader();

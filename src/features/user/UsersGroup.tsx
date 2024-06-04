@@ -1,22 +1,17 @@
 import { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Button, Typography } from "antd";
+import { useDispatch } from "react-redux";
+import { Button } from "antd";
 // models
 import { Friend } from "./redux/interfaces";
 import { UserState } from "../login/redux/interfaces";
 //utils
 import {
-  myFriendsFirestore,
   addFriendFirestore,
   updateUserFirebase,
 } from "../../externalFeeds/firebase.utils";
 
 // redux
-import {
-  selectors as friendsSelector,
-  actions as friendsActions,
-} from "@app/features/user/redux";
-import { getUserDetails } from "@features/login/redux/selectors";
+import { actions as friendsActions } from "@app/features/user/redux";
 
 // component
 import GoToProfile from "./GoToProfile";

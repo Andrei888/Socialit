@@ -4,7 +4,7 @@ import { Row, Col, Typography } from "antd";
 // components
 import AllGroupsList from "@features/groups/AllGroups";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const AllGroups: React.FC = () => {
   return (

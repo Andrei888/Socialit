@@ -1,6 +1,5 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Button } from "antd";
 // models
 import { Friend } from "./redux/interfaces";
 //utils
@@ -14,7 +13,6 @@ import {
 import { getUserDetails } from "@features/login/redux/selectors";
 
 // component
-import GoToMessages from "./GoToMessages";
 import UsersGroup from "./UsersGroup";
 
 const UsersFriends: FC = () => {

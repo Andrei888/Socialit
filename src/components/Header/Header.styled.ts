@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { Row, Col } from "antd";
+import { Row } from "antd";
 
 const Header = styled(Row)`
   background: rgb(24, 106, 182);
