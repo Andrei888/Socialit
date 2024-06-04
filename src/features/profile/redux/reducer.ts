@@ -4,7 +4,7 @@ import { UserProfile } from "./interfaces";
 import * as actions from "./actions";
 
 const initialState: UserProfile = {
-  userId: null,
+  id: null,
   displayName: null,
   avatar: null,
   age: null,
@@ -16,9 +16,9 @@ const getUserProfileSuccessReducer: CaseReducer<UserProfile> = (
   draftState,
   action
 ) => {
-  const { userId, displayName, avatar, age, sex, description } = action.payload;
+  const { id, displayName, avatar, age, sex, description } = action.payload;
 
-  draftState.userId = userId;
+  draftState.id = id;
   draftState.displayName = displayName;
   draftState.avatar = avatar;
   draftState.age = age;

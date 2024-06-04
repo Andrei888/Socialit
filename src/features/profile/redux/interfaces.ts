@@ -1,5 +1,5 @@
 export interface UserProfile {
-  userId: string | null;
+  id: string | null;
   displayName: string | null;
   avatar: string | null;
   age: string | null;
