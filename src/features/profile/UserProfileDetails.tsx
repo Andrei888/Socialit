@@ -39,12 +39,12 @@ const UserProfile: FC<UserProfileProps> = ({ profileId }) => {
       }
     }
 
-    if (profileId && userProfile.userId !== profileId) {
+    if (profileId && userProfile.id !== profileId) {
       getLatestUserProfile();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileId, userProfile.userId]);
+  }, [profileId, userProfile.id]);
 
   if (!profileId) {
     return null;
@@ -83,7 +83,7 @@ const UserProfile: FC<UserProfileProps> = ({ profileId }) => {
           </Row>
           <Row>
             <Col span={24}>
-              <GoToMessages myId={myUser.id} friendId={userProfile.userId} />
+              <GoToMessages myId={myUser.id} friendId={userProfile.id} />
             </Col>
           </Row>
         </Col>

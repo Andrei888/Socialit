@@ -5,7 +5,7 @@ const selectUserInformation = (state: any) => state.userProfile as UserProfile;
 
 export const getUserProfile = createSelector(selectUserInformation, (state) => {
   return {
-    userId: state.userId,
+    id: state.id,
     displayName: state.displayName,
     avatar: state.avatar,
     sex: state.sex,

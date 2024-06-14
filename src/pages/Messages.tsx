@@ -1,7 +1,10 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { Typography, Row, Col } from "antd";
+import { Typography, Row, Col, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
+//models
+import { FileObj } from "@models/file";
+import { Friend } from "@app/features/user/redux/interfaces";
 // utils
 import {
   getUserToUserMessages,
@@ -20,7 +23,7 @@ import {
   actions as messagesAction,
 } from "@features/messages/redux";
 import MessagesBlock from "@app/features/messages/MessagesBlock";
-import { Friend } from "@app/features/user/redux/interfaces";
+import FilesBlock from "@app/features/messages/FilesBlock";
 
 // components
 
@@ -30,10 +33,14 @@ const Messages: React.FC = () => {
   const user = useSelector(getUserDetails);
   const [userId, setUserId] = useState<string>("");
   const [friendId, setFriendId] = useState<string>("");
+  const [showOnlyFiles, setShowOnlyFiles] = useState<boolean>(false);
+  const [files, setFriendFiles] = useState<FileObj[] | null>(null);
+
   const messagesState = useSelector(messagesSelectors.getMessagesState);
   const requestMessages = useSelector(messagesSelectors.requestMessages);
   const friendsNotLoaded = useSelector(friendsSelector.getRequestFriends);
   const myFriends = useSelector(friendsSelector.getFriends);
+
   const location = useLocation();
 
   const [fileUploaded, setFileUploaded] = useState<File | null>(null);
@@ -64,12 +71,23 @@ const Messages: React.FC = () => {
     // get conversation
     async function getUserToUserMsg() {
       try {
-        const messages = await getUserToUserMessages(userId, friendId);
+        const chat = await getUserToUserMessages(userId, friendId);
 
-        console.log(messages);
+        if (chat) {
+          console.log(chat.messages);
+          const getFiles: FileObj[] = chat.messages
+            ?.filter((msg: any) => msg.fileType)
+            .map((file: any) => {
+              return {
+                name: file.fileName,
+                type: file.fileType,
+                url: file.file,
+              };
+            });
 
-        if (messages) {
-          dispatch(messagesAction.getUserMessagesSuccess(messages));
+          setFriendFiles(getFiles);
+
+          dispatch(messagesAction.getUserMessagesSuccess(chat));
         }
       } catch (error) {
         console.log(error);
@@ -153,13 +171,18 @@ const Messages: React.FC = () => {
     }
   };
   const handleUpload = async () => {
+    console.log(fileUploaded);
     // We will fill this out later
     const response = await uploadFile(user.id, fileUploaded);
-    const { url, type } = response;
-    handleSendFileToFirestore(url, type);
+    const { url, type, name } = response;
+    handleSendFileToFirestore(url, type, name);
   };
 
-  const handleSendFileToFirestore = (fileUrl: string, type: string) => {
+  const handleSendFileToFirestore = (
+    fileUrl: string,
+    type: string,
+    name: string
+  ) => {
     async function updateTextMsg(friendId: string) {
       try {
         const response = await updateConversationFirestore(
@@ -168,7 +191,8 @@ const Messages: React.FC = () => {
           friendId,
           fileUrl,
           true,
-          type
+          type,
+          name
         );
         if (response) {
           dispatch(messagesAction.updateUserMessages());
@@ -183,24 +207,39 @@ const Messages: React.FC = () => {
     }
   };
 
+  const handleSeeAllFiles = () => {
+    setShowOnlyFiles((prev) => !prev);
+  };
+
   return (
     <div className="friends-page">
       <Title>Messages with - {getFriendName()}</Title>
+      {files && (
+        <Row>
+          <Button onClick={handleSeeAllFiles}>
+            {showOnlyFiles ? "See Chat conversation" : "See all Files"}
+          </Button>
+        </Row>
+      )}
       <Row>
-        <Col span={18}>
-          <MessagesBlock
-            userId={userId}
-            friendName={getFriendName()}
-            messages={messagesState.messages}
-            newMessage={newMessage}
-            handleKeyUp={handleKeyUp}
-            handleChangeText={handleChangeText}
-            handleSendText={handleSendText}
-            newFile={fileUploaded}
-            handleFileChange={handleFileChange}
-            handleFileUpload={handleUpload}
-          />
-        </Col>
+        {showOnlyFiles ? (
+          <FilesBlock files={files} />
+        ) : (
+          <Col span={18}>
+            <MessagesBlock
+              userId={userId}
+              friendName={getFriendName()}
+              messages={messagesState.messages}
+              newMessage={newMessage}
+              handleKeyUp={handleKeyUp}
+              handleChangeText={handleChangeText}
+              handleSendText={handleSendText}
+              newFile={fileUploaded}
+              handleFileChange={handleFileChange}
+              handleFileUpload={handleUpload}
+            />
+          </Col>
+        )}
       </Row>
     </div>
   );

@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+import "dotenv/config";
+import bcryptjs from "bcryptjs";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   getAuth,
@@ -23,13 +25,13 @@ import {
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCfCF3j0qt2rUqKnzK_et4bZa-ndz8tHmU",
-  authDomain: "social-9bd87.firebaseapp.com",
-  projectId: "social-9bd87",
-  storageBucket: "social-9bd87.appspot.com",
-  messagingSenderId: "148459129005",
-  appId: "1:148459129005:web:b35ae64c71a6576a849e24",
-  //measurementId: "G-9VCWQ5C77G",
+  apiKey: process.env.REACT_APP_firebaseApiKey,
+  authDomain: process.env.REACT_APP_firebaseAuthDomain,
+  projectId: process.env.REACT_APP_firebaseProjectId,
+  storageBucket: process.env.REACT_APP_firebaseStorageBucket,
+  messagingSenderId: process.env.REACT_APP_firebaseMessagingSenderId,
+  appId: process.env.REACT_APP_firebaseAppId,
+  //measurementId: "XXX",
 };
 
 // Initialize Firebase
@@ -73,9 +75,6 @@ export const createUserDocumentFromAuth = async (
     }
   }
 
-  //return userAuth;
-  console.log(userSnapshot.id);
-  console.log(userSnapshot.data());
   return {
     displayName: userSnapshot.data().displayName,
     avatar: userSnapshot.data().avatar,
@@ -93,18 +92,20 @@ export const createUserDocumentFromAuth = async (
 export const createUserFirebase = async (user) => {
   if (!user.email || !user.password) return;
 
-  return await createUserWithEmailAndPassword(auth, user.email, user.password);
+  const encriptedPass = await bcryptjs.hash(user.password, 10);
+
+  return await createUserWithEmailAndPassword(auth, user.email, encriptedPass);
 };
 
 export const signInUserWithEmailAndPassword = async (user) => {
   if (!user.email || !user.password) return;
+  const encriptedPass = await bcryptjs.hash(user.password, 10);
 
   const response = await signInWithEmailAndPassword(
     auth,
     user.email,
-    user.password
+    encriptedPass
   );
-  console.log(response);
   if (response.user.uid) {
     const updatedUser = await getUserProfile(response.user.uid);
     return updatedUser;
@@ -270,9 +271,6 @@ export const myFriendsFirestore = async (user, queryText, isFriend) => {
 
   let usersList = [];
 
-  console.log(user);
-  console.log(queryText);
-
   if (userSnapshot.exists()) {
     const userFriends = userSnapshot.data().friends;
     if (userFriends && userFriends.length) {
@@ -280,8 +278,6 @@ export const myFriendsFirestore = async (user, queryText, isFriend) => {
       const usersCol = collection(db, "users");
 
       const usersSnapshot = await getDocs(usersCol);
-
-      console.log(userFriends);
 
       if (queryText) {
         usersList = usersSnapshot.docs
@@ -848,7 +844,8 @@ export const updateConversationFirestore = async (
   friendId,
   text,
   isFile = false,
-  fileType = ""
+  fileType = "",
+  fileName = ""
 ) => {
   const messagesIds = [user.id + "-" + friendId, friendId + "-" + user.id];
   const msgId = Date.now().toString();
@@ -885,6 +882,7 @@ export const updateConversationFirestore = async (
             msgId: msgId,
             file: isFile ? text : null,
             fileType: isFile ? fileType : null,
+            fileName: isFile ? fileName : null,
           },
         ],
       };
@@ -904,6 +902,7 @@ export const updateConversationFirestore = async (
             msgId: msgId,
             file: isFile ? text : null,
             fileType: isFile ? fileType : null,
+            fileName: isFile ? fileName : null,
           },
         ],
       };
@@ -930,18 +929,19 @@ export const getUserLatestMessages = async (userId) => {
     const messages = messagesSnapshot.docs.filter((doc) => {
       return doc.id.includes(userId);
     });
-    console.log(messages);
+
     if (!messages) {
       return null;
     } else {
+      console.log(messages);
       const latestMessages = messages.map((doc) => {
-        const messages = doc.data().messages;
-        if (messages?.length) {
-          const reversedMessages = messages
+        const chats = doc.data().messages;
+        if (chats?.length) {
+          console.log(chats);
+          const reversedMessages = chats
             .reverse()
-            .filter((msg) => msg.userId !== userId);
+            .filter((msg) => msg.userId !== userId && msg.text);
           console.log(reversedMessages);
-
           if (reversedMessages?.length) {
             console.log(reversedMessages);
             return reversedMessages[0];
@@ -969,7 +969,7 @@ export const uploadFile = async (userId, file) => {
 
   const url = await getDownloadURL(storageRef);
 
-  return { url: url, type: fileType };
+  return { url: url, type: fileType, name: file.name };
   //const mountainsRef = ref(storage, `images/${file.name}`);
   //console.log(mountainsRef);
 };

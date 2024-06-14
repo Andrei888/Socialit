@@ -30,13 +30,13 @@ const Header = () => {
                 </Link>
               </Col>
               <Col>
-                <Link className="header-link" to="/messages">
-                  Messages
+                <Link className="header-link" to="/friends">
+                  Friends
                 </Link>
               </Col>
               <Col>
-                <Link className="header-link" to="/friends">
-                  Friends
+                <Link className="header-link" to="/messages">
+                  Messages
                 </Link>
               </Col>
               <Col>

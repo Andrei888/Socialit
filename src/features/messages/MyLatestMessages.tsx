@@ -18,7 +18,6 @@ interface MyLatestMessagesProps {
   user: BasicUser;
 }
 const MyLatestMessages: FC<MyLatestMessagesProps> = ({ user }) => {
-  console.log(user);
   const dispatch = useDispatch();
 
   const latestMessages = useSelector(selectors.getLatestMessages);

@@ -114,6 +114,7 @@ const MessagesBlock: FC<MessagesBlockProps> = ({
               type="file"
               onChange={handleFileChange}
               className="sr-only"
+              accept="image/*"
             />
             {newFile && <Spacer>{newFile.name}</Spacer>}
           </Col>

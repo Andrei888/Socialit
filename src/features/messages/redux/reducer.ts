@@ -19,6 +19,7 @@ const getUserMessagesSuccessReducer: CaseReducer<UsersMessages> = (
 ) => {
   const { userId, firstUser, firstUserId, secondUser, secondUserId, messages } =
     action.payload;
+  console.log(action.payload);
   if (userId === firstUser) {
     draftState.friend = secondUser;
     draftState.friendId = secondUserId;

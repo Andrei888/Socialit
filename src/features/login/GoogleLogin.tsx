@@ -17,8 +17,6 @@ const GoogleLogin: FC = () => {
 
     const user = await createUserDocumentFromAuth(response.user);
 
-    console.log(user);
-
     if (user) {
       dispatch(userLoginSuccess(user));
     }

@@ -138,7 +138,16 @@ const ImageInput: React.FC<ImageInputProps> = ({ user }) => {
         />
       </Styled.ImageWrapper>
       <Styled.ImageInputWrapper>
-        <input type="file" name="file" onChange={(e) => handleImageChange(e)} />
+        <label htmlFor="file" className="action-btn">
+          Change Image
+        </label>
+        <input
+          id="file"
+          type="file"
+          name="file"
+          className="sr-only"
+          onChange={(e) => handleImageChange(e)}
+        />
       </Styled.ImageInputWrapper>
       <Modal visible={isModalOpen} onCancel={toggleModal} onOk={handleImageOk}>
         <Title>Update User Avatar</Title>
