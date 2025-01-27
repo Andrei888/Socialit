@@ -176,4 +176,8 @@ table {
     position: absolute;
     z-index: -1;
   }
+
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    font-size: 21px;
+  }
 }

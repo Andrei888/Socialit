@@ -28,8 +28,6 @@ const MyLatestMessages: FC<MyLatestMessagesProps> = ({ user }) => {
       try {
         const messages = await getUserLatestMessages(user.id);
 
-        console.log(messages);
-
         if (messages) {
           dispatch(
             actions.getLatestMessagesSuccess(
@@ -56,8 +54,8 @@ const MyLatestMessages: FC<MyLatestMessagesProps> = ({ user }) => {
     <div>
       {latestMessages && latestMessages.length ? (
         <div>
-          {latestMessages.map((message) => (
-            <Styled.MsgBlock>
+          {latestMessages.map((message, idx) => (
+            <Styled.MsgBlock key={idx}>
               <Styled.Row justify={"space-between"} align={"top"}>
                 <Styled.Col>
                   <Styled.Title>{message.userName}</Styled.Title>

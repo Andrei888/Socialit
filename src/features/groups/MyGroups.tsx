@@ -63,7 +63,7 @@ const UsersGroups: FC = () => {
       {myGroups && (
         <>
           {myGroups.map((group: Group) => (
-            <Styled.Row justify={"space-between"} align={"top"}>
+            <Styled.Row justify={"space-between"} align={"top"} key={group.id}>
               <Styled.Col>
                 <Title className="group-name">{group.name}</Title>
                 <Text className="group-name">{group.description}</Text>

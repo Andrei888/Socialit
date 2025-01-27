@@ -27,7 +27,6 @@ const userLoginSuccessReducer: CaseReducer<UserState> = (
   draftState,
   action
 ) => {
-  console.log(action.payload);
   const {
     displayName,
     name,
@@ -61,8 +60,22 @@ const userLoginSuccessReducer: CaseReducer<UserState> = (
 };
 const userLogoutReducer: CaseReducer = (draftState, action) => {
   draftState.displayName = "";
+  draftState.avatar = "";
+  draftState.name = "";
   draftState.email = "";
+  draftState.address = "";
+  draftState.age = null;
+  draftState.sex = "";
+  draftState.description = "";
+  draftState.isProfilePublic = true;
   draftState.id = null;
+  draftState.isAnonymous = true;
+  draftState.accessToken = "";
+  draftState.friends = null;
+  draftState.loading = false;
+  draftState.isAdmin = undefined;
+  draftState.isDisabled = undefined;
+  draftState.updateUserDetails = true;
 };
 
 const getUserDetailsSuccessReducer: CaseReducer = (draftState, action) => {

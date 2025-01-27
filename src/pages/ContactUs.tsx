@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography } from "antd";
+import { RightCircleOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
 
@@ -14,28 +15,48 @@ const ContactUs: React.FC = () => {
           reach out to us through any of the following methods:
         </Text>
         <Text>
-          <b>General Inquiries </b>
+          <b>
+            <RightCircleOutlined
+              style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+            />{" "}
+            General Inquiries{" "}
+          </b>
         </Text>
         <Text>
           For general questions or information about our app, email us at:
           info@socialIT.com
         </Text>
         <Text>
-          <b>Support</b>
+          <b>
+            <RightCircleOutlined
+              style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+            />{" "}
+            Support
+          </b>
         </Text>
         <Text>
           Experiencing an issue or need help? Our support team is ready to
           assist you. Email us at: support@socialIT.com
         </Text>
         <Text>
-          <b>Feedback</b>
+          <b>
+            <RightCircleOutlined
+              style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+            />{" "}
+            Feedback
+          </b>
         </Text>
         <Text>
           Your feedback is invaluable to us. Help us improve by sharing your
           thoughts and suggestions: feedback@socialIT.com
         </Text>
         <Text>
-          <b>Follow Us</b>
+          <b>
+            <RightCircleOutlined
+              style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+            />{" "}
+            Follow Us
+          </b>
         </Text>
         <Text>
           Stay connected and get the latest updates by following us on social
@@ -46,6 +67,9 @@ const ContactUs: React.FC = () => {
           <b>Instagram:</b> @SocialIT
         </Text>
         <Text>
+          <RightCircleOutlined
+            style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+          />{" "}
           <b>Mailing Address</b>
         </Text>
         <Text>
@@ -55,6 +79,9 @@ const ContactUs: React.FC = () => {
           City, State, ZIP Code <br />
         </Text>
         <Text>
+          <RightCircleOutlined
+            style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+          />{" "}
           <b>Office Hours </b>
         </Text>
         <Text>

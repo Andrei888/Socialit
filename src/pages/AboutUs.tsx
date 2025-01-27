@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography } from "antd";
+import { RightCircleOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
@@ -8,7 +9,12 @@ const AboutUs: React.FC = () => {
     <div className="about-us-page">
       <Title>About Us</Title>
       <section>
-        <h2>Our Mission</h2>
+        <h2>
+          <RightCircleOutlined
+            style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+          />{" "}
+          Our Mission
+        </h2>
         <p>
           At <strong>Social IT</strong>, our mission is to connect people from
           all walks of life, fostering a global community where everyone can
@@ -18,7 +24,12 @@ const AboutUs: React.FC = () => {
       </section>
 
       <section>
-        <h2>Our Story</h2>
+        <h2>
+          <RightCircleOutlined
+            style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+          />{" "}
+          Our Story
+        </h2>
         <p>
           <strong>Social IT</strong> was founded in <strong>2024</strong> with a
           simple idea: to create a space where people can easily connect, share
@@ -29,7 +40,12 @@ const AboutUs: React.FC = () => {
       </section>
 
       <section>
-        <h2>Our Values</h2>
+        <h2>
+          <RightCircleOutlined
+            style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+          />{" "}
+          Our Values
+        </h2>
         <ul>
           <li>
             <strong>Community:</strong> We strive to build a supportive and
@@ -53,7 +69,12 @@ const AboutUs: React.FC = () => {
       </section>
 
       <section>
-        <h2>Meet Our Team</h2>
+        <h2>
+          <RightCircleOutlined
+            style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+          />{" "}
+          Meet Our Team
+        </h2>
         <p>
           We are a diverse group of passionate individuals dedicated to making{" "}
           <strong>Social IT</strong> the best social networking experience. From
@@ -70,7 +91,12 @@ const AboutUs: React.FC = () => {
       </section>
 
       <section>
-        <h2>What We Offer</h2>
+        <h2>
+          <RightCircleOutlined
+            style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+          />{" "}
+          What We Offer
+        </h2>
         <ul>
           <li>
             <strong>Personalized Experience:</strong> Tailored content and
@@ -88,7 +114,12 @@ const AboutUs: React.FC = () => {
       </section>
 
       <section>
-        <h2>Contact Us</h2>
+        <h2>
+          <RightCircleOutlined
+            style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+          />{" "}
+          Contact Us
+        </h2>
         <p>
           Have questions or feedback? Visit our{" "}
           <a href="/contact">Contact Us</a> page to get in touch. We’d love to
@@ -97,7 +128,12 @@ const AboutUs: React.FC = () => {
       </section>
 
       <section>
-        <h2>Follow Us</h2>
+        <h2>
+          <RightCircleOutlined
+            style={{ color: "rgb(24, 106, 182)", fontSize: "21px" }}
+          />{" "}
+          Follow Us
+        </h2>
         <p>
           Stay up-to-date with the latest news and updates by following us on
           social media:

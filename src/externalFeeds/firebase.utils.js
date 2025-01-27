@@ -161,26 +161,6 @@ export const updateUserFirebase = async (user, additionalInfo = {}) => {
 
     return updatedUser;
   }
-
-  // const userDocRef = doc(db, "users", user.id);
-
-  // const userSnapshot = await getDoc(userDocRef);
-
-  // if (userSnapshot.exists()) {
-  //   console.log(userSnapshot);
-  //   try {
-  //     // await setDoc(userDocRef, {
-  //     //   displayName,
-  //     //   email,
-  //     //   createdAt,
-  //     //   ...additionalInfo,
-  //     // });
-  //   } catch (error) {
-  //     console.log("error creating user", error.message);
-  //   }
-  // } else {
-  //   console.log("error editing user that does not exist");
-  // }
 };
 
 // get user profile
@@ -233,7 +213,7 @@ export const findUsersFirebase = async (
   const userSnapshot = await getDocs(usersCol);
 
   if (!userSnapshot.empty) {
-    const test = userSnapshot.docs
+    const user = userSnapshot.docs
       .map((doc) => {
         return { id: doc.id, ...doc.data() };
       })
@@ -250,13 +230,24 @@ export const findUsersFirebase = async (
 
         return user.id !== myUser.id && name.includes(query.toLowerCase());
       })
+      .filter((user) => {
+        let isMyFriend = false;
+
+        user.friends.forEach((friend) => {
+          if (friend.friendId === user.id) {
+            isMyFriend = true;
+          }
+        });
+
+        return !isMyFriend;
+      })
       .map((user) => ({
         displayName: user.displayName,
         id: user.id,
         email: user.email,
       }));
 
-    return test;
+    return user;
   } else {
     return null;
   }
@@ -449,7 +440,6 @@ export const findGroupsFirebase = async (query, searchIn) => {
         return { id: doc.id, ...doc.data() };
       })
       .filter((group) => {
-        console.log(searchIn);
         if (searchIn === "description") {
           const groupDescription = group.description?.toLowerCase();
 
@@ -459,7 +449,6 @@ export const findGroupsFirebase = async (query, searchIn) => {
             ?.map((message) => message.text.toLowerCase())
             .join("_")
             ?.toLowerCase();
-          console.log(groupChat);
 
           return groupChat?.includes(query.toLowerCase());
         } else {
@@ -541,7 +530,6 @@ export const joinGroupFirebase = async (user, groupId) => {
           ];
 
       const newGroup = { ...group, users: usersInGroupArr };
-      console.log(newGroup);
       try {
         await setDoc(groupDocRef, newGroup);
       } catch (error) {
@@ -588,7 +576,6 @@ export const myGroupsFirestore = async (user) => {
 // create new Groups
 
 export const createNewGroupFirestore = async (user, newGroup) => {
-  console.log(user);
   // check if group already exist with same Id
   const allGroups = collection(db, "groups");
   const groupsSnapshot = await getDocs(allGroups);
@@ -634,7 +621,6 @@ export const fetchGroupDetails = async (newGroupId) => {
 
   // find if group already exists with same ID
   if (groupSnapshot.exists) {
-    console.log(groupSnapshot.data());
     return {
       ...groupSnapshot.data(),
       seo: groupSnapshot.data().seo ?? newGroupId,
@@ -647,7 +633,6 @@ export const fetchGroupDetails = async (newGroupId) => {
 // update Group Firestore
 
 export const updateChatInGroupFirestore = async (user, groupId, text) => {
-  console.log(user);
   // check if group already exist with same Id
   const group = doc(db, "groups", groupId);
   const groupSnapshot = await getDoc(group);
@@ -667,7 +652,7 @@ export const updateChatInGroupFirestore = async (user, groupId, text) => {
         },
       ],
     };
-    console.log(updatedGroup);
+
     try {
       await setDoc(doc(db, "groups", groupId), updatedGroup);
     } catch (error) {
@@ -686,7 +671,6 @@ export const disableGroupFirestore = async (user, groupId, disabled) => {
   // check if group exists
   const group = doc(db, "groups", groupId);
   const groupSnapshot = await getDoc(group);
-  console.log(disabled);
 
   // find if group already exists with same ID
   if (groupSnapshot.exists) {
@@ -850,12 +834,6 @@ export const updateConversationFirestore = async (
   const messagesIds = [user.id + "-" + friendId, friendId + "-" + user.id];
   const msgId = Date.now().toString();
   // check if group already exist with same Id
-  // const group = doc(db, "groups", groupId);
-  // const groupSnapshot = await getDoc(group);
-  console.log(user);
-  console.log(friend);
-  console.log(friendId);
-
   const messagesCol = collection(db, "messages");
   const messagesSnapshot = await getDocs(messagesCol);
 
@@ -923,8 +901,6 @@ export const getUserLatestMessages = async (userId) => {
   const messagesCol = collection(db, "messages");
   const messagesSnapshot = await getDocs(messagesCol);
 
-  console.log(messagesSnapshot);
-
   if (!messagesSnapshot.empty) {
     const messages = messagesSnapshot.docs.filter((doc) => {
       return doc.id.includes(userId);
@@ -933,17 +909,13 @@ export const getUserLatestMessages = async (userId) => {
     if (!messages) {
       return null;
     } else {
-      console.log(messages);
       const latestMessages = messages.map((doc) => {
         const chats = doc.data().messages;
         if (chats?.length) {
-          console.log(chats);
           const reversedMessages = chats
             .reverse()
             .filter((msg) => msg.userId !== userId && msg.text);
-          console.log(reversedMessages);
           if (reversedMessages?.length) {
-            console.log(reversedMessages);
             return reversedMessages[0];
           } else {
             return null;
@@ -951,7 +923,6 @@ export const getUserLatestMessages = async (userId) => {
         }
         return null;
       });
-      console.log(latestMessages);
       return latestMessages;
     }
   } else {

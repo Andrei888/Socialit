@@ -65,7 +65,7 @@ const CreateNewGroup: FC = () => {
         dispatch(groupAction.updateGroupsList());
         setTimeout(() => {
           history.push("/groups");
-        }, 2000);
+        }, 1000);
       }
     } catch (error) {
       console.log(error);
